@@ -1,0 +1,26 @@
+services:
+  nextcloud-aio-mastercontainer:
+    image: nextcloud/all-in-one:latest
+    init: true
+    restart: always
+    container_name: nextcloud-aio-mastercontainer
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8080:8080 # This is the port for the master container
+    environment:
+      APACHE_PORT: 11000 # This is the port to proxy to
+      APACHE_IP_BINDING: 0.0.0.0
+      NEXTCLOUD_DATADIR: /data/nextcloud
+      NEXTCLOUD_MOUNT: /data/
+      NEXTCLOUD_UPLOAD_LIMIT: 10G
+      NEXTCLOUD_MAX_TIME: 3600
+      NEXTCLOUD_MEMORY_LIMIT: 512M
+      NEXTCLOUD_ADDITIONAL_APKS: imagemagick
+      NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS: imagick
+      SKIP_DOMAIN_VALIDATION: true # Needed for tunnels to work
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
