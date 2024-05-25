@@ -1,5 +1,5 @@
 services:
-  nginx:
+  nginx: &nginx
     image: nginx:latest
     container_name: nginx
     networks:
@@ -12,6 +12,12 @@ services:
       - ./stream:/etc/nginx/stream:ro
       - ./logs:/var/log/nginx
     restart: unless-stopped
+
+  test:
+    <<: *nginx
+    container_name: nginx-test
+    command: nginx -t
+    restart: no
 
   cloudflared:
     image: cloudflare/cloudflared:latest
