@@ -31,13 +31,24 @@ services:
       - /data/media:/usr/src/paperless/media
       - /data/export:/usr/src/paperless/export
       - /data/consume:/usr/src/paperless/consume
-    env_file: docker-compose.env
     environment:
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_DBHOST: db
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+
+      # Host relevant settings for permissions
+      USERMAP_UID: 0
+      USERMAP_GID: 0
+
+      # Custom Paperless settings
+      # Run `docker compose up -d --force-recreate` to apply changes
+      PAPERLESS_TIME_ZONE: Europe/Berlin
+      PAPERLESS_OCR_LANGUAGE: deu
+      PAPERLESS_OCR_LANGUAGES: eng deu
+      PAPERLESS_URL: https://archive.davidkopczynski.com
+      PAPERLESS_SECRET_KEY: "***REMOVED***"
 
   gotenberg:
     image: docker.io/gotenberg/gotenberg:7.10
