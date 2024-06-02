@@ -21,6 +21,20 @@ services:
     <<: *nginx
     container_name: nginx-test
     command: nginx -t
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./nginx.conf
+          target: /etc/nginx/nginx.conf
+        - action: sync+restart
+          path: ./config
+          target: /etc/nginx/conf.d/config
+        - action: sync+restart
+          path: ./sites
+          target: /etc/nginx/sites-enabled
+        - action: sync+restart
+          path: ./streams
+          target: /etc/nginx/streams-enabled
     restart: no
 
   cloudflared:
@@ -38,4 +52,4 @@ services:
 
 networks:
   default:
-    name: nginx
+    name: network
