@@ -10,7 +10,6 @@ services:
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:release
-    command: ['start.sh', 'immich']
     environment:
       <<: *environment
     volumes:
@@ -18,20 +17,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 2283:3001
-    depends_on:
-      - redis
-      - database
-    restart: always
-
-  immich-microservices:
-    container_name: immich_microservices
-    image: ghcr.io/immich-app/immich-server:release
-    command: ['start.sh', 'microservices']
-    environment:
-      <<: *environment
-    volumes:
-      - /data/photos:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - redis
       - database
