@@ -1,26 +1,50 @@
-services:
-  nextcloud-aio-mastercontainer:
-    image: nextcloud/all-in-one:latest
-    init: true
-    restart: always
-    container_name: nextcloud-aio-mastercontainer
-    volumes:
-      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - 8080:8080 # This is the port for the master container
-    environment:
-      APACHE_PORT: 11000 # This is the port to proxy to
-      APACHE_IP_BINDING: 0.0.0.0
-      NEXTCLOUD_DATADIR: /data/nextcloud
-      NEXTCLOUD_MOUNT: /data/
-      NEXTCLOUD_UPLOAD_LIMIT: 10G
-      NEXTCLOUD_MAX_TIME: 3600
-      NEXTCLOUD_MEMORY_LIMIT: 512M
-      NEXTCLOUD_ADDITIONAL_APKS: imagemagick
-      NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS: imagick
-      SKIP_DOMAIN_VALIDATION: true # Needed for tunnels to work
+x-database: &x-database
+  MYSQL_ROOT_PASSWORD: ***REMOVED***
+  MYSQL_PASSWORD:      ***REMOVED***
+  MYSQL_DATABASE:      nextcloud
+  MYSQL_USER:          nextcloud
+  MYSQL_HOST:          db
 
-volumes:
-  nextcloud_aio_mastercontainer:
-    name: nextcloud_aio_mastercontainer
+x-redis: &x-redis
+  REDIS_HOST_PASSWORD: ***REMOVED***
+  REDIS_HOST:          redis
+
+services:
+  db:
+    image: mariadb
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - /data/db:/var/lib/mysql
+    environment:
+      <<: *x-database
+      TZ: Europe/Berlin
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    command: /bin/sh -c "redis-server --requirepass $${REDIS_HOST_PASSWORD}"
+    environment:
+      <<: *x-redis
+      TZ: Europe/Berlin
+
+  app:
+    image: nextcloud
+    restart: unless-stopped
+    ports:
+      - 11000:80
+    links:
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - /data/nextcloud:/var/www/html
+    environment:
+      <<: [*x-database, *x-redis]
+      TZ: Europe/Berlin
+      NEXTCLOUD_TRUSTED_DOMAINS: cloud.davidkopczynski.com localhost
+      TRUSTED_PROXIES: 10.0.1.0
+      OVERWRITEHOST: cloud.davidkopczynski.com
+      OVERWRITEPROTOCOL: https
