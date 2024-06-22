@@ -47,6 +47,7 @@ services:
       PAPERLESS_TIME_ZONE: Europe/Berlin
       PAPERLESS_OCR_LANGUAGE: deu
       PAPERLESS_OCR_LANGUAGES: eng deu
+      PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures": true}'
       PAPERLESS_URL: https://archive.davidkopczynski.com
       PAPERLESS_SECRET_KEY: "***REMOVED***"
 
