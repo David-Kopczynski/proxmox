@@ -11,6 +11,7 @@ x-redis: &x-redis
 
 services:
   db:
+    container_name: db
     image: mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
@@ -21,6 +22,7 @@ services:
       TZ: Europe/Berlin
 
   redis:
+    container_name: redis
     image: redis
     restart: unless-stopped
     command: /bin/sh -c "redis-server --requirepass $${REDIS_HOST_PASSWORD}"
@@ -29,6 +31,7 @@ services:
       TZ: Europe/Berlin
 
   app:
+    container_name: nextcloud
     image: nextcloud
     restart: unless-stopped
     ports:
