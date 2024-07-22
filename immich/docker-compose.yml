@@ -1,22 +1,14 @@
-x-environment: &environment
-  DB_PASSWORD:       ***REMOVED***
-  POSTGRES_PASSWORD: ***REMOVED***
-  DB_USERNAME:       postgres
-  POSTGRES_USER:     postgres
-  DB_DATABASE_NAME:  immich
-  POSTGRES_DB:       immich
-
 services:
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:release
-    environment:
-      <<: *environment
+    env_file:
+      - /data/.env-database
     volumes:
       - /data/photos:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - 2283:3001
+      - 80:3001
     depends_on:
       - redis
       - database
@@ -25,8 +17,8 @@ services:
   immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:release
-    environment:
-      <<: *environment
+    env_file:
+      - /data/.env-database
     volumes:
       - model-cache:/cache
     restart: always
@@ -40,8 +32,9 @@ services:
     container_name: immich_postgres
     image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     environment:
-      <<: *environment
       POSTGRES_INITDB_ARGS: '--data-checksums'
+    env_file:
+      - /data/.env-database
     volumes:
       - /data/immich:/var/lib/postgresql/data
     restart: always
