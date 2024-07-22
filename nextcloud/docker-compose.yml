@@ -1,14 +1,3 @@
-x-database: &x-database
-  MYSQL_ROOT_PASSWORD: ***REMOVED***
-  MYSQL_PASSWORD:      ***REMOVED***
-  MYSQL_DATABASE:      nextcloud
-  MYSQL_USER:          nextcloud
-  MYSQL_HOST:          db
-
-x-redis: &x-redis
-  REDIS_HOST_PASSWORD: ***REMOVED***
-  REDIS_HOST:          redis
-
 services:
   db:
     container_name: db
@@ -18,8 +7,9 @@ services:
     volumes:
       - /data/db:/var/lib/mysql
     environment:
-      <<: *x-database
       TZ: Europe/Berlin
+    env_file:
+      - /data/.env-database
 
   redis:
     container_name: redis
@@ -27,27 +17,27 @@ services:
     restart: unless-stopped
     command: /bin/sh -c "redis-server --requirepass $${REDIS_HOST_PASSWORD}"
     environment:
-      <<: *x-redis
       TZ: Europe/Berlin
+    env_file:
+      - /data/.env-redis
 
   app:
     container_name: nextcloud
     image: nextcloud
     restart: unless-stopped
     ports:
-      - 11000:80
-    links:
-      - db
-      - redis
+      - 80:80
     depends_on:
       - db
       - redis
     volumes:
       - /data/nextcloud:/var/www/html
     environment:
-      <<: [*x-database, *x-redis]
       TZ: Europe/Berlin
       NEXTCLOUD_TRUSTED_DOMAINS: cloud.davidkopczynski.com localhost
       TRUSTED_PROXIES: 10.0.1.0
       OVERWRITEHOST: cloud.davidkopczynski.com
       OVERWRITEPROTOCOL: https
+    env_file:
+      - /data/.env-database
+      - /data/.env-redis
