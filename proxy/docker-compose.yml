@@ -1,5 +1,5 @@
 services:
-  nginx: &nginx
+  nginx:
     build:
       context: .
       dockerfile_inline: |
@@ -9,47 +9,18 @@ services:
         COPY ./sites /etc/nginx/sites-enabled
         COPY ./streams /etc/nginx/streams-enabled
     container_name: nginx
-    networks:
-      - default
     environment:
       - TZ=Europe/Berlin
-    volumes:
-      - ./logs:/var/log/nginx
     restart: unless-stopped
-
-  test:
-    <<: *nginx
-    container_name: nginx-test
-    command: nginx -t
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./nginx.conf
-          target: /etc/nginx/nginx.conf
-        - action: sync+restart
-          path: ./config
-          target: /etc/nginx/conf.d
-        - action: sync+restart
-          path: ./sites
-          target: /etc/nginx/sites-enabled
-        - action: sync+restart
-          path: ./streams
-          target: /etc/nginx/streams-enabled
-    restart: no
 
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
     command: tunnel run
-    networks:
-      - default
     environment:
       - TZ=Europe/Berlin
-      - TUNNEL_TOKEN=***REMOVED***
+    env_file:
+      - /data/.env-cloudflared
     depends_on:
       - nginx
     restart: unless-stopped
-
-networks:
-  default:
-    name: network
