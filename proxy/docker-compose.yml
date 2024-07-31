@@ -9,6 +9,8 @@ services:
         COPY ./sites /etc/nginx/sites-enabled
         COPY ./streams /etc/nginx/streams-enabled
     container_name: nginx
+    volumes:
+      - ./logs:/var/log/nginx
     environment:
       - TZ=Europe/Berlin
     restart: unless-stopped
