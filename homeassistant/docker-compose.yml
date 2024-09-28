@@ -8,6 +8,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
   esphome:
     container_name: esphome
@@ -20,3 +25,9 @@ services:
     environment:
       ESPHOME_DASHBOARD_USE_PING: true
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
+
