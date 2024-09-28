@@ -16,3 +16,8 @@ services:
       - /data/etc-pihole:/etc/pihole
       - /data/etc-dnsmasq.d:/etc/dnsmasq.d
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
