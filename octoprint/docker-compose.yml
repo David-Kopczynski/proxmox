@@ -13,3 +13,8 @@ services:
     environment:
       - MJPG_STREAMER_INPUT=-n -r 1920x1080 -br 0 -co 32 -sa 64 -sh 10
       - ENABLE_MJPG_STREAMER=true
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
