@@ -5,6 +5,11 @@ services:
     restart: unless-stopped
     volumes:
       - redisdata:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
   db:
     image: docker.io/library/postgres:16
@@ -17,6 +22,11 @@ services:
       POSTGRES_DB: paperless
       POSTGRES_USER: paperless
       POSTGRES_PASSWORD: paperless
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -54,6 +64,11 @@ services:
       PAPERLESS_URL: https://archive.davidkopczynski.com
     env_file:
       - /data/.env-paperless
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
   gotenberg:
     image: docker.io/gotenberg/gotenberg:8.7
@@ -63,11 +78,21 @@ services:
       - "gotenberg"
       - "--chromium-disable-javascript=true"
       - "--chromium-allow-list=file:///tmp/.*"
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
   tika:
     image: ghcr.io/paperless-ngx/tika:latest
     container_name: tika
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
 
 volumes:
   redisdata:
