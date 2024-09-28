@@ -7,3 +7,8 @@ services:
     ports:
       - 80:3001
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: 5
