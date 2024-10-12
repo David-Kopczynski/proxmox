@@ -1,0 +1,20 @@
+cd "$(dirname "$0")"
+
+##
+## Add this to cronjob with:
+##   0 0 * * * bash {path_to_this_directory}/certbot
+##
+
+# Run certbot and check if new certificate has been created
+# In this case, Nginx should be restarted
+echo "trying to generate new certificate..."
+output=$(docker compose up certbot)
+echo "$output"
+
+if ! [[ "$output" =~ "no action taken." ]]; then
+    echo "new certificate generated."
+    echo "restarting nginx..."
+    docker exec nginx nginx -s reload
+else
+    echo "no actions taken."
+fi
