@@ -10,6 +10,7 @@ services:
       - ./config:/etc/nginx/config
       - ./sites:/etc/nginx/sites-enabled
       - ./ssl:/etc/nginx/ssl
+      - ./streams:/etc/nginx/streams-enabled
         # For the origin certificates, SST/TLS encrytion must be set to Full(strict)
         # and the certificates placed here as "davidkopczynski.com.pem" and "davidkopczynski.com.key".
         # Ideally, the origin pulls are also authenticated in the settings.
