@@ -9,6 +9,7 @@ services:
     environment:
       TZ: Europe/Berlin
     env_file:
+      # DB requires MYSQL_{ ROOT_PASSWORD, PASSWORD, DATABASE, USER }
       - /data/.env-database
     logging:
       driver: json-file
@@ -24,6 +25,7 @@ services:
     environment:
       TZ: Europe/Berlin
     env_file:
+      # Redis requires REDIS_{ HOST_PASSWORD }
       - /data/.env-redis
     logging:
       driver: json-file
@@ -49,6 +51,8 @@ services:
       OVERWRITEHOST: cloud.davidkopczynski.com
       OVERWRITEPROTOCOL: https
     env_file:
+      # Nextcloud requires environments from DB and Redis on top of:
+      # MYSQL_HOST and REDIS_HOST with the name of the containers
       - /data/.env-database
       - /data/.env-redis
     logging:
