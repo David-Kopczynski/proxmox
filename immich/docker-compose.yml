@@ -3,6 +3,8 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:release
     env_file:
+      # The environment variables are not split between different services
+      # more info can be found on the repo of immich
       - /data/.env-database
     volumes:
       - /data/photos:/usr/src/app/upload
