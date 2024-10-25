@@ -8,9 +8,13 @@ services:
       - /data/db:/var/lib/mysql
     environment:
       TZ: Europe/Berlin
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
     env_file:
-      # DB requires MYSQL_{ ROOT_PASSWORD, PASSWORD, DATABASE, USER }
+      # DB requires MYSQL_{ ROOT_PASSWORD, PASSWORD }
+      # but MYSQL_ROOT_PASSWORD should be kept secret to this service
       - /data/.env-database
+      - /data/.env-database-root
     logging:
       driver: json-file
       options:
@@ -25,7 +29,7 @@ services:
     environment:
       TZ: Europe/Berlin
     env_file:
-      # Redis requires REDIS_{ HOST_PASSWORD }
+      # Redis requires REDIS_HOST_PASSWORD
       - /data/.env-redis
     logging:
       driver: json-file
@@ -50,9 +54,12 @@ services:
       TRUSTED_PROXIES: 10.0.1.0
       OVERWRITEHOST: cloud.davidkopczynski.com
       OVERWRITEPROTOCOL: https
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_HOST: db
+      REDIS_HOST: redis
     env_file:
-      # Nextcloud requires environments from DB and Redis on top of:
-      # MYSQL_HOST and REDIS_HOST with the name of the containers
+      # Passwords are also required for Nextcloud
       - /data/.env-database
       - /data/.env-redis
     logging:
