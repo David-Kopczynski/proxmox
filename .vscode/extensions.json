@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    // Nix related
+    "jnoortheen.nix-ide",
+  ]
+}
