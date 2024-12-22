@@ -71,8 +71,9 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"
   ];
 
-  # Update keymap
+  # Update locale and timezone
   console.keyMap = "de";
+  time.timeZone = "Europe/Berlin";
 
   # Install version
   system.stateVersion = "24.11";
