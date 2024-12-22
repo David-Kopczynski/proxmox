@@ -1,7 +1,7 @@
 # 🌐 NixOS on Proxmox
 
 This Nix installation includes all services running on my Proxmox Home-Lab server.
-Installation is done remotely via `nixos-rebuild --target-host root@IP_OF_TARGET -I nixos-config=PATH_TO_THIS_REPO` to build and deploy the new configuration.
+Installation is done remotely via `nixos-rebuild --target-host root@IP_OF_TARGET -I nixos-config=PATH_TO_THIS_REPO switch` to build and deploy the new configuration.
 This way, the server is always up-to-date with the current channels of my private NixOS configuration (latest stable).
 
 Please keep in mind, that data is primarily stored locally on the server within the `/data` directory (which must be added via Proxmox and setup using parted).
