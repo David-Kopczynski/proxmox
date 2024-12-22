@@ -1,12 +1,22 @@
 { ... }:
 
+let
+  PORT = 44301;
+  DATA = /data/uptime-kuma;
+in
 {
   services.uptime-kuma.enable = true;
-  services.uptime-kuma.settings = {
+  services.uptime-kuma = {
 
-    # Data directory cannot be changed
-    # DATA_DIR = "/var/lib/private/uptime-kuma";
-    PORT = "44301";
+    # General configuration
+    appriseSupport = true;
+
+    settings = {
+
+      # Data directory cannot be changed
+      # DATA_DIR = "/var/lib/private/uptime-kuma";
+      PORT = toString PORT;
+    };
   };
 
   # Manually symlink data directory as it cannot be changed
@@ -15,6 +25,6 @@
     mkdir -p /var/lib/private
     chmod 700 /var/lib/private
 
-    ln -s /data/uptime-kuma /var/lib/private/uptime-kuma
+    ln -s ${toString DATA} /var/lib/private/uptime-kuma
   '';
 }
