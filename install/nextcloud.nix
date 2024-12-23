@@ -28,4 +28,10 @@ in
       NextcloudAdminPassword!
     '';
   };
+
+  # Nginx reverse proxy to Nextcloud
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+  };
 }

@@ -1,6 +1,7 @@
 { ... }:
 
 let
+  HOST = "davidkopczynski.com";
   PORT = 44301;
   DATA = /data/uptime-kuma;
 in
@@ -27,4 +28,16 @@ in
 
     ln -s ${toString DATA} /var/lib/private/uptime-kuma
   '';
+
+  # Nginx reverse proxy to Uptime Kuma with custom port
+  services.nginx.virtualHosts.${HOST} = {
+    default = true;
+
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://[::1]:${toString PORT}";
+      proxyWebsockets = true;
+    };
+  };
 }

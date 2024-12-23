@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 let
   HOST = "archive.davidkopczynski.com";
@@ -16,6 +16,16 @@ in
 
       # This prevents failure when PDF is signed
       invalidate_digital_signatures = true;
+    };
+  };
+
+  # Nginx reverse proxy to Paperless with port 28981
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://[::1]:${toString config.services.paperless.port}";
+      proxyWebsockets = true;
     };
   };
 }

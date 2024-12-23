@@ -1,12 +1,13 @@
-{ ... }:
+{ config, ... }:
 
 let
+  HOST = "home.davidkopczynski.com";
   ADDR = "192.168.0.39";
   DATA = /data/home-assistant;
 in
 {
   services.home-assistant.enable = true;
-  services.home-assistant.configDir = toString DATA;
+  services.home-assistant.configDir = DATA;
   services.home-assistant = {
 
     # Additional components
@@ -90,4 +91,17 @@ in
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
+
+  # Nginx reverse proxy to HomeAssistant with port 8123
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      extraConfig = ''
+        proxy_buffering off;
+      '';
+      proxyPass = "http://[::1]:${toString config.services.home-assistant.config.http.server_port}";
+      proxyWebsockets = true;
+    };
+  };
 }

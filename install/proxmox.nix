@@ -1,5 +1,11 @@
 { modulesPath, ... }:
 
+let
+  HOST = "server.davidkopczynski.com";
+  HOME = "192.168.0.0/24";
+  ADDR = "192.168.0.169";
+  PORT = 8006;
+in
 {
   # Hardware specific configuration
   # These values are taken from the initial hardware-configuration.nix
@@ -74,6 +80,20 @@
   # Update locale and timezone
   console.keyMap = "de";
   time.timeZone = "Europe/Berlin";
+
+  # Allow access to dashboard from local network
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      extraConfig = ''
+        deny  all;
+        allow ${HOME};
+      '';
+      proxyPass = "https://${ADDR}:${toString PORT}";
+      proxyWebsockets = true;
+    };
+  };
 
   # Install version
   system.stateVersion = "24.11";

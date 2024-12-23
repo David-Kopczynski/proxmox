@@ -21,4 +21,14 @@ in
     };
     environmentFiles = [ "${toString DATA}/secrets.env" ];
   };
+
+  # Nginx reverse proxy to Speedtest Tracker with custom port
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://[::1]:${toString PORT}";
+      proxyWebsockets = true;
+    };
+  };
 }

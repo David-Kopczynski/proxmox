@@ -1,6 +1,7 @@
-{ ... }:
+{ config, ... }:
 
 let
+  HOST = "photos.davidkopczynski.com";
   DATA = /data/immich;
 in
 {
@@ -13,4 +14,14 @@ in
     "video"
     "render"
   ];
+
+  # Nginx reverse proxy to Immich with port 2283
+  services.nginx.virtualHosts.${HOST} = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://[::1]:${toString config.services.immich.port}";
+      proxyWebsockets = true;
+    };
+  };
 }
