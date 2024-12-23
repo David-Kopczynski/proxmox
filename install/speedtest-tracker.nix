@@ -24,7 +24,13 @@ in
 
   # Nginx reverse proxy to Speedtest Tracker with custom port
   services.nginx.virtualHosts.${HOST} = {
-    enableACME = true;
+
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:${toString PORT}";

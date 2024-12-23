@@ -96,7 +96,13 @@ in
 
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
-    enableACME = true;
+
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       extraConfig = ''

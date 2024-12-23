@@ -21,7 +21,13 @@ in
 
   # Nginx reverse proxy to Paperless with port 28981
   services.nginx.virtualHosts.${HOST} = {
-    enableACME = true;
+
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:${toString config.services.paperless.port}";

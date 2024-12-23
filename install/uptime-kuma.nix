@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 let
   HOST = "davidkopczynski.com";
@@ -33,7 +33,12 @@ in
   services.nginx.virtualHosts.${HOST} = {
     default = true;
 
-    enableACME = true;
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:${toString PORT}";

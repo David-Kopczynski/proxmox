@@ -8,6 +8,7 @@ in
 {
   # Allow access to dashboard from outside
   services.nginx.virtualHosts.${HOST} = {
+
     enableACME = true;
     forceSSL = true;
     locations."/" = {

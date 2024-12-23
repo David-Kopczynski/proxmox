@@ -17,6 +17,7 @@ in
 
   # Nginx reverse proxy to Immich with port 2283
   services.nginx.virtualHosts.${HOST} = {
+
     enableACME = true;
     forceSSL = true;
     locations."/" = {

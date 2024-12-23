@@ -24,7 +24,13 @@ in
 
   # Nginx reverse proxy to OctoPrint with port 5000
   services.nginx.virtualHosts.${HOST} = {
-    enableACME = true;
+
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:${toString config.services.octoprint.port}";

@@ -15,6 +15,7 @@ in
 
   # Nginx reverse proxy to Stirling PDF with custom port
   services.nginx.virtualHosts.${HOST} = {
+
     enableACME = true;
     forceSSL = true;
     locations."/" = {

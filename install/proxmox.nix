@@ -1,4 +1,4 @@
-{ modulesPath, ... }:
+{ config, modulesPath, ... }:
 
 let
   HOST = "server.davidkopczynski.com";
@@ -83,7 +83,13 @@ in
 
   # Allow access to dashboard from local network
   services.nginx.virtualHosts.${HOST} = {
-    enableACME = true;
+
+    inherit (config.cloudflare)
+      extraConfig
+      sslCertificate
+      sslCertificateKey
+      sslTrustedCertificate
+      ;
     forceSSL = true;
     locations."/" = {
       extraConfig = ''
