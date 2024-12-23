@@ -7,7 +7,7 @@ let
 in
 {
   services.home-assistant.enable = true;
-  services.home-assistant.configDir = DATA;
+  services.home-assistant.configDir = toString DATA;
   services.home-assistant = {
 
     # Additional components
