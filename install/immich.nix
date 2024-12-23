@@ -20,7 +20,7 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://[::1]:${toString config.services.immich.port}";
+      proxyPass = "http://localhost:${toString config.services.immich.port}";
       proxyWebsockets = true;
     };
   };

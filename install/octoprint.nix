@@ -27,7 +27,7 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://[::1]:${toString config.services.octoprint.port}";
+      proxyPass = "http://localhost:${toString config.services.octoprint.port}";
       proxyWebsockets = true;
     };
   };

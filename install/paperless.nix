@@ -24,7 +24,7 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://[::1]:${toString config.services.paperless.port}";
+      proxyPass = "http://localhost:${toString config.services.paperless.port}";
       proxyWebsockets = true;
     };
   };
