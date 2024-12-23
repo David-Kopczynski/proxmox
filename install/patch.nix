@@ -6,7 +6,9 @@ let
 in
 {
   # Redirect patch. to page of my choice
-  services.nginx.virtualHosts.${HOST}.locations."/" = {
-    return = "302 ${MOVE}";
+  services.nginx.virtualHosts.${HOST} = {
+    forceSSL = true;
+    globalRedirect = MOVE;
+    redirectCode = 302;
   };
 }
