@@ -38,8 +38,10 @@ in
 
       # HTTP configuration for reverse proxy
       http = {
-        server_host = "::1";
-        trusted_proxies = [ "::1" ];
+        trusted_proxies = [
+          "127.0.0.1"
+          "::1"
+        ];
         use_x_forwarded_for = true;
       };
 
