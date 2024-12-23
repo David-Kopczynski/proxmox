@@ -19,7 +19,7 @@ in
       PRUNE_RESULTS_OLDER_THAN = "0";
       DISPLAY_TIMEZONE = config.time.timeZone;
     };
-    environmentFiles = [ "${toString DATA}/secrets.env" ];
+    environmentFiles = [ (toString (DATA + ./secrets.env)) ];
   };
 
   # Nginx reverse proxy to Speedtest Tracker with custom port
