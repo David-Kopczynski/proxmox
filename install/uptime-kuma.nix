@@ -26,6 +26,7 @@ in
     mkdir -p /var/lib/private
     chmod 700 /var/lib/private
 
+    rm -rf /var/lib/private/uptime-kuma
     ln -s ${toString DATA} /var/lib/private/uptime-kuma
   '';
 
