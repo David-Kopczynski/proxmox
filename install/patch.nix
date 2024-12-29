@@ -15,7 +15,8 @@ in
       sslTrustedCertificate
       ;
     forceSSL = true;
-    globalRedirect = MOVE;
-    redirectCode = 302;
+    locations."/" = {
+      return = "302 ${MOVE}";
+    };
   };
 }
