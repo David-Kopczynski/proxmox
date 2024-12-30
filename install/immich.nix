@@ -21,7 +21,13 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.immich.port}";
+      extraConfig = ''
+        # Allow large file uploads
+        client_max_body_size    0;
+        proxy_request_buffering off;
+        proxy_buffering         off;
+      '';
+      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";
       proxyWebsockets = true;
     };
   };
