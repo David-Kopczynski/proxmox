@@ -54,6 +54,18 @@ in
     autoResize = true;
   };
 
+  fileSystems."/data/nextcloud" = {
+    device = "/dev/disk/by-label/nextcloud";
+    fsType = "ext4";
+    autoResize = true;
+  };
+
+  fileSystems."/data/immich" = {
+    device = "/dev/disk/by-label/immich";
+    fsType = "ext4";
+    autoResize = true;
+  };
+
   # Automatically keep system clean
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
