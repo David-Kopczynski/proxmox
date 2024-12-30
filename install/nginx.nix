@@ -19,6 +19,11 @@ in
 
     # Additional custom security headers
     appendHttpConfig = ''
+      proxy_hide_header Strict-Transport-Security;
+      proxy_hide_header X-Content-Type-Options;
+      proxy_hide_header X-Frame-Options;
+      proxy_hide_header X-Robots-Tag;
+
       add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
       add_header X-Content-Type-Options nosniff;
       add_header X-Frame-Options SAMEORIGIN;
