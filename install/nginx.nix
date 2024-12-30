@@ -43,8 +43,10 @@ in
   services.ddclient = {
 
     protocol = "cloudflare";
+    usev4 = "webv4, webv4=ipv4.ident.me/";
+    usev6 = "webv6, webv6=ipv6.ident.me/";
     zone = HOST;
-    domains = [ "*.${HOST}" ];
+    domains = [ HOST ];
     username = "token";
     passwordFile = toString (DATA + ./cloudflare.token);
     interval = "1min";
