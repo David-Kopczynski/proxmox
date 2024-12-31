@@ -19,6 +19,15 @@ in
     https = true;
     maxUploadSize = "10G";
 
+    settings = {
+      maintenance_window_start = 3;
+      default_phone_region = "DE";
+    };
+
+    phpOptions = {
+      "opcache.interned_strings_buffer" = "64";
+    };
+
     # Faster database
     config.dbtype = "pgsql";
     database.createLocally = true;

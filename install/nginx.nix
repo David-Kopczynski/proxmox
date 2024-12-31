@@ -19,15 +19,21 @@ in
 
     # Additional custom security headers
     appendHttpConfig = ''
+      proxy_hide_header Referrer-Policy;
       proxy_hide_header Strict-Transport-Security;
       proxy_hide_header X-Content-Type-Options;
       proxy_hide_header X-Frame-Options;
+      proxy_hide_header X-Permitted-Cross-Domain-Policies;
       proxy_hide_header X-Robots-Tag;
+      proxy_hide_header X-XSS-Protection;
 
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
       add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
       add_header X-Content-Type-Options nosniff;
       add_header X-Frame-Options SAMEORIGIN;
-      add_header X-Robots-Tag none;
+      add_header X-Permitted-Cross-Domain-Policies none;
+      add_header X-Robots-Tag noindex,nofollow;
+      add_header X-XSS-Protection "1; mode=block";
     '';
   };
 
