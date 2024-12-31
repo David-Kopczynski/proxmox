@@ -7,10 +7,10 @@ in
   # Origin Server Certificates (SSL)
   # Ideally, also enable Full (Strict) SSL on Cloudflare
   options.cloudflare.sslCertificate = with lib; mkOption { type = types.str; };
-  config.cloudflare.sslCertificate = toString (DATA + ./cloudflare.crt);
+  config.cloudflare.sslCertificate = toString (DATA + "/origin.pem");
 
   options.cloudflare.sslCertificateKey = with lib; mkOption { type = types.str; };
-  config.cloudflare.sslCertificateKey = toString (DATA + ./cloudflare.key);
+  config.cloudflare.sslCertificateKey = toString (DATA + "/origin.key");
 
   # Client Certificates
   # These are optional, but can be used to verify the origin server
@@ -20,7 +20,7 @@ in
       type = types.nullOr types.str;
       default = null;
     };
-  config.cloudflare.sslTrustedCertificate = toString (DATA + ./cloudflare.pem);
+  config.cloudflare.sslTrustedCertificate = toString (DATA + "/client.pem");
 
   # Cloudflare configuration for reverse proxy
   # This is taken from https://nixos.wiki/wiki/Nginx

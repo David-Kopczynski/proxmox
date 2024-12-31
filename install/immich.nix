@@ -6,8 +6,8 @@ let
 in
 {
   services.immich.enable = true;
-  services.immich.mediaLocation = toString DATA;
-  services.immich.secretsFile = toString (DATA + ./secrets.env);
+  services.immich.mediaLocation = toString (DATA + "/media");
+  services.immich.secretsFile = toString (DATA + "/secrets.env");
 
   # Enable hardware acceleration
   users.users.immich.extraGroups = [

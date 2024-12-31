@@ -8,7 +8,7 @@ let
 in
 {
   services.octoprint.enable = true;
-  services.octoprint.stateDir = toString DATA;
+  services.octoprint.stateDir = toString (DATA + "/config");
   services.octoprint.extraConfig = {
 
     # Printer configuration

@@ -6,8 +6,8 @@ let
 in
 {
   services.nextcloud.enable = true;
-  services.nextcloud.home = toString DATA;
-  services.nextcloud.secretFile = toString (DATA + ./secrets.json);
+  services.nextcloud.home = toString (DATA + "/home");
+  services.nextcloud.secretFile = toString (DATA + "/secrets.json");
   services.nextcloud.hostName = HOST;
   services.nextcloud = {
 

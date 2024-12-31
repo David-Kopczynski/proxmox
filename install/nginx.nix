@@ -53,7 +53,7 @@ in
     zone = HOST;
     domains = [ HOST ];
     username = "token";
-    passwordFile = toString (DATA + ./cloudflare.token);
+    passwordFile = toString (DATA + "/cloudflare.token");
     interval = "1min";
   };
 }
