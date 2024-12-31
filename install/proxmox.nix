@@ -2,9 +2,9 @@
 
 let
   HOST = "server.davidkopczynski.com";
-  HOME = "192.168.0.0/24";
   ADDR = "192.168.0.169";
   PORT = 8006;
+  DATA = /data/proxmox;
 in
 {
   # Hardware specific configuration
@@ -104,10 +104,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      extraConfig = ''
-        deny  all;
-        allow ${HOME};
-      '';
+      basicAuthFile = toString (DATA + "/connect.auth");
       proxyPass = "https://${ADDR}:${toString PORT}";
       proxyWebsockets = true;
     };
