@@ -2,7 +2,7 @@
 
 let
   HOST = "server.davidkopczynski.com";
-  ADDR = "192.168.0.169";
+  ADDR = "10.1.0.0";
   PORT = 8006;
   DATA = /data/proxmox;
 in
