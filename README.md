@@ -10,8 +10,8 @@ The layout of the disks is as follows:
 ```console
 [root@nixos:/home/nixos]# lsblk
 NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-sda      8:0    0   24G  0 disk
-├─sda1   8:1    0 16.5G  0 part /nix/store
+sda      8:0    0   32G  0 disk
+├─sda1   8:1    0 24.5G  0 part /nix/store
 |                               /
 ├─sda2   8:2    0    7G  0 part [SWAP]
 └─sda3   8:3    0  487M  0 part /boot
