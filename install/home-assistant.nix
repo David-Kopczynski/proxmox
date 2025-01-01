@@ -3,6 +3,8 @@
 let
   HOST = "home.davidkopczynski.com";
   ADDR = "192.168.0.39";
+  MASK = 24;
+  PORT = 8300;
   DATA = /data/home-assistant;
 in
 {
@@ -50,7 +52,7 @@ in
       # Alexa support using Emulated Hue
       emulated_hue = {
         host_ip = ADDR;
-        listen_port = 8300;
+        listen_port = PORT;
         expose_by_default = false;
         entities = "!include emulated_hue.yaml";
       };
@@ -78,6 +80,24 @@ in
     rm -rf /var/lib/private/esphome
     ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
   '';
+
+  # Networking for Emulated Hue (static IP and port 80 forwarding to custom port)
+  networking.interfaces."ens18".ipv4.addresses = [
+    {
+      address = ADDR;
+      prefixLength = MASK;
+    }
+  ];
+
+  services.nginx.virtualHosts.${ADDR} = {
+
+    locations."/description.xml" = {
+      proxyPass = "http://${ADDR}:${toString PORT}/description.xml";
+    };
+    locations."/api/" = {
+      proxyPass = "http://${ADDR}:${toString PORT}/api/";
+    };
+  };
 
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
