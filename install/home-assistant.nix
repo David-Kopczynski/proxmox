@@ -7,7 +7,7 @@ let
 in
 {
   services.home-assistant.enable = true;
-  services.home-assistant.configDir = toString DATA;
+  services.home-assistant.configDir = toString (DATA + "/config");
   services.home-assistant = {
 
     # Additional components
@@ -27,11 +27,11 @@ in
       default_config = { };
 
       # Load frontend themes from the themes folder
-      # This may render errors when the files do not exist yet
       frontend = {
         themes = "!include_dir_merge_named themes";
       };
 
+      # Load different sensitive or ui driven configuration
       automation = "!include automations.yaml";
       rest_command = "!include rest_command.yaml";
       scene = "!include scenes.yaml";
@@ -55,6 +55,14 @@ in
       };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "f ${config.services.home-assistant.configDir}/automations.yaml 644 hass hass"
+    "f ${config.services.home-assistant.configDir}/rest_command.yaml 644 hass hass"
+    "f ${config.services.home-assistant.configDir}/scenes.yaml 644 hass hass"
+    "f ${config.services.home-assistant.configDir}/scripts.yaml 644 hass hass"
+    "f ${config.services.home-assistant.configDir}/emulated_hue.yaml 644 hass hass"
+  ];
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
