@@ -1,0 +1,31 @@
+{
+  // Basic editor settings
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  //
+  "files.trimTrailingWhitespace": true,
+  //
+  // Formatter settings
+  "editor.formatOnSave": true,
+  //
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
+  //
+  // Nix related settings
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
+  "nix.serverSettings": {
+    "nixd": {
+      "nixpkgs": {
+        "expr": "import <nixos> {}",
+      },
+      "formatting": {
+        "command": [
+          "nixfmt"
+        ]
+      },
+    },
+  },
+}
