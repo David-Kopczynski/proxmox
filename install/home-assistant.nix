@@ -66,6 +66,7 @@ in
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
+  services.esphome.usePing = true;
 
   # Manually symlink data directory as it cannot be changed
   # /var/lib/private/esphome -> /data/home-assistant/esphome
