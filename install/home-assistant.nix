@@ -46,41 +46,12 @@ in
         use_x_forwarded_for = true;
       };
 
-      # Alexa Support using Emulated Hue
+      # Alexa support using Emulated Hue
       emulated_hue = {
         host_ip = ADDR;
-        listen_port = 80;
+        listen_port = 8300;
         expose_by_default = false;
-        entities = {
-          "light.esphome_web_dfc8f0_licht_david" = {
-            name = "David";
-            hidden = false;
-          };
-          "light.esphome_web_dfc8f0_licht_bad" = {
-            name = "Bad";
-            hidden = false;
-          };
-          "light.esphome_web_dfc8f0_licht_erik" = {
-            name = "Erik";
-            hidden = false;
-          };
-          "light.esphome_web_dfc8f0_licht_flur" = {
-            name = "Flur";
-            hidden = false;
-          };
-          "light.esphome_web_dfc8f0_licht_kammer" = {
-            name = "Kammer";
-            hidden = false;
-          };
-          "light.esphome_web_dfc8f0_licht_kueche" = {
-            name = "Kueche";
-            hidden = false;
-          };
-          "input_boolean.alexa_pc_toggle" = {
-            name = "PC";
-            hidden = false;
-          };
-        };
+        entities = "!include emulated_hue.yaml";
       };
     };
   };
