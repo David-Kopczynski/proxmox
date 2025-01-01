@@ -67,6 +67,16 @@ in
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
 
+  # Manually symlink data directory as it cannot be changed
+  # /var/lib/private/esphome -> /data/home-assistant/esphome
+  system.activationScripts.esphome = ''
+    mkdir -p /var/lib/private
+    chmod 700 /var/lib/private
+
+    rm -rf /var/lib/private/esphome
+    ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
+  '';
+
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
 
@@ -82,6 +92,11 @@ in
         proxy_buffering off;
       '';
       proxyPass = "http://localhost:${toString config.services.home-assistant.config.http.server_port}";
+      proxyWebsockets = true;
+    };
+    locations."/esphome/" = {
+      basicAuthFile = toString (DATA + "/esphome.auth");
+      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
       proxyWebsockets = true;
     };
   };
