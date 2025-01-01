@@ -33,8 +33,9 @@ in
       };
 
       automation = "!include automations.yaml";
-      script = "!include scripts.yaml";
+      rest_command = "!include rest_command.yaml";
       scene = "!include scenes.yaml";
+      script = "!include scripts.yaml";
 
       # HTTP configuration for reverse proxy
       http = {
@@ -43,13 +44,6 @@ in
           "::1"
         ];
         use_x_forwarded_for = true;
-      };
-
-      # Shell commands
-      shell_command = {
-        "webhook_export_co2_david_to_lars" = "bash shell/webhook_export_co2_david_to_lars.sh";
-        "webhook_export_co2_david_to_levin" = "bash shell/webhook_export_co2_david_to_levin.sh";
-        "webhook_export_co2_erik_to_lars" = "bash shell/webhook_export_co2_erik_to_lars.sh";
       };
 
       # Alexa Support using Emulated Hue
