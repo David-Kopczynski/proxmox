@@ -15,6 +15,7 @@ in
       "default_config"
       "emulated_hue"
       "esphome"
+      "isal"
       "met"
       "mobile_app"
       "sun"
