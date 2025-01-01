@@ -33,7 +33,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString PORT}";
+      proxyPass = "http://localhost:${toString PORT}/";
       proxyWebsockets = true;
     };
   };

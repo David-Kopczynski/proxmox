@@ -33,7 +33,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.paperless.port}";
+      proxyPass = "http://localhost:${toString config.services.paperless.port}/";
       proxyWebsockets = true;
     };
   };

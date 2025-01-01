@@ -43,12 +43,12 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.octoprint.port}";
+      proxyPass = "http://localhost:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
       basicAuthFile = toString (DATA + "/streamer.auth");
-      proxyPass = "http://localhost:${toString PORT}/?action=stream";
+      proxyPass = "http://localhost:${toString PORT}/?action=stream/";
     };
   };
 }

@@ -91,7 +91,7 @@ in
       extraConfig = ''
         proxy_buffering off;
       '';
-      proxyPass = "http://localhost:${toString config.services.home-assistant.config.http.server_port}";
+      proxyPass = "http://localhost:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {

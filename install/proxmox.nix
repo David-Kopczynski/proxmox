@@ -105,7 +105,7 @@ in
     forceSSL = true;
     locations."/" = {
       basicAuthFile = toString (DATA + "/connect.auth");
-      proxyPass = "https://${ADDR}:${toString PORT}";
+      proxyPass = "https://${ADDR}:${toString PORT}/";
       proxyWebsockets = true;
     };
   };

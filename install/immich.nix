@@ -27,7 +27,7 @@ in
         proxy_request_buffering off;
         proxy_buffering         off;
       '';
-      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";
+      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
       proxyWebsockets = true;
     };
   };

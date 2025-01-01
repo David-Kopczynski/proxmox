@@ -12,7 +12,7 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "https://${ADDR}:${toString PORT}";
+      proxyPass = "https://${ADDR}:${toString PORT}/";
       proxyWebsockets = true;
     };
   };
