@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   HOST = "printer.davidkopczynski.com";
@@ -47,8 +47,31 @@ in
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
-      basicAuthFile = toString (DATA + "/streamer.auth");
+      extraConfig = ''
+        ${
+          let
+            configFromList = lib.strings.concatStringsSep "\n" (proxyHideHeaderLines ++ addHeaderLines);
+            proxyHideHeaderLines = builtins.filter (lib.strings.hasPrefix "proxy_hide_header") httpToList;
+            addHeaderLines = builtins.filter (lib.strings.hasPrefix "add_header") httpToList;
+            httpToList = lib.strings.splitString "\n" config.services.nginx.appendHttpConfig;
+          in
+          configFromList
+        }
+
+        include ${toString (DATA + "/streamer.token")};
+        if ($cookie_auth_basic_token = $streamer_token) { set $streamer_passed success; }
+        auth_basic $auth_basic_streamer;
+        auth_basic_user_file ${toString (DATA + "/streamer.auth")};
+        add_header Set-Cookie "auth_basic_token=$streamer_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
+      '';
       proxyPass = "http://localhost:${toString PORT}/?action=stream/";
     };
   };
+
+  services.nginx.appendHttpConfig = ''
+    map $streamer_passed $auth_basic_streamer {
+      success off;
+      default secured;
+    }
+  '';
 }

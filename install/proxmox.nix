@@ -1,4 +1,9 @@
-{ config, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 
 let
   HOST = "server.davidkopczynski.com";
@@ -104,11 +109,34 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      basicAuthFile = toString (DATA + "/connect.auth");
+      extraConfig = ''
+        ${
+          let
+            configFromList = lib.strings.concatStringsSep "\n" (proxyHideHeaderLines ++ addHeaderLines);
+            proxyHideHeaderLines = builtins.filter (lib.strings.hasPrefix "proxy_hide_header") httpToList;
+            addHeaderLines = builtins.filter (lib.strings.hasPrefix "add_header") httpToList;
+            httpToList = lib.strings.splitString "\n" config.services.nginx.appendHttpConfig;
+          in
+          configFromList
+        }
+
+        include ${toString (DATA + "/connect.token")};
+        if ($cookie_auth_basic_token = $connect_token) { set $connect_passed success; }
+        auth_basic $auth_basic_connect;
+        auth_basic_user_file ${toString (DATA + "/connect.auth")};
+        add_header Set-Cookie "auth_basic_token=$connect_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
+      '';
       proxyPass = "https://${ADDR}:${toString PORT}/";
       proxyWebsockets = true;
     };
   };
+
+  services.nginx.appendHttpConfig = ''
+    map $connect_passed $auth_basic_connect {
+      success off;
+      default secured;
+    }
+  '';
 
   # Install version
   system.stateVersion = "24.11";
