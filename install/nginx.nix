@@ -3,6 +3,7 @@
 let
   HOST = "davidkopczynski.com";
   MAIL = "mail@davidkopczynski.com";
+  ETH0 = "ens18";
   DATA = /data/nginx;
 in
 {
@@ -54,8 +55,7 @@ in
   services.ddclient = {
 
     protocol = "cloudflare";
-    usev4 = "webv4, webv4=ipv4.ident.me/";
-    usev6 = "webv6, webv6=ipv6.ident.me/";
+    usev6 = "ifv6, ifv6=${ETH0}";
     zone = HOST;
     domains = [ HOST ];
     username = "token";
