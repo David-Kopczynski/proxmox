@@ -55,6 +55,7 @@ in
   services.ddclient = {
 
     protocol = "cloudflare";
+    usev4 = "disabled";
     usev6 = "ifv6, ifv6=${ETH0}";
     zone = HOST;
     domains = [ HOST ];
