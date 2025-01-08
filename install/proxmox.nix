@@ -74,6 +74,7 @@ in
   # Automatically keep system clean
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
+  nix.gc.options = "--delete-older-than 14d";
   nix.optimise.automatic = true;
 
   # Configure QEMU quest agent for safe shutdown
