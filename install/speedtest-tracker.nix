@@ -15,7 +15,7 @@ in
     environment = {
       APP_URL = "https://${HOST}";
       DB_CONNECTION = "sqlite";
-      SPEEDTEST_SCHEDULE = "*/10 * * * *";
+      SPEEDTEST_SCHEDULE = "0 * * * *";
       PRUNE_RESULTS_OLDER_THAN = "0";
       DISPLAY_TIMEZONE = config.time.timeZone;
     };
