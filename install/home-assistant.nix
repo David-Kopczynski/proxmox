@@ -3,9 +3,7 @@
 let
   HOST = "home.davidkopczynski.com";
   ADDR = "192.168.0.39";
-  MASK = 24;
   PORT = 8300;
-  ETH0 = "ens18";
   DATA = /data/home-assistant;
 in
 {
@@ -81,14 +79,6 @@ in
     rm -rf /var/lib/private/esphome
     ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
   '';
-
-  # Networking for Emulated Hue (static IP and port 80 forwarding to custom port)
-  networking.interfaces.${ETH0}.ipv4.addresses = [
-    {
-      address = ADDR;
-      prefixLength = MASK;
-    }
-  ];
 
   services.nginx.virtualHosts.${ADDR} = {
 
