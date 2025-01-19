@@ -81,6 +81,8 @@ in
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
   services.qemuGuest.enable = true;
 
+  systemd.extraConfig = "DefaultTimeoutStopSec=10s";
+
   # Enable networking
   networking.hostName = "nixos-server";
   networking.networkmanager.enable = true;
