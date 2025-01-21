@@ -32,7 +32,7 @@ in
         in
         lib.attrsets.concatMapAttrs
           (file: application_type: {
-            file = {
+            ${file} = {
               extraConfig = ''
                 ${
                   let
