@@ -12,21 +12,15 @@ let
   DATA = /data/proxmox;
 in
 {
-  # Hardware specific configuration
-  # These values are taken from the initial hardware-configuration.nix
+  system.name = "server";
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  # (Tweaked) boot parameters taken from hardware-configuration.nix
   boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
     "virtio_pci"
     "virtio_scsi"
     "sd_mod"
-    "sr_mod"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
 
   # Enable bootloader from initial configuration
   boot.loader.systemd-boot.enable = true;
