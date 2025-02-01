@@ -9,20 +9,33 @@ in
 {
   services.octoprint.enable = true;
   services.octoprint.stateDir = toString (DATA + "/config");
-  services.octoprint.extraConfig = {
+  services.octoprint = {
 
-    # Printer configuration
-    serialDevice = "/dev/ttyACM0";
+    # Additional plugins
+    plugins =
+      p: with p; [
+        firmwareupdater
+        printtimegenius
+        prusaslicerthumbnails
+        telegram
+      ];
 
-    # Camera configuration
-    plugins.classicwebcam = {
-      snapshot = "http://localhost:${toString PORT}/?action=snapshot";
-      stream = "/webcam";
-    };
+    extraConfig = {
 
-    # System configuration
-    server.commands = {
-      serverRestartCommand = "systemctl restart octoprint.service";
+      # General configuration
+      appearance.name = "Prusa-Printer";
+      serialDevice = "/dev/ttyACM0";
+      serial.autoconnect = true;
+      server.commands.serverRestartCommand = "systemctl restart octoprint.service";
+      server.onlineCheck.enabled = false;
+      tracking.enabled = false;
+      webcam.watermark = false;
+
+      # Camera configuration
+      plugins.classicwebcam = {
+        snapshot = "http://localhost:${toString PORT}/?action=snapshot";
+        stream = "/webcam";
+      };
     };
   };
 
