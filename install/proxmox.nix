@@ -91,6 +91,9 @@ in
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"
   ];
 
+  services.fail2ban.enable = true;
+  services.fail2ban.bantime-increment.enable = true;
+
   # Update locale and timezone
   console.keyMap = "de";
   time.timeZone = "Europe/Berlin";
