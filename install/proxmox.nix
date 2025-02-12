@@ -138,6 +138,9 @@ in
     }
   '';
 
+  # Performance tweaks
+  services.preload.enable = true;
+
   # Install version
   system.stateVersion = "24.11";
 }
