@@ -80,8 +80,10 @@ in
     ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
   '';
 
+  # Configure emulated hue
   services.nginx.virtualHosts.${ADDR} = {
 
+    forceSSL = false;
     locations."/description.xml" = {
       proxyPass = "http://${ADDR}:${toString PORT}/description.xml";
     };
@@ -89,6 +91,8 @@ in
       proxyPass = "http://${ADDR}:${toString PORT}/api/";
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ PORT ];
 
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
