@@ -2,8 +2,6 @@
 
 let
   HOST = "home.davidkopczynski.com";
-  ADDR = "192.168.0.39";
-  PORT = 8300;
   DATA = /data/home-assistant;
 in
 {
@@ -13,8 +11,8 @@ in
 
     # Additional components
     extraComponents = [
+      "alexa"
       "default_config"
-      "emulated_hue"
       "esphome"
       "isal"
       "met"
@@ -48,22 +46,18 @@ in
         use_x_forwarded_for = true;
       };
 
-      # Alexa support using Emulated Hue
-      emulated_hue = {
-        host_ip = ADDR;
-        listen_port = PORT;
-        expose_by_default = false;
-        entities = "!include emulated_hue.yaml";
-      };
+      # Alexa support
+      # see https://www.home-assistant.io/integrations/alexa.smart_home/
+      alexa = "!include alexa.yaml";
     };
   };
 
   systemd.tmpfiles.rules = [
+    "f ${config.services.home-assistant.configDir}/alexa.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/automations.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/rest_command.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/scenes.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/scripts.yaml 644 hass hass"
-    "f ${config.services.home-assistant.configDir}/emulated_hue.yaml 644 hass hass"
   ];
 
   # Enable ESPHome for HomeAssistant
@@ -80,34 +74,12 @@ in
     ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
   '';
 
-  # Configure emulated hue
-  services.nginx.virtualHosts.${ADDR} = {
-
-    forceSSL = false;
-    locations."/description.xml" = {
-      proxyPass = "http://${ADDR}:${toString PORT}/description.xml";
-    };
-    locations."/api/" = {
-      proxyPass = "http://${ADDR}:${toString PORT}/api/";
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = [ PORT ];
-
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      sslTrustedCertificate
-      ;
+    enableACME = true;
     forceSSL = true;
     locations."/" = {
-      extraConfig = ''
-        proxy_buffering off;
-      '';
       proxyPass = "http://localhost:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
