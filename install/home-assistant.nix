@@ -2,8 +2,8 @@
 
 let
   HOST = "home.davidkopczynski.com";
-  ADDR = "192.168.0.39";
-  PORT = 8300;
+  WHSP = 10300;
+  PIPR = 10200;
   DATA = /data/home-assistant;
 in
 {
@@ -19,7 +19,10 @@ in
       "isal"
       "met"
       "mobile_app"
+      "piper"
       "sun"
+      "whisper"
+      "wyoming"
     ];
 
     # General configuration
@@ -47,14 +50,6 @@ in
         ];
         use_x_forwarded_for = true;
       };
-
-      # Alexa support using Emulated Hue
-      emulated_hue = {
-        host_ip = ADDR;
-        listen_port = PORT;
-        expose_by_default = false;
-        entities = "!include emulated_hue.yaml";
-      };
     };
   };
 
@@ -80,19 +75,19 @@ in
     ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
   '';
 
-  # Configure emulated hue
-  services.nginx.virtualHosts.${ADDR} = {
+  # Voice assistant
+  services.wyoming.faster-whisper.servers."home-assistant" = {
 
-    forceSSL = false;
-    locations."/description.xml" = {
-      proxyPass = "http://${ADDR}:${toString PORT}/description.xml";
-    };
-    locations."/api/" = {
-      proxyPass = "http://${ADDR}:${toString PORT}/api/";
-    };
+    enable = true;
+    language = "de";
+    uri = "tcp://0.0.0.0:${toString WHSP}";
   };
+  services.wyoming.piper.servers."home-assistant" = {
 
-  networking.firewall.allowedTCPPorts = [ PORT ];
+    enable = true;
+    voice = "de_DE-thorsten-high";
+    uri = "tcp://0.0.0.0:${toString PIPR}";
+  };
 
   # Nginx reverse proxy to HomeAssistant with port 8123
   services.nginx.virtualHosts.${HOST} = {
