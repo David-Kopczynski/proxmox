@@ -12,16 +12,6 @@ in
   options.cloudflare.sslCertificateKey = with lib; mkOption { type = types.str; };
   config.cloudflare.sslCertificateKey = toString (DATA + "/origin.key");
 
-  # Client Certificates
-  # These are optional, but can be used to verify the origin server
-  options.cloudflare.sslTrustedCertificate =
-    with lib;
-    mkOption {
-      type = types.nullOr types.str;
-      default = null;
-    };
-  config.cloudflare.sslTrustedCertificate = toString (DATA + "/client.pem");
-
   # Cloudflare configuration for reverse proxy
   # This is taken from https://nixos.wiki/wiki/Nginx
   options.cloudflare.extraConfig = with lib; mkOption { type = types.str; };
@@ -50,5 +40,8 @@ in
 
       # Maximum upload limit
       client_max_body_size 100M;
+
+      # Disable OCSP stapling
+      ssl_stapling off;
     '';
 }

@@ -38,7 +38,6 @@ in
       extraConfig
       sslCertificate
       sslCertificateKey
-      sslTrustedCertificate
       ;
     forceSSL = true;
     locations."/" = {
