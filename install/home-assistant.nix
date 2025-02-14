@@ -14,7 +14,6 @@ in
     # Additional components
     extraComponents = [
       "default_config"
-      "emulated_hue"
       "esphome"
       "isal"
       "met"
@@ -58,7 +57,6 @@ in
     "f ${config.services.home-assistant.configDir}/rest_command.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/scenes.yaml 644 hass hass"
     "f ${config.services.home-assistant.configDir}/scripts.yaml 644 hass hass"
-    "f ${config.services.home-assistant.configDir}/emulated_hue.yaml 644 hass hass"
   ];
 
   # Enable ESPHome for HomeAssistant
