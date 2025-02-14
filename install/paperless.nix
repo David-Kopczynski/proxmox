@@ -24,11 +24,12 @@ in
     # Add office document support
     PAPERLESS_TIKA_ENABLED = true;
     PAPERLESS_TIKA_ENDPOINT = "http://${config.services.tika.listenAddress}:${toString config.services.tika.port}";
-    PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://localhost:${toString config.services.gotenberg.port}";
+    PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://127.0.0.1:${toString config.services.gotenberg.port}";
   };
 
   # Required services for office document support
   services.tika.enable = true;
+  services.tika.listenAddress = "127.0.0.1";
 
   services.gotenberg.enable = true;
   services.gotenberg.chromium.disableJavascript = true;
@@ -54,7 +55,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.paperless.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/";
       proxyWebsockets = true;
     };
   };

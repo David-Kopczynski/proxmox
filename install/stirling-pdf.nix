@@ -19,7 +19,7 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString PORT}/";
+      proxyPass = "http://127.0.0.1:${toString PORT}/";
       proxyWebsockets = true;
     };
   };

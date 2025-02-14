@@ -33,7 +33,7 @@ in
 
       # Camera configuration
       plugins.classicwebcam = {
-        snapshot = "http://localhost:${toString PORT}/?action=snapshot";
+        snapshot = "http://127.0.0.1:${toString PORT}/?action=snapshot";
         stream = "/webcam";
       };
     };
@@ -55,7 +55,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.octoprint.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
@@ -76,7 +76,7 @@ in
         auth_basic_user_file ${toString (DATA + "/streamer.auth")};
         add_header Set-Cookie "auth_basic_token=$streamer_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
       '';
-      proxyPass = "http://localhost:${toString PORT}/?action=stream/";
+      proxyPass = "http://127.0.0.1:${toString PORT}/?action=stream/";
     };
   };
 

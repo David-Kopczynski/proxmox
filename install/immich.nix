@@ -6,6 +6,7 @@ let
 in
 {
   services.immich.enable = true;
+  services.immich.host = "127.0.0.1";
   services.immich.mediaLocation = toString (DATA + "/media");
   services.immich.secretsFile = toString (DATA + "/secrets.env");
 

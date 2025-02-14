@@ -61,6 +61,7 @@ in
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
+  services.esphome.address = "127.0.0.1";
   services.esphome.usePing = true;
 
   # Manually symlink data directory as it cannot be changed
@@ -97,7 +98,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://localhost:${toString config.services.home-assistant.config.http.server_port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
