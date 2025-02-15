@@ -33,15 +33,17 @@ in
       );
     in
     ''
-      # Update real IP address from Cloudflare
-      ${realIpsFromList cloudflare-ipv4}
-      ${realIpsFromList cloudflare-ipv6}
-      real_ip_header CF-Connecting-IP;
+      include ${pkgs.writeText "cloudflare-nginx-configuration" ''
+        # Update real IP address from Cloudflare
+        ${realIpsFromList cloudflare-ipv4}
+        ${realIpsFromList cloudflare-ipv6}
+        real_ip_header CF-Connecting-IP;
 
-      # Maximum upload limit
-      client_max_body_size 100M;
+        # Maximum upload limit
+        client_max_body_size 100M;
 
-      # Disable OCSP stapling
-      ssl_stapling off;
+        # Disable OCSP stapling
+        ssl_stapling off;
+      ''};
     '';
 }
