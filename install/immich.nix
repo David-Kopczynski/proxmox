@@ -29,6 +29,9 @@ in
         proxy_buffering         off;
       '';
       proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
+    };
+    locations."/api/socket.io/" = {
+      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/api/socket.io/";
       proxyWebsockets = true;
     };
   };

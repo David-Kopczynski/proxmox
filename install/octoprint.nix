@@ -56,6 +56,9 @@ in
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/";
+    };
+    locations."/sockjs/" = {
+      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/sockjs/";
       proxyWebsockets = true;
     };
     locations."/webcam/" = {

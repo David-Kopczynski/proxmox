@@ -126,6 +126,9 @@ in
         add_header Set-Cookie "auth_basic_token=$connect_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
       '';
       proxyPass = "https://${ADDR}:${toString PORT}/";
+    };
+    locations."~ websocket" = {
+      proxyPass = "https://${ADDR}:${toString PORT}";
       proxyWebsockets = true;
     };
   };

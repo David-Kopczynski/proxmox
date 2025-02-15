@@ -13,6 +13,9 @@ in
     forceSSL = true;
     locations."/" = {
       proxyPass = "https://${ADDR}:${toString PORT}/";
+    };
+    locations."~ websocket" = {
+      proxyPass = "https://${ADDR}:${toString PORT}";
       proxyWebsockets = true;
     };
   };

@@ -99,6 +99,9 @@ in
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
+    };
+    locations."/api/websocket" = {
+      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/api/websocket";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
@@ -120,6 +123,12 @@ in
         add_header Set-Cookie "auth_basic_token=$esphome_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
       '';
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
+    };
+    locations."/esphome/ace" = {
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/esphome/")
+        extraConfig
+        ;
+      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/ace";
       proxyWebsockets = true;
     };
   };
