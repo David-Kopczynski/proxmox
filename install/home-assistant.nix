@@ -30,9 +30,10 @@ in
 
       default_config = { };
 
-      # Load frontend themes from the themes folder
-      frontend = {
-        themes = "!include_dir_merge_named themes";
+      # Additional lovelace resources
+      lovelace = {
+        mode = "yaml";
+        resources = [ ];
       };
 
       # Load different sensitive or ui driven configuration
