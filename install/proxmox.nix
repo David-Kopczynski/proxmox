@@ -128,6 +128,9 @@ in
       proxyPass = "https://${ADDR}:${toString PORT}/";
     };
     locations."~ websocket" = {
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        extraConfig
+        ;
       proxyPass = "https://${ADDR}:${toString PORT}";
       proxyWebsockets = true;
     };
