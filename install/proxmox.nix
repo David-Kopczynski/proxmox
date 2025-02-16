@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  ...
-}:
+{ config, modulesPath, ... }:
 
 let
   HOST = "server.davidkopczynski.com";
@@ -108,23 +103,10 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      extraConfig = ''
-        ${
-          let
-            configFromList = lib.strings.concatStringsSep "\n" (proxyHideHeaderLines ++ addHeaderLines);
-            proxyHideHeaderLines = builtins.filter (lib.strings.hasPrefix "proxy_hide_header") httpToList;
-            addHeaderLines = builtins.filter (lib.strings.hasPrefix "add_header") httpToList;
-            httpToList = lib.strings.splitString "\n" config.services.nginx.appendHttpConfig;
-          in
-          configFromList
-        }
-
-        include ${toString (DATA + "/connect.token")};
-        if ($cookie_auth_basic_token = $connect_token) { set $connect_passed success; }
-        auth_basic $auth_basic_connect;
-        auth_basic_user_file ${toString (DATA + "/connect.auth")};
-        add_header Set-Cookie "auth_basic_token=$connect_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
-      '';
+      extraConfig = config.nginx.basic_auth {
+        authFile = DATA + "/connect.auth";
+        tokenFile = DATA + "/connect.token";
+      };
       proxyPass = "https://${ADDR}:${toString PORT}/";
     };
     locations."/api2/json/" = {
@@ -135,13 +117,6 @@ in
       proxyWebsockets = true;
     };
   };
-
-  services.nginx.appendHttpConfig = ''
-    map $connect_passed $auth_basic_connect {
-      success off;
-      default secured;
-    }
-  '';
 
   # Performance tweaks
   services.preload.enable = true;

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 
 let
   HOST = "home.davidkopczynski.com";
@@ -106,23 +106,10 @@ in
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
-      extraConfig = ''
-        ${
-          let
-            configFromList = lib.strings.concatStringsSep "\n" (proxyHideHeaderLines ++ addHeaderLines);
-            proxyHideHeaderLines = builtins.filter (lib.strings.hasPrefix "proxy_hide_header") httpToList;
-            addHeaderLines = builtins.filter (lib.strings.hasPrefix "add_header") httpToList;
-            httpToList = lib.strings.splitString "\n" config.services.nginx.appendHttpConfig;
-          in
-          configFromList
-        }
-
-        include ${toString (DATA + "/esphome.token")};
-        if ($cookie_auth_basic_token = $esphome_token) { set $esphome_passed success; }
-        auth_basic $auth_basic_esphome;
-        auth_basic_user_file ${toString (DATA + "/esphome.auth")};
-        add_header Set-Cookie "auth_basic_token=$esphome_token; Path=/; Max-Age=2628000; SameSite=strict; Secure; HttpOnly;";
-      '';
+      extraConfig = config.nginx.basic_auth {
+        authFile = DATA + "/esphome.auth";
+        tokenFile = DATA + "/esphome.token";
+      };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
     };
     locations."/esphome/ace" = {
@@ -133,11 +120,4 @@ in
       proxyWebsockets = true;
     };
   };
-
-  services.nginx.appendHttpConfig = ''
-    map $esphome_passed $auth_basic_esphome {
-      success off;
-      default secured;
-    }
-  '';
 }
