@@ -14,8 +14,8 @@ in
     locations."/" = {
       proxyPass = "https://${ADDR}:${toString PORT}/";
     };
-    locations."~ websocket" = {
-      proxyPass = "https://${ADDR}:${toString PORT}";
+    locations."/api2/json/" = {
+      proxyPass = "https://${ADDR}:${toString PORT}/api2/json/";
       proxyWebsockets = true;
     };
   };
