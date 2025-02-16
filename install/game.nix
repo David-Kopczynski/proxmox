@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   HOST = "game.davidkopczynski.com";
@@ -17,22 +22,12 @@ in
       {
         "/".root = toString DATA;
       }
-      (
-        let
-          # Special configuration for compressed files when using Unity's WebGL build
-          disableRecommendedCompression = ''
-            brotli off;
-            gzip off;
-            zstd off;
-          '';
-          applyContentEncoding = ''
-            add_header Content-Encoding br;
-          '';
-        in
-        lib.attrsets.concatMapAttrs
-          (file: application_type: {
-            ${file} = {
-              extraConfig = ''
+      (lib.attrsets.concatMapAttrs
+        (file: application_type: {
+          ${file} = {
+            # Special configuration for compressed files when using Unity's WebGL build
+            extraConfig = ''
+              include ${pkgs.writeText "unity-compression" ''
                 ${
                   let
                     configFromList = lib.strings.concatStringsSep "\n" (proxyHideHeaderLines ++ addHeaderLines);
@@ -43,18 +38,23 @@ in
                   configFromList
                 }
 
-                ${disableRecommendedCompression}
-                ${applyContentEncoding}
-                ${application_type}
-              '';
-              root = toString DATA;
-            };
-          })
-          {
-            "~ .+\\.(data|symbols\\.json)\\.br$" = "default_type application/octet-stream;";
-            "~ .+\\.js\\.br$" = "default_type application/javascript;";
-            "~ .+\\.wasm\\.br$" = "default_type application/wasm;";
-          }
+                brotli off;
+                gzip off;
+                zstd off;
+
+                add_header Content-Encoding br;
+              ''};
+
+              ${application_type}
+            '';
+            root = toString DATA;
+          };
+        })
+        {
+          "~ .+\\.(data|symbols\\.json)\\.br$" = "default_type application/octet-stream;";
+          "~ .+\\.js\\.br$" = "default_type application/javascript;";
+          "~ .+\\.wasm\\.br$" = "default_type application/wasm;";
+        }
       )
     ];
   };
