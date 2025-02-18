@@ -101,7 +101,7 @@ in
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
     };
-    locations."/api/websocket" = {
+    locations."= /api/websocket" = {
       proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/api/websocket";
       proxyWebsockets = true;
     };
@@ -112,11 +112,11 @@ in
       };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
     };
-    locations."/esphome/ace" = {
+    locations."~ ^/esphome/(?<path>logs|ace|validate|compile|run|clean)$" = {
       inherit (config.services.nginx.virtualHosts.${HOST}.locations."/esphome/")
         extraConfig
         ;
-      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/ace";
+      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/$path";
       proxyWebsockets = true;
     };
   };
