@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 let
   HOST = "pbs.davidkopczynski.com";
@@ -12,10 +12,12 @@ in
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "https://${ADDR}:${toString PORT}/";
+      proxyPass = "https://${ADDR}:${toString PORT}";
     };
     locations."/api2/json/" = {
-      proxyPass = "https://${ADDR}:${toString PORT}/api2/json/";
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        proxyPass
+        ;
       proxyWebsockets = true;
     };
   };

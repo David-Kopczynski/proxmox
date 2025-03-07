@@ -55,10 +55,12 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}";
     };
     locations."/ws/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/ws/";
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        proxyPass
+        ;
       proxyWebsockets = true;
     };
   };

@@ -32,7 +32,7 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString PORT}/";
+      proxyPass = "http://127.0.0.1:${toString PORT}";
     };
   };
 }

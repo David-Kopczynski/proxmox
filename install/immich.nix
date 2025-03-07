@@ -28,10 +28,12 @@ in
         proxy_request_buffering off;
         proxy_buffering         off;
       '';
-      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
+      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";
     };
     locations."= /api/socket.io/" = {
-      proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/api/socket.io/";
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        proxyPass
+        ;
       proxyWebsockets = true;
     };
   };

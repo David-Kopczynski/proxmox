@@ -34,7 +34,7 @@ in
       # Camera configuration
       plugins.classicwebcam = {
         snapshot = "http://127.0.0.1:${toString PORT}/?action=snapshot";
-        stream = "/webcam";
+        stream = "/webcam/?action=stream";
       };
     };
   };
@@ -55,10 +55,12 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}";
     };
     locations."/sockjs/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/sockjs/";
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        proxyPass
+        ;
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
@@ -66,7 +68,7 @@ in
         authFile = DATA + "/streamer.auth";
         tokenFile = DATA + "/streamer.token";
       };
-      proxyPass = "http://127.0.0.1:${toString PORT}/?action=stream/";
+      proxyPass = "http://127.0.0.1:${toString PORT}/";
     };
   };
 }

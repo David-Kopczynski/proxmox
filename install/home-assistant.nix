@@ -99,10 +99,12 @@ in
       ;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
     };
     locations."= /api/websocket" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/api/websocket";
+      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+        proxyPass
+        ;
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
@@ -116,7 +118,7 @@ in
       inherit (config.services.nginx.virtualHosts.${HOST}.locations."/esphome/")
         extraConfig
         ;
-      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/$path";
+      proxyPass = "${config.services.nginx.virtualHosts.${HOST}.locations."/esphome/"}$path";
       proxyWebsockets = true;
     };
   };

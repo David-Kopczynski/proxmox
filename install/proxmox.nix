@@ -104,13 +104,13 @@ in
         authFile = DATA + "/connect.auth";
         tokenFile = DATA + "/connect.token";
       };
-      proxyPass = "https://${ADDR}:${toString PORT}/";
+      proxyPass = "https://${ADDR}:${toString PORT}";
     };
     locations."/api2/json/" = {
       inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
         extraConfig
+        proxyPass
         ;
-      proxyPass = "https://${ADDR}:${toString PORT}/api2/json/";
       proxyWebsockets = true;
     };
   };
