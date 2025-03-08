@@ -115,8 +115,10 @@ in
     };
   };
 
-  # Performance tweaks
+  # Optimizations
   services.preload.enable = true;
+
+  documentation.enable = false;
 
   # Install version
   system.stateVersion = "24.11";
