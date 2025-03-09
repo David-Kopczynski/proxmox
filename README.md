@@ -24,11 +24,12 @@ Make sure the following constraints are met:
     - Hard Disk (scsi1): **1 GB**
     - EFI Disk: ***default***
 2. The VM is booted with the NixOS installation ISO.
-3. A **password is set** with `passwd` to connect with the VM over SSH.
+3. A **password is set** with `sudo passwd` to connect with the VM over SSH.
 4. Install using `nix-shell PATH_TO_THIS_REPO/nixos-anywhere/setup.sh`.
 5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**.
 
-*Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.*
+*Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \
+*During the installation, it is possible for the IP to change. If this happens, run the installation again using the new IP.*
 
 *At the time of writing, secure boot must be disabled with `ESC -> Device Manager -> Secure Boot Configuration -> Disable Secure Boot -> Save & Exit` (enter by spamming ESC while booting VM).*
 

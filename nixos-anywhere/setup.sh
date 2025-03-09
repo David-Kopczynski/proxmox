@@ -8,4 +8,4 @@ cd "$(dirname "$0")"
 
 # Get target host
 read -rp "Host IP: " host
-nixos-anywhere --store-paths $(nix-build -A config.system.build.diskoScript -A config.system.build.toplevel --no-out-link) nixos@"$host"
+nixos-anywhere --store-paths $(nix-build -A config.system.build.diskoScript -A config.system.build.toplevel --no-out-link) root@"$host"

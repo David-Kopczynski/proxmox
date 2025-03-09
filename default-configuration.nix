@@ -41,7 +41,7 @@
   # Automatically keep system clean
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 14d";
+  nix.gc.options = "--delete-older-than 7d";
   nix.optimise.automatic = true;
 
   # Configure QEMU quest agent for safe shutdown
@@ -49,9 +49,6 @@
   services.qemuGuest.enable = true;
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Enable SSH
   programs.ssh.startAgent = true;
@@ -62,9 +59,6 @@
   users.users."root".openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"
   ];
-
-  services.fail2ban.enable = true;
-  services.fail2ban.bantime-increment.enable = true;
 
   # Update locale and timezone
   console.keyMap = "de";

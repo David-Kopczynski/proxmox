@@ -63,4 +63,8 @@ in
     passwordFile = toString (DATA + "/cloudflare.token");
     interval = "1min";
   };
+
+  # Secure SSH with Fail2Ban
+  services.fail2ban.enable = true;
+  services.fail2ban.bantime-increment.enable = true;
 }
