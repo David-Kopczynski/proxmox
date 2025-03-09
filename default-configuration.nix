@@ -3,11 +3,9 @@
 {
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  # (Tweaked) boot parameters taken from hardware-configuration.nix
-  boot.initrd.availableKernelModules = [
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/profiles/minimal.nix")
   ];
 
   # Enable bootloader from initial configuration
@@ -38,16 +36,15 @@
     autoResize = true;
   };
 
-  # Automatically keep system clean
+  # Automatically keep system clean and optimized
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 7d";
   nix.optimise.automatic = true;
+  system.disableInstallerTools = true;
 
   # Configure QEMU quest agent for safe shutdown
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
   services.qemuGuest.enable = true;
-
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
 
   # Enable SSH
@@ -66,6 +63,4 @@
 
   # Optimizations
   services.preload.enable = true;
-
-  documentation.enable = false;
 }
