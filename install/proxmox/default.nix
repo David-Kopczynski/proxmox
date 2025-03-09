@@ -7,11 +7,6 @@ let
   DATA = /data/proxmox;
 in
 {
-  system.name = "server";
-
-  # Enable networking
-  networking.hostName = "nixos-server";
-
   # Allow access to dashboard from local network
   services.nginx.virtualHosts.${HOST} = {
 
@@ -36,7 +31,4 @@ in
       proxyWebsockets = true;
     };
   };
-
-  # Install version
-  system.stateVersion = "24.11";
 }

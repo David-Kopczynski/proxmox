@@ -5,7 +5,7 @@ This Nix installation is for multiple VMs running on my Proxmox Home-Lab server 
 Installation is done remotely with the following command to build and deploy the new configuration.
 
 ```shell
-???
+nix-shell -p colmena --run "colmena apply -f PATH_TO_THIS_REPO"
 ```
 
 This way, the server is always up-to-date with the current channels of my private NixOS configuration (latest stable).
@@ -27,6 +27,7 @@ Make sure the following constraints are met:
 3. A **password is set** with `sudo passwd` to connect with the VM over SSH.
 4. Install using `nix-shell PATH_TO_THIS_REPO/nixos-anywhere/setup.sh`.
 5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**.
+6. In order to deploy with Colmena, the initial installation with `deployment.targetHost` should point to the hostname `nixos` or the IP address of the VM.
 
 *Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \
 *During the installation, it is possible for the IP to change. If this happens, run the installation again using the new IP.*
