@@ -8,7 +8,7 @@ Installation is done remotely with the following command to build and deploy the
 nix-shell -p colmena --run "colmena apply -f PATH_TO_THIS_REPO/hive.nix [switch|test] [--on <NODES>]"
 ```
 
-This way, the server is always up-to-date with the current channels of my private NixOS configuration (latest stable).
+This way, the server is always up-to-date with the current channels (`nixos`, `sops-nix`) of my private NixOS configuration.
 
 <details>
 <summary>🔨 Installation</summary>
@@ -33,6 +33,21 @@ Make sure the following constraints are met:
 *During the installation, it is possible for the IP to change. If this happens, run the installation again using the new IP.*
 
 *At the time of writing, secure boot must be disabled with `ESC -> Device Manager -> Secure Boot Configuration -> Disable Secure Boot -> Save & Exit` (enter by pressing ESC while booting VM).*
+
+</details>
+
+<details>
+<summary>🔐 Secrets</summary>
+
+Secrets are encrypted with [`sops`](https://github.com/Mic92/sops-nix/) using my private SSH key.
+
+```shell
+cd PATH_TO_THIS_REPO
+nix-shell -p sops --run "sops install/$HOST/secrets.yaml"
+```
+
+*During creation of the `secrets.yaml`, you need to `cd` into this directory to create the file.* \
+*Afterwards, you can open the file from anywhere.*
 
 </details>
 
