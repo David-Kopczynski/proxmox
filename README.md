@@ -5,7 +5,7 @@ This Nix installation is for multiple VMs running on my Proxmox Home-Lab server 
 Installation is done remotely with the following command to build and deploy the new configuration.
 
 ```shell
-nix-shell -p colmena --run "colmena apply -f PATH_TO_THIS_REPO"
+nix-shell -p colmena --run "colmena apply -f PATH_TO_THIS_REPO/hive.nix [switch|test] [--on <NODES>]"
 ```
 
 This way, the server is always up-to-date with the current channels of my private NixOS configuration (latest stable).
@@ -32,7 +32,7 @@ Make sure the following constraints are met:
 *Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \
 *During the installation, it is possible for the IP to change. If this happens, run the installation again using the new IP.*
 
-*At the time of writing, secure boot must be disabled with `ESC -> Device Manager -> Secure Boot Configuration -> Disable Secure Boot -> Save & Exit` (enter by spamming ESC while booting VM).*
+*At the time of writing, secure boot must be disabled with `ESC -> Device Manager -> Secure Boot Configuration -> Disable Secure Boot -> Save & Exit` (enter by pressing ESC while booting VM).*
 
 </details>
 

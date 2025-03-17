@@ -1,25 +1,25 @@
-{ ... }:
+{ config, ... }:
 
-let
-  HOST = "pdf.davidkopczynski.com";
-  PORT = 44302;
-in
 {
   services.stirling-pdf.enable = true;
   services.stirling-pdf.environment = {
 
     # General configuration
-    SERVER_PORT = PORT;
     INSTALL_BOOK_AND_ADVANCED_HTML_OPS = "true";
+    SERVER_PORT = 3000;
   };
 
-  # Nginx reverse proxy to Stirling PDF with custom port
-  services.nginx.virtualHosts.${HOST} = {
+  # Nginx reverse proxy to Stirling PDF with custom port 3000
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
 
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString PORT}";
+      extraConfig = ''
+        client_max_body_size 100M;
+      '';
+      proxyPass = "http://127.0.0.1:${toString config.services.stirling-pdf.environment.SERVER_PORT}";
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 }

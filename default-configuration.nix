@@ -1,4 +1,9 @@
-{ modulesPath, ... }:
+{
+  hasDataDisk,
+  lib,
+  modulesPath,
+  ...
+}:
 
 {
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -18,29 +23,37 @@
   # Add filesystem partitions
   swapDevices = [ { device = "/dev/disk/by-partlabel/disk-system-swap"; } ];
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-partlabel/disk-system-ESP";
-    fsType = "vfat";
-    options = [ "umask=0077" ];
-  };
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-partlabel/disk-system-root";
-    fsType = "ext4";
-    autoResize = true;
-  };
-
-  fileSystems."/data" = {
-    device = "/dev/sdb";
-    fsType = "ext4";
-    autoResize = true;
-  };
+  fileSystems =
+    # Disk: /dev/sda
+    {
+      "/boot" = {
+        device = "/dev/disk/by-partlabel/disk-system-ESP";
+        fsType = "vfat";
+        options = [ "umask=0077" ];
+      };
+      "/" = {
+        device = "/dev/disk/by-partlabel/disk-system-root";
+        fsType = "ext4";
+        autoResize = true;
+      };
+    }
+    //
+    # Disk: /dev/sdb (optional)
+    lib.optionalAttrs hasDataDisk {
+      "/data" = {
+        device = "/dev/sdb";
+        fsType = "ext4";
+        autoResize = true;
+      };
+    };
 
   # Automatically keep system clean and optimized
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 7d";
   nix.optimise.automatic = true;
+
+  nix.channel.enable = false;
   system.disableInstallerTools = true;
 
   # Configure QEMU quest agent for safe shutdown
