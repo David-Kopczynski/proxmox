@@ -8,7 +8,7 @@ in
   services.immich.enable = true;
   services.immich.host = "127.0.0.1";
   services.immich.mediaLocation = toString (DATA + "/media");
-  services.immich.secretsFile = toString (DATA + "/secrets.env");
+  services.immich.secretsFile = config.sops.secrets."secrets".path;
 
   # Enable hardware acceleration
   users.users.immich.extraGroups = [
@@ -36,5 +36,11 @@ in
         ;
       proxyWebsockets = true;
     };
+  };
+
+  # Secrets
+  sops.secrets."secrets" = {
+    owner = "immich";
+    group = "immich";
   };
 }

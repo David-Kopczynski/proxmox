@@ -65,10 +65,20 @@ in
     };
     locations."/webcam/" = {
       extraConfig = config.nginx.basic_auth {
-        authFile = DATA + "/streamer.auth";
-        tokenFile = DATA + "/streamer.token";
+        authFile = config.sops.secrets."basic-auth/auth".path;
+        tokenFile = config.sops.secrets."basic-auth/token".path;
       };
       proxyPass = "http://127.0.0.1:${toString PORT}/";
     };
+  };
+
+  # Secrets
+  sops.secrets."basic-auth/auth" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.secrets."basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
   };
 }

@@ -4,7 +4,6 @@ let
   HOST = "server.davidkopczynski.com";
   ADDR = "10.1.0.0";
   PORT = 8006;
-  DATA = /data/proxmox;
 in
 {
   # Allow access to dashboard from local network
@@ -18,8 +17,8 @@ in
     forceSSL = true;
     locations."/" = {
       extraConfig = config.nginx.basic_auth {
-        authFile = DATA + "/connect.auth";
-        tokenFile = DATA + "/connect.token";
+        authFile = config.sops.secrets."basic-auth/auth".path;
+        tokenFile = config.sops.secrets."basic-auth/token".path;
       };
       proxyPass = "https://${ADDR}:${toString PORT}";
     };
@@ -30,5 +29,15 @@ in
         ;
       proxyWebsockets = true;
     };
+  };
+
+  # Secrets
+  sops.secrets."basic-auth/auth" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.secrets."basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
   };
 }

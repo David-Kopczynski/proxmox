@@ -109,8 +109,8 @@ in
     };
     locations."/esphome/" = {
       extraConfig = config.nginx.basic_auth {
-        authFile = DATA + "/esphome.auth";
-        tokenFile = DATA + "/esphome.token";
+        authFile = config.sops.secrets."esphome/basic-auth/auth".path;
+        tokenFile = config.sops.secrets."esphome/basic-auth/token".path;
       };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
     };
@@ -121,5 +121,15 @@ in
       proxyPass = "${config.services.nginx.virtualHosts.${HOST}.locations."/esphome/"}$path";
       proxyWebsockets = true;
     };
+  };
+
+  # Secrets
+  sops.secrets."esphome/basic-auth/auth" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.secrets."esphome/basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
   };
 }

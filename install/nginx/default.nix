@@ -4,7 +4,6 @@ let
   HOST = "davidkopczynski.com";
   MAIL = "mail@davidkopczynski.com";
   ETH0 = "ens18";
-  DATA = /data/nginx;
 in
 {
   services.nginx.enable = true;
@@ -60,11 +59,17 @@ in
     zone = HOST;
     domains = [ HOST ];
     username = "token";
-    passwordFile = toString (DATA + "/cloudflare.token");
+    passwordFile = config.sops.secrets."cloudflare/token".path;
     interval = "1min";
   };
 
   # Secure SSH with Fail2Ban
   services.fail2ban.enable = true;
   services.fail2ban.bantime-increment.enable = true;
+
+  # Secrets
+  sops.secrets."cloudflare/token" = {
+    owner = "nginx";
+    group = "nginx";
+  };
 }
