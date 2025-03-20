@@ -1,14 +1,7 @@
 { config, ... }:
 
-let
-  HOST = "home.davidkopczynski.com";
-  WHSP = 10300;
-  PIPR = 10200;
-  DATA = /data/home-assistant;
-in
 {
   services.home-assistant.enable = true;
-  services.home-assistant.configDir = toString (DATA + "/config");
   services.home-assistant = {
 
     # Additional components
@@ -44,10 +37,7 @@ in
 
       # HTTP configuration for reverse proxy
       http = {
-        trusted_proxies = [
-          "127.0.0.1"
-          "::1"
-        ];
+        trusted_proxies = [ "127.0.0.1" ];
         use_x_forwarded_for = true;
       };
     };
@@ -62,47 +52,34 @@ in
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
-  services.esphome.address = "127.0.0.1";
+  services.esphome.address = "0.0.0.0";
   services.esphome.usePing = true;
-
-  # Manually symlink data directory as it cannot be changed
-  # /var/lib/private/esphome -> /data/home-assistant/esphome
-  system.activationScripts.esphome = ''
-    mkdir -p /var/lib/private
-    chmod 700 /var/lib/private
-
-    rm -rf /var/lib/private/esphome
-    ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
-  '';
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
 
     enable = true;
     language = "de";
-    uri = "tcp://0.0.0.0:${toString WHSP}";
+    uri = "tcp://0.0.0.0:${toString 10300}";
   };
   services.wyoming.piper.servers."home-assistant" = {
 
     enable = true;
     voice = "de_DE-thorsten-high";
-    uri = "tcp://0.0.0.0:${toString PIPR}";
+    uri = "tcp://0.0.0.0:${toString 10200}";
   };
 
   # Nginx reverse proxy to HomeAssistant with port 8123
-  services.nginx.virtualHosts.${HOST} = {
+  imports = [ ../nginx/basic-auth.nix ];
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
-    forceSSL = true;
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
+
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
     };
     locations."= /api/websocket" = {
-      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
         proxyPass
         ;
       proxyWebsockets = true;
@@ -110,18 +87,22 @@ in
     locations."/esphome/" = {
       extraConfig = config.nginx.basic_auth {
         authFile = config.sops.secrets."esphome/basic-auth/auth".path;
-        tokenFile = config.sops.secrets."esphome/basic-auth/token".path;
+        tokenFile = config.sops.templates."esphome/basic-auth/token".path;
       };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
     };
     locations."~ ^/esphome/(?<path>logs|ace|validate|compile|run|clean)$" = {
-      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/esphome/")
+      inherit (config.services.nginx.virtualHosts."localhost".locations."/esphome/")
         extraConfig
         ;
-      proxyPass = "${config.services.nginx.virtualHosts.${HOST}.locations."/esphome/"}$path";
+      proxyPass = "${
+        config.services.nginx.virtualHosts."localhost".locations."/esphome/".proxyPass
+      }$path";
       proxyWebsockets = true;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 
   # Secrets
   sops.secrets."esphome/basic-auth/auth" = {
@@ -129,6 +110,13 @@ in
     group = "nginx";
   };
   sops.secrets."esphome/basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.templates."esphome/basic-auth/token" = {
+    content = ''
+      set $auth_token "${config.sops.placeholder."esphome/basic-auth/token"}";
+    '';
     owner = "nginx";
     group = "nginx";
   };

@@ -65,6 +65,12 @@
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   #                Special Purpose VMs                #
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  home-assistant = {
+    system.name = "home.davidkopczynski.com";
+    system.stateVersion = "24.11";
+
+    deployment.tags = [ "cloudflare" ];
+  };
   stirling-pdf = {
     system.name = "pdf.davidkopczynski.com";
     system.stateVersion = "24.11";
