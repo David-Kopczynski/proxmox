@@ -24,7 +24,7 @@
       default_phone_region = "DE";
 
       trusted_domains = [ config.networking.hostName ];
-      trusted_proxies = [ "192.168.0.0/24" ];
+      trusted_proxies = [ "10.0.0.0/8" ] ++ [ "172.16.0.0/12" ] ++ [ "192.168.0.0/16" ];
     };
 
     phpOptions = {
