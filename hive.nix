@@ -71,6 +71,12 @@
 
     deployment.tags = [ "cloudflare" ];
   };
+  nextcloud = {
+    system.name = "cloud.davidkopczynski.com";
+    system.stateVersion = "24.11";
+
+    deployment.tags = [ "data" ];
+  };
   paperless = {
     system.name = "archive.davidkopczynski.com";
     system.stateVersion = "24.11";
