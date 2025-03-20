@@ -7,13 +7,13 @@
 
 {
   services.nextcloud.enable = true;
-  services.nextcloud.home = toString /data;
   services.nextcloud = {
 
     package = pkgs.nextcloud30;
 
     # General configuration
     hostName = domain;
+    home = toString /data;
 
     autoUpdateApps.enable = true;
     configureRedis = true;
