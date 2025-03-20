@@ -79,7 +79,7 @@
     '';
 
   # Secrets
-  sops.secrets."certificates/key" = {
+  config.sops.secrets."certificates/key" = {
     owner = "nginx";
     group = "nginx";
   };

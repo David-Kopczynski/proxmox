@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 let
   HOST = "davidkopczynski.com";
