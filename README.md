@@ -26,7 +26,7 @@ Make sure the following constraints are met:
 2. The VM is booted with the NixOS installation ISO.
 3. A **password is set** with `sudo passwd` to connect with the VM over SSH.
 4. Install using `nix-shell PATH_TO_THIS_REPO/nixos-anywhere/setup.sh`.
-5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**.
+5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**. Ideally, the VM should also be renamed to its hostname within the router dashboard.
 6. In order to deploy with Colmena, the initial installation with `deployment.targetHost` should point to the hostname `nixos` or the IP address of the VM.
 
 *Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \
