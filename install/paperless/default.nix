@@ -1,13 +1,16 @@
-{ config, lib, ... }:
+{
+  config,
+  domain,
+  lib,
+  ...
+}:
 
-let
-  HOST = "archive.davidkopczynski.com";
-  DATA = /data/paperless;
-in
 {
   services.paperless.enable = true;
-  services.paperless.dataDir = toString DATA;
   services.paperless.settings = {
+
+    # General configuration
+    PAPERLESS_URL = "https://${domain}";
 
     # Custom settings for my optimal setup
     PAPERLESS_OCR_LANGUAGE = "deu+eng";
@@ -46,22 +49,19 @@ in
   };
 
   # Nginx reverse proxy to Paperless with port 28981
-  services.nginx.virtualHosts.${HOST} = {
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}";
     };
     locations."/ws/" = {
-      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
         proxyPass
         ;
       proxyWebsockets = true;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 }

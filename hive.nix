@@ -71,6 +71,12 @@
 
     deployment.tags = [ "cloudflare" ];
   };
+  paperless = {
+    system.name = "archive.davidkopczynski.com";
+    system.stateVersion = "24.11";
+
+    deployment.tags = [ "cloudflare" ];
+  };
   stirling-pdf = {
     system.name = "pdf.davidkopczynski.com";
     system.stateVersion = "24.11";
