@@ -71,4 +71,10 @@
 
     deployment.tags = [ ];
   };
+  uptime-kuma = {
+    system.name = "davidkopczynski.com";
+    system.stateVersion = "24.11";
+
+    deployment.tags = [ "cloudflare" ] ++ [ "default" ];
+  };
 }
