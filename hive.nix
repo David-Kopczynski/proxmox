@@ -25,7 +25,7 @@
         );
 
       # Networking target host
-      deployment.targetHost = config.networking.hostName;
+      deployment.targetHost = lib.mkDefault config.networking.hostName;
       networking.hostName = name;
     };
 
