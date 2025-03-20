@@ -77,6 +77,12 @@
 
     deployment.tags = [ "data" ];
   };
+  octoprint = {
+    system.name = "printer.davidkopczynski.com";
+    system.stateVersion = "24.11";
+
+    deployment.tags = [ "data" ] ++ [ "cloudflare" ];
+  };
   paperless = {
     system.name = "archive.davidkopczynski.com";
     system.stateVersion = "24.11";

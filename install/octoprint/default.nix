@@ -1,14 +1,7 @@
 { config, ... }:
 
-let
-  HOST = "printer.davidkopczynski.com";
-  VID0 = /dev/video0;
-  PORT = 5050;
-  DATA = /data/octoprint;
-in
 {
   services.octoprint.enable = true;
-  services.octoprint.stateDir = toString (DATA + "/config");
   services.octoprint = {
 
     # Additional plugins
@@ -24,6 +17,7 @@ in
 
       # General configuration
       appearance.name = "Prusa-Printer";
+      folder.timelapse = toString /data/timelapse;
       serialDevice = "/dev/ttyACM0";
       serial.autoconnect = true;
       server.commands.serverRestartCommand = "systemctl restart octoprint.service";
@@ -33,7 +27,7 @@ in
 
       # Camera configuration
       plugins.classicwebcam = {
-        snapshot = "http://127.0.0.1:${toString PORT}/?action=snapshot";
+        snapshot = "http://127.0.0.1:5050/?action=snapshot";
         stream = "/webcam/?action=stream";
       };
     };
@@ -42,23 +36,20 @@ in
   # Camera configuration for OctoPrint
   # Input is specially tuned for the Arducam 1080P Day/Night Vision USB
   services.mjpg-streamer.enable = true;
-  services.mjpg-streamer.inputPlugin = "input_uvc.so -d ${toString VID0} -r 1920x1080 -n -br 0 -co 32 -sa 64 -sh 10";
-  services.mjpg-streamer.outputPlugin = "output_http.so -p ${toString PORT} -w @www@ -n";
+  services.mjpg-streamer.inputPlugin = "input_uvc.so -d ${toString /dev/video0} -r 1920x1080 -n -br 0 -co 32 -sa 64 -sh 10";
+  services.mjpg-streamer.outputPlugin = "output_http.so -p 5050 -w @www@ -n";
 
   # Nginx reverse proxy to OctoPrint with port 5000
-  services.nginx.virtualHosts.${HOST} = {
+  imports = [ ../nginx/basic-auth.nix ];
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
-    forceSSL = true;
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
+
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}";
     };
     locations."/sockjs/" = {
-      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/")
+      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
         proxyPass
         ;
       proxyWebsockets = true;
@@ -66,11 +57,13 @@ in
     locations."/webcam/" = {
       extraConfig = config.nginx.basic_auth {
         authFile = config.sops.secrets."basic-auth/auth".path;
-        tokenFile = config.sops.secrets."basic-auth/token".path;
+        tokenFile = config.sops.templates."basic-auth/token".path;
       };
-      proxyPass = "http://127.0.0.1:${toString PORT}/";
+      proxyPass = "http://127.0.0.1:5050/";
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 
   # Secrets
   sops.secrets."basic-auth/auth" = {
@@ -78,6 +71,13 @@ in
     group = "nginx";
   };
   sops.secrets."basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.templates."basic-auth/token" = {
+    content = ''
+      set $auth_token "${config.sops.placeholder."basic-auth/token"}";
+    '';
     owner = "nginx";
     group = "nginx";
   };
