@@ -99,7 +99,7 @@
     system.name = "pdf.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ ];
+    deployment.tags = [ "cloudflare" ];
   };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
