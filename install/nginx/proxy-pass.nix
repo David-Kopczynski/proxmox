@@ -16,7 +16,17 @@
 
     # Basic configuration for all services
     forceSSL = true;
-    locations."/".proxyPass = "http://${targetHost}";
+    locations."/" = {
+      proxyPass = "http://${targetHost}/";
+
+      # Special configuration to get Websockets correctly when working with second Nginx instance
+      # Manually configure Websockets with forwarded method $http_connection
+      extraConfig = ''
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade    $http_upgrade;
+        proxy_set_header   Connection $http_connection;
+      '';
+    };
 
     # Configuration if Tunneling is disabled (DNS only)
     # Manage certificates manually

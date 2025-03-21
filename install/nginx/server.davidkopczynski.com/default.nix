@@ -21,13 +21,7 @@
         authFile = config.sops.secrets."basic-auth/auth".path;
         tokenFile = config.sops.templates."basic-auth/token".path;
       };
-      proxyPass = "https://10.1.0.0:8006";
-    };
-    locations."/api2/json/" = {
-      inherit (config.services.nginx.virtualHosts.${domain}.locations."/")
-        extraConfig
-        proxyPass
-        ;
+      proxyPass = "https://10.1.0.0:8006/";
       proxyWebsockets = true;
     };
   };

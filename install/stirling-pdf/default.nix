@@ -15,7 +15,7 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.stirling-pdf.environment.SERVER_PORT}";
+      proxyPass = "http://127.0.0.1:${toString config.services.stirling-pdf.environment.SERVER_PORT}/";
     };
   };
 

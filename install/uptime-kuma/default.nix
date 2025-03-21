@@ -15,12 +15,16 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}";
-    };
-    locations."= /socket.io/" = {
-      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
-        proxyPass
-        ;
+      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
+      # This fixes websockets with my `user -> https -> http -> service` setup
+      extraConfig = ''
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
+      proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}/";
       proxyWebsockets = true;
     };
   };

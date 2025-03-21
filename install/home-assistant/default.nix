@@ -77,28 +77,26 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
-    };
-    locations."= /api/websocket" = {
-      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
-        proxyPass
-        ;
+      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
+      # This fixes websockets with my `user -> https -> http -> service` setup
+      extraConfig = ''
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
+      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
-      extraConfig = config.nginx.basic_auth {
-        authFile = config.sops.secrets."esphome/basic-auth/auth".path;
-        tokenFile = config.sops.templates."esphome/basic-auth/token".path;
-      };
+      extraConfig =
+        config.services.nginx.virtualHosts."localhost".locations."/".extraConfig
+        ++ config.nginx.basic_auth {
+          authFile = config.sops.secrets."esphome/basic-auth/auth".path;
+          tokenFile = config.sops.templates."esphome/basic-auth/token".path;
+        };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
-    };
-    locations."~ ^/esphome/(?<path>logs|ace|validate|compile|run|clean)$" = {
-      inherit (config.services.nginx.virtualHosts."localhost".locations."/esphome/")
-        extraConfig
-        ;
-      proxyPass = "${
-        config.services.nginx.virtualHosts."localhost".locations."/esphome/".proxyPass
-      }$path";
       proxyWebsockets = true;
     };
   };

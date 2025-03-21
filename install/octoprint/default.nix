@@ -19,7 +19,7 @@
       # General configuration
       appearance.name = "Prusa-Printer";
       folder.timelapse = toString /data/timelapse;
-      serialDevice = "/dev/ttyACM0";
+      serialDevice = toString /dev/ttyACM0;
       serial.autoconnect = true;
       server.commands.serverRestartCommand = "systemctl restart octoprint.service";
       server.onlineCheck.enabled = false;
@@ -29,7 +29,7 @@
       # Camera configuration
       plugins.classicwebcam = {
         snapshot = "http://127.0.0.1:5050/?action=snapshot";
-        stream = "/webcam/?action=stream";
+        stream = "/webcam";
       };
     };
   };
@@ -47,12 +47,16 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}";
-    };
-    locations."/sockjs/" = {
-      inherit (config.services.nginx.virtualHosts."localhost".locations."/")
-        proxyPass
-        ;
+      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
+      # This fixes websockets with my `user -> https -> http -> service` setup
+      extraConfig = ''
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
+      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
@@ -60,7 +64,7 @@
         authFile = config.sops.secrets."basic-auth/auth".path;
         tokenFile = config.sops.templates."basic-auth/token".path;
       };
-      proxyPass = "http://127.0.0.1:5050/";
+      proxyPass = "http://127.0.0.1:5050/?action=stream/";
     };
   };
 
