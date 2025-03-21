@@ -1,4 +1,5 @@
-{ config, domain, ... }:
+{ domain }:
+{ config, ... }:
 
 {
   # Allow access to dashboard from outside

@@ -1,9 +1,5 @@
-{
-  hasDataDisk,
-  lib,
-  modulesPath,
-  ...
-}:
+{ hasDataDisk }:
+{ lib, modulesPath, ... }:
 
 {
   nixpkgs.hostPlatform = "x86_64-linux";

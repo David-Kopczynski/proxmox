@@ -1,11 +1,10 @@
 {
   cloudflare ? false,
-  config,
   default ? false,
   domain,
   targetHost,
-  ...
 }:
+{ config, ... }:
 
 {
   imports = [ ./cloudflare.nix ];

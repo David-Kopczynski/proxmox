@@ -1,9 +1,5 @@
-{
-  config,
-  domain,
-  lib,
-  ...
-}:
+{ domain }:
+{ config, lib, ... }:
 
 {
   services.paperless.enable = true;

@@ -1,9 +1,5 @@
-{
-  config,
-  domain,
-  pkgs,
-  ...
-}:
+{ domain }:
+{ config, pkgs, ... }:
 
 {
   services.nextcloud.enable = true;

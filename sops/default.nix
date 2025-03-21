@@ -1,4 +1,5 @@
-{ sopsFile, ... }:
+{ sopsFile }:
+{ ... }:
 
 {
   imports = [ <sops-nix/modules/sops> ];
