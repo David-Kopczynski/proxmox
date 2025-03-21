@@ -64,6 +64,9 @@ in
     interval = "1min";
   };
 
+  # Prevent incorrect IPv6 address resolution
+  networking.interfaces.${ETH0}.tempAddress = "disabled";
+
   # Secure SSH with Fail2Ban
   services.fail2ban.enable = true;
   services.fail2ban.bantime-increment.enable = true;
