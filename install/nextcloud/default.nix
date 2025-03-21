@@ -1,27 +1,31 @@
-{ pkgs, ... }:
+{ domain }:
+{ config, pkgs, ... }:
 
-let
-  HOST = "cloud.davidkopczynski.com";
-  DATA = /data/nextcloud;
-in
 {
   services.nextcloud.enable = true;
-  services.nextcloud.home = toString (DATA + "/home");
-  services.nextcloud.secretFile = toString (DATA + "/secrets.json");
-  services.nextcloud.hostName = HOST;
   services.nextcloud = {
 
     package = pkgs.nextcloud30;
 
     # General configuration
+    hostName = domain;
+    home = toString /data;
+
     autoUpdateApps.enable = true;
     configureRedis = true;
-    https = true;
     maxUploadSize = "10G";
 
     settings = {
       maintenance_window_start = 3;
       default_phone_region = "DE";
+
+      trusted_domains = [ config.networking.hostName ];
+      trusted_proxies = [
+        "127.0.0.0/8"
+        "10.0.0.0/8"
+        "172.16.0.0/12"
+        "192.168.0.0/16"
+      ];
     };
 
     phpOptions = {
@@ -38,10 +42,6 @@ in
     '';
   };
 
-  # Nginx reverse proxy to Nextcloud
-  services.nginx.virtualHosts.${HOST} = {
-
-    enableACME = true;
-    forceSSL = true;
-  };
+  # Allow access to service from nginx
+  networking.firewall.allowedTCPPorts = [ 80 ];
 }

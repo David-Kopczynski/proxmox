@@ -1,13 +1,13 @@
+{ domain }:
 { config, lib, ... }:
 
-let
-  HOST = "archive.davidkopczynski.com";
-  DATA = /data/paperless;
-in
 {
   services.paperless.enable = true;
-  services.paperless.dataDir = toString DATA;
   services.paperless.settings = {
+
+    # General configuration
+    PAPERLESS_URL = "https://${domain}";
+    PAPERLESS_TRUSTED_PROXIES = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
 
     # Custom settings for my optimal setup
     PAPERLESS_OCR_LANGUAGE = "deu+eng";
@@ -46,20 +46,23 @@ in
   };
 
   # Nginx reverse proxy to Paperless with port 28981
-  services.nginx.virtualHosts.${HOST} = {
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
-    forceSSL = true;
     locations."/" = {
+      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
+      # This fixes websockets with my `user -> https -> http -> service` setup
+      extraConfig = ''
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
       proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/";
-    };
-    locations."/ws/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/ws/";
       proxyWebsockets = true;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 }

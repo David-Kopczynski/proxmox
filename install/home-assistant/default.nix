@@ -1,14 +1,8 @@
+{ ... }:
 { config, ... }:
 
-let
-  HOST = "home.davidkopczynski.com";
-  WHSP = 10300;
-  PIPR = 10200;
-  DATA = /data/home-assistant;
-in
 {
   services.home-assistant.enable = true;
-  services.home-assistant.configDir = toString (DATA + "/config");
   services.home-assistant = {
 
     # Additional components
@@ -45,8 +39,10 @@ in
       # HTTP configuration for reverse proxy
       http = {
         trusted_proxies = [
-          "127.0.0.1"
-          "::1"
+          "127.0.0.0/8"
+          "10.0.0.0/8"
+          "172.16.0.0/12"
+          "192.168.0.0/16"
         ];
         use_x_forwarded_for = true;
       };
@@ -62,62 +58,70 @@ in
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
-  services.esphome.address = "127.0.0.1";
+  services.esphome.address = "0.0.0.0";
   services.esphome.usePing = true;
-
-  # Manually symlink data directory as it cannot be changed
-  # /var/lib/private/esphome -> /data/home-assistant/esphome
-  system.activationScripts.esphome = ''
-    mkdir -p /var/lib/private
-    chmod 700 /var/lib/private
-
-    rm -rf /var/lib/private/esphome
-    ln -s ${toString (DATA + "/esphome")} /var/lib/private/esphome
-  '';
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
 
     enable = true;
     language = "de";
-    uri = "tcp://0.0.0.0:${toString WHSP}";
+    uri = "tcp://0.0.0.0:${toString 10300}";
   };
   services.wyoming.piper.servers."home-assistant" = {
 
     enable = true;
     voice = "de_DE-thorsten-high";
-    uri = "tcp://0.0.0.0:${toString PIPR}";
+    uri = "tcp://0.0.0.0:${toString 10200}";
   };
 
   # Nginx reverse proxy to HomeAssistant with port 8123
-  services.nginx.virtualHosts.${HOST} = {
+  imports = [ ../nginx/basic-auth.nix ];
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
-    forceSSL = true;
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."localhost" = {
+
     locations."/" = {
+      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
+      # This fixes websockets with my `user -> https -> http -> service` setup
+      extraConfig = ''
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
       proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
-    };
-    locations."= /api/websocket" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/api/websocket";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
-      extraConfig = config.nginx.basic_auth {
-        authFile = DATA + "/esphome.auth";
-        tokenFile = DATA + "/esphome.token";
-      };
+      extraConfig =
+        config.services.nginx.virtualHosts."localhost".locations."/".extraConfig
+        + config.nginx.basic_auth {
+          authFile = config.sops.secrets."esphome/basic-auth/auth".path;
+          tokenFile = config.sops.templates."esphome/basic-auth/token".path;
+        };
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
-    };
-    locations."~ ^/esphome/(?<path>logs|ace|validate|compile|run|clean)$" = {
-      inherit (config.services.nginx.virtualHosts.${HOST}.locations."/esphome/")
-        extraConfig
-        ;
-      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/$path";
       proxyWebsockets = true;
     };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
+
+  # Secrets
+  sops.secrets."esphome/basic-auth/auth" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.secrets."esphome/basic-auth/token" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+  sops.templates."esphome/basic-auth/token" = {
+    content = ''
+      set $auth_token "${config.sops.placeholder."esphome/basic-auth/token"}";
+    '';
+    owner = "nginx";
+    group = "nginx";
   };
 }
