@@ -33,7 +33,14 @@
     enableACME = !cloudflare;
 
     # Configuration if Tunneling is enabled (Cloudflare)
-    extraConfig = if cloudflare then config.cloudflare.extraConfig else "";
+    extraConfig =
+      if cloudflare then
+        config.cloudflare.extraConfig
+      else
+        ''
+          # General maximum upload limit
+          client_max_body_size 1G;
+        '';
     sslCertificate = if cloudflare then config.cloudflare.sslCertificate else null;
     sslCertificateKey = if cloudflare then config.cloudflare.sslCertificateKey else null;
   };

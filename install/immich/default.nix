@@ -31,10 +31,7 @@
         proxy_set_header X-Forwarded-Host   $host;
         proxy_set_header X-Forwarded-Server $host;
 
-        # Allow large file uploads
-        client_max_body_size    0;
-        proxy_request_buffering off;
-        proxy_buffering         off;
+        client_max_body_size 0;
       '';
       proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
       proxyWebsockets = true;
