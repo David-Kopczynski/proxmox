@@ -44,11 +44,11 @@
           (map (
             n:
             import ./install/nginx/proxy-pass.nix {
-                cloudflare = builtins.elem "cloudflare" n.value.config.deployment.tags;
-                default = builtins.elem "default" n.value.config.deployment.tags;
-                domain = n.value.config.system.name;
-                targetHost = n.value.config.deployment.targetHost;
-              }
+              cloudflare = builtins.elem "cloudflare" n.value.config.deployment.tags;
+              default = builtins.elem "default" n.value.config.deployment.tags;
+              domain = n.value.config.system.name;
+              targetHost = n.value.config.deployment.targetHost;
+            }
           ))
         ]
         # Include additional stateless nginx configurations

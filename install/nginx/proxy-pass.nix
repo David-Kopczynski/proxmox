@@ -31,8 +31,6 @@
     # Configuration if Tunneling is disabled (DNS only)
     # Manage certificates manually
     enableACME = !cloudflare;
-
-    # Configuration if Tunneling is enabled (Cloudflare)
     extraConfig =
       if cloudflare then
         config.cloudflare.extraConfig
@@ -41,6 +39,8 @@
           # General maximum upload limit
           client_max_body_size 1G;
         '';
+
+    # Configuration if Tunneling is enabled (Cloudflare)
     sslCertificate = if cloudflare then config.cloudflare.sslCertificate else null;
     sslCertificateKey = if cloudflare then config.cloudflare.sslCertificateKey else null;
   };
