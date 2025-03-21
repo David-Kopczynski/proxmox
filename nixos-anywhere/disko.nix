@@ -7,7 +7,7 @@
     # Default disk setup using EFI partition
     {
       "system" = {
-        device = "/dev/sda";
+        device = "/dev/disk/by-path/pci-0000:01:01.0-scsi-0:0:0:0";
         type = "disk";
         content = {
           type = "gpt";
@@ -47,7 +47,7 @@
     # Extra data disk without partitioning (optional)
     lib.optionalAttrs hasDataDisk {
       "data" = {
-        device = "/dev/sdb";
+        device = "/dev/disk/by-path/pci-0000:01:02.0-scsi-0:0:0:1";
         type = "disk";
         content = {
           type = "filesystem";
