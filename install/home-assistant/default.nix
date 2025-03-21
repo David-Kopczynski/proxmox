@@ -38,7 +38,12 @@
 
       # HTTP configuration for reverse proxy
       http = {
-        trusted_proxies = [ "127.0.0.1" ];
+        trusted_proxies = [
+          "127.0.0.0/8"
+          "10.0.0.0/8"
+          "172.16.0.0/12"
+          "192.168.0.0/16"
+        ];
         use_x_forwarded_for = true;
       };
     };

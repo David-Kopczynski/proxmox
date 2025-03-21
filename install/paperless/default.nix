@@ -7,6 +7,7 @@
 
     # General configuration
     PAPERLESS_URL = "https://${domain}";
+    PAPERLESS_TRUSTED_PROXIES = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
 
     # Custom settings for my optimal setup
     PAPERLESS_OCR_LANGUAGE = "deu+eng";
