@@ -10,7 +10,7 @@
   # Ideally, also enable Full (Strict) SSL on Cloudflare
   options.cloudflare.sslCertificate = with lib; mkOption { type = types.str; };
   config.cloudflare.sslCertificate = toString (
-    pkgs.writeText "cloudflare-ssl-certificate.pem" ''
+    builtins.toFile "cloudflare-ssl-certificate.pem" ''
       -----BEGIN CERTIFICATE-----
       MIIEsjCCA5qgAwIBAgIUeZvoxQ9UGpImJ5SbmpR53UfuVVgwDQYJKoZIhvcNAQEL
       BQAwgYsxCzAJBgNVBAYTAlVTMRkwFwYDVQQKExBDbG91ZEZsYXJlLCBJbmMuMTQw
@@ -66,7 +66,7 @@
       );
     in
     ''
-      include ${pkgs.writeText "cloudflare-nginx-configuration" ''
+      include ${builtins.toFile "cloudflare-nginx-configuration" ''
         # Update real IP address from Cloudflare
         ${realIpsFromList cloudflare-ipv4}
         ${realIpsFromList cloudflare-ipv6}
