@@ -92,7 +92,7 @@
     locations."/esphome/" = {
       extraConfig =
         config.services.nginx.virtualHosts."localhost".locations."/".extraConfig
-        ++ config.nginx.basic_auth {
+        + config.nginx.basic_auth {
           authFile = config.sops.secrets."esphome/basic-auth/auth".path;
           tokenFile = config.sops.templates."esphome/basic-auth/token".path;
         };
