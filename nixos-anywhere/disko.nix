@@ -7,7 +7,7 @@
     # Default disk setup using EFI partition
     {
       "system" = {
-        device = "/dev/disk/by-path/pci-0000:01:01.0-scsi-0:0:0:0";
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0";
         type = "disk";
         content = {
           type = "gpt";
@@ -47,7 +47,7 @@
     # Extra data disk without partitioning (optional)
     lib.optionalAttrs hasDataDisk {
       "data" = {
-        device = "/dev/disk/by-path/pci-0000:01:02.0-scsi-0:0:0:1";
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
         type = "disk";
         content = {
           type = "filesystem";
