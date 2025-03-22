@@ -4,7 +4,7 @@
 let
   HOST = "davidkopczynski.com";
   MAIL = "mail@davidkopczynski.com";
-  ETH0 = "ens18";
+  ETH0 = "enp6s18";
 in
 {
   services.nginx.enable = true;
