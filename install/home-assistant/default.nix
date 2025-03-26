@@ -14,6 +14,7 @@
       "mobile_app"
       "piper"
       "sun"
+      "tplink"
       "whisper"
       "wyoming"
     ];
