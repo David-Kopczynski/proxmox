@@ -14,7 +14,7 @@
           partitions = {
             "ESP" = {
               priority = 1;
-              size = "125M";
+              size = "126M"; # Align with 1MiB padding at start and end of disk
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -25,7 +25,7 @@
             };
             "swap" = {
               priority = 2;
-              size = "875M";
+              size = "896M";
               content = {
                 type = "swap";
               };
