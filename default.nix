@@ -25,7 +25,6 @@
       "/boot" = {
         device = "/dev/disk/by-partlabel/disk-system-ESP";
         fsType = "vfat";
-        options = [ "umask=0077" ];
       };
       "/" = {
         device = "/dev/disk/by-partlabel/disk-system-root";
