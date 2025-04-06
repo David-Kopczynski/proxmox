@@ -1,5 +1,5 @@
 { ... }:
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   services.home-assistant.enable = true;
@@ -25,12 +25,6 @@
 
       default_config = { };
 
-      # Additional lovelace resources
-      lovelace = {
-        mode = "yaml";
-        resources = [ ];
-      };
-
       # Load different sensitive or ui driven configuration
       automation = "!include automations.yaml";
       rest_command = "!include rest_command.yaml";
@@ -48,6 +42,15 @@
         use_x_forwarded_for = true;
       };
     };
+
+    # Additional lovelace modules
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mini-graph-card
+    ];
+
+    # Lovelace configuration
+    # This only loads the modules for use with the default views
+    lovelaceConfig = { };
   };
 
   systemd.tmpfiles.rules = [
