@@ -1,7 +1,29 @@
 keys:
-  - &user age1nhssvcts5qr9m3gjl2ps5p4ss7nez6nnhjncrvwm0gpy7x0nqeeq97tm9v
+  - users:
+      - &user age1nhssvcts5qr9m3gjl2ps5p4ss7nez6nnhjncrvwm0gpy7x0nqeeq97tm9v
+  - hosts:
+      - &home-assistant age1t8gkcjjs2jsu5umdmpdkflgdajugk6dcc52fr6wecem7f954ruuq4nn3sw
+      - &immich age17mwqcru7agmkjxagtdhnhh2hyj4zazf543e6c9xv2teqmzyl352s0pwwkp
+      - &nginx age1rpqdczs8q4rzrd0cp79d96zg0xxzcjh6jsyld2xrl539fh65ju8q6cq9my
+      - &octoprint age19mudawdduaf42halmrelllltzuke6cnufvm600mvyck6jl2tdals3mmdaz
 creation_rules:
-  - path_regex: ^install\/[[:print:]]+\/secrets\.yaml$
+  - path_regex: ^install\/home-assistant\/secrets\.yaml$
     key_groups:
       - age:
           - *user
+          - *home-assistant
+  - path_regex: ^install\/immich\/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *immich
+  - path_regex: ^install\/nginx(\/[[:print:]]+)?\/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *nginx
+  - path_regex: ^install\/octoprint\/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *octoprint
