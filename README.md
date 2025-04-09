@@ -8,7 +8,12 @@ Installation is done remotely with the following command to build and deploy the
 nix-shell -p colmena --run "colmena apply -f PATH_TO_THIS_REPO/hive.nix [switch|test] [--on <NODES>]"
 ```
 
-This way, the server is always up-to-date with the current channels (`nixos`, `sops-nix`) of my private NixOS configuration.
+This way, the server is always up-to-date with the current channels (`nixos`, `sops-nix`) of my private NixOS configuration. \
+Proxmox itself and the Proxmox-Backup-Server is kept updated with Ansible.
+
+```shell
+nix-shell ansible/update.sh
+```
 
 <details>
 <summary>🔨 Installation</summary>

@@ -1,0 +1,9 @@
+- name: Proxmox System Updates and Upgrades
+  hosts: system:&proxmox
+  roles:
+    - system
+
+- name: Proxmox-Backup-Server Updates and Upgrades
+  hosts: system:&backup-server
+  roles:
+    - system
