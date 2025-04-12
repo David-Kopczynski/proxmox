@@ -1,5 +1,5 @@
 { ... }:
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   HOST = "davidkopczynski.com";
@@ -72,9 +72,31 @@ in
   # Prevent incorrect IPv6 address resolution
   networking.interfaces.${ETH0}.tempAddress = "disabled";
 
-  # Secure SSH with Fail2Ban
+  # Secure SSH/Nginx with Fail2Ban
   services.fail2ban.enable = true;
   services.fail2ban.bantime-increment.enable = true;
+
+  services.fail2ban.jails =
+    lib.genAttrs
+      [
+        "nginx-bad-request"
+        "nginx-botsearch"
+        "nginx-error-common"
+        "nginx-forbidden"
+        "nginx-http-auth"
+        "recidive"
+      ]
+      (filter: {
+        settings = {
+
+          inherit filter;
+          enabled = true;
+
+          backend = "auto";
+          logpath = "/var/log/nginx/*.log";
+          port = "http,https";
+        };
+      });
 
   # Secrets
   sops.secrets."cloudflare/token" = {
