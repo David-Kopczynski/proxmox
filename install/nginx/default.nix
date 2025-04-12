@@ -18,6 +18,11 @@ in
     recommendedTlsSettings = true;
     recommendedZstdSettings = true;
 
+    # General configuration
+    appendConfig = ''
+      worker_processes auto;
+    '';
+
     # Additional custom security headers
     appendHttpConfig = ''
       proxy_hide_header Referrer-Policy;
