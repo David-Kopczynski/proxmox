@@ -1,5 +1,5 @@
 { ... }:
-{ config, lib, ... }:
+{ config, ... }:
 
 let
   HOST = "davidkopczynski.com";
@@ -76,27 +76,24 @@ in
   services.fail2ban.enable = true;
   services.fail2ban.bantime-increment.enable = true;
 
-  services.fail2ban.jails =
-    lib.genAttrs
-      [
-        "nginx-bad-request"
-        "nginx-botsearch"
-        "nginx-error-common"
-        "nginx-forbidden"
-        "nginx-http-auth"
-        "recidive"
-      ]
-      (filter: {
-        settings = {
-
-          inherit filter;
-          enabled = true;
-
-          backend = "auto";
-          logpath = "/var/log/nginx/*.log";
-          port = "http,https";
-        };
-      });
+  services.fail2ban.jails = {
+    "nginx-bad-request".settings = {
+      enabled = true;
+      backend = "auto";
+      logpath = "/var/log/nginx/access.log";
+    };
+    "nginx-botsearch".settings = {
+      enabled = true;
+      backend = "auto";
+      logpath = "/var/log/nginx/access.log";
+    };
+    "nginx-forbidden".settings = {
+      enabled = true;
+    };
+    "nginx-http-auth".settings = {
+      enabled = true;
+    };
+  };
 
   # Secrets
   sops.secrets."cloudflare/token" = {
