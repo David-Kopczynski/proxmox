@@ -47,7 +47,7 @@
   services.mjpg-streamer.outputPlugin = "output_http.so -p 5050 -w @www@ -n";
 
   # Nginx reverse proxy to OctoPrint with port 5000
-  imports = [ ../nginx/basic-auth.nix ];
+  imports = [ ../nginx/auth-request.nix ];
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."localhost" = {
@@ -66,30 +66,14 @@
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
-      extraConfig = config.nginx.basic_auth {
-        authFile = config.sops.secrets."basic-auth/auth".path;
-        tokenFile = config.sops.templates."basic-auth/token".path;
+      extraConfig = config.nginx.auth_request {
+        app = config.services.nginx.virtualHosts."localhost".locations."/".proxyPass;
+        auth = "api/access/users";
+        base = "/webcam/";
       };
       proxyPass = "http://127.0.0.1:5050/?action=stream/";
     };
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ];
-
-  # Secrets
-  sops.secrets."basic-auth/auth" = {
-    owner = "nginx";
-    group = "nginx";
-  };
-  sops.secrets."basic-auth/token" = {
-    owner = "nginx";
-    group = "nginx";
-  };
-  sops.templates."basic-auth/token" = {
-    content = ''
-      set $auth_token "${config.sops.placeholder."basic-auth/token"}";
-    '';
-    owner = "nginx";
-    group = "nginx";
-  };
 }
