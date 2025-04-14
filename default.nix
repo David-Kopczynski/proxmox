@@ -1,5 +1,10 @@
 { hasDataDisk }:
-{ lib, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 
 {
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -17,7 +22,13 @@
   boot.growPartition = true;
 
   # Add filesystem partitions
-  swapDevices = [ { device = "/dev/disk/by-partlabel/disk-system-swap"; } ];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-partlabel/disk-system-swap";
+      randomEncryption.enable = true;
+      randomEncryption.allowDiscards = config.services.fstrim.enable;
+    }
+  ];
 
   fileSystems =
     # Disk: /dev/sda
@@ -71,4 +82,9 @@
 
   # Optimizations
   services.preload.enable = true;
+
+  # Enable firmware updates
+  services.fwupd.enable = true;
+  services.fwupd.extraRemotes = [ "lvfs-testing" ];
+  services.fwupd.daemonSettings.DisabledPlugins = [ "bios" ];
 }
