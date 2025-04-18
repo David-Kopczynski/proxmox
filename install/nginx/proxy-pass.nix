@@ -27,10 +27,9 @@
           proxy_set_header   Upgrade    $http_upgrade;
           proxy_set_header   Connection $http_connection;
         ''
-        ++
         # Disable all limits and buffering features
         # These should be set in the second Nginx instance
-        ''
+        + ''
           client_max_body_size 0;
 
           proxy_buffering off;
