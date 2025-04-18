@@ -18,18 +18,14 @@
   ];
 
   # Nginx reverse proxy to Immich with port 2283
+  imports = [ ../nginx/proxy-pass.websockets.nix ];
+
   services.nginx.enable = true;
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
-      # This fixes websockets with my `user -> https -> http -> service` setup
       extraConfig = ''
-        proxy_set_header Host               $host;
-        proxy_set_header X-Real-IP          $remote_addr;
-        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Host   $host;
-        proxy_set_header X-Forwarded-Server $host;
+        ${config.nginx.proxyWebsocketsConfig}
 
         client_max_body_size 0;
       '';
