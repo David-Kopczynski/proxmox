@@ -43,10 +43,7 @@ in
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
+  networking.firewall.allowedTCPPorts = [ 80 ] ++ [ 443 ];
 
   # Enable ACME for automatic SSL certificates
   # A separate certificate will be generated for all domains with enableACME

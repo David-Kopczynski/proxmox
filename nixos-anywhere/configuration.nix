@@ -2,8 +2,5 @@
 
 {
   # Load minimum viable configuration for initial deployment
-  imports = [
-    (import ../default.nix { inherit hasDataDisk; })
-    ./disko.nix
-  ];
+  imports = [ (import ../default.nix { inherit hasDataDisk; }) ] ++ [ ./disko.nix ];
 }

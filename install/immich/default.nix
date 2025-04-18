@@ -12,10 +12,7 @@
   };
 
   # Enable hardware acceleration
-  users.users.immich.extraGroups = [
-    "video"
-    "render"
-  ];
+  users.users.immich.extraGroups = [ "video" ] ++ [ "render" ];
 
   # Nginx reverse proxy to Immich with port 2283
   imports = [ ../nginx/proxy-pass.websockets.nix ];

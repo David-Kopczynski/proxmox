@@ -91,12 +91,14 @@
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
-      extraConfig =
-        config.services.nginx.virtualHosts."localhost".locations."/".extraConfig
-        + config.nginx.basic_auth {
+      extraConfig = ''
+        ${config.services.nginx.virtualHosts."localhost".locations."/".extraConfig}
+
+        ${config.nginx.basic_auth {
           authFile = config.sops.secrets."esphome/basic-auth/auth".path;
           tokenFile = config.sops.templates."esphome/basic-auth/token".path;
-        };
+        }}
+      '';
       proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
       proxyWebsockets = true;
     };
