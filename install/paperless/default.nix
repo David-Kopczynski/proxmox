@@ -1,5 +1,5 @@
 { domain }:
-{ config, lib, ... }:
+{ config, ... }:
 
 {
   services.paperless.enable = true;
@@ -33,17 +33,6 @@
 
   services.gotenberg.enable = true;
   services.gotenberg.chromium.disableJavascript = true;
-
-  # Fix gotenberg environment issues
-  # see https://github.com/NixOS/nixpkgs/issues/349123
-  systemd.services."gotenberg".environment = {
-    HOME = "/run/gotenberg";
-  };
-  systemd.services."gotenberg".serviceConfig = {
-    SystemCallFilter = lib.mkAfter [ "@chown" ];
-    WorkingDirectory = "/run/gotenberg";
-    RuntimeDirectory = "gotenberg";
-  };
 
   # Nginx reverse proxy to Paperless with port 28981
   imports = [ ../nginx/proxy-pass.websockets.nix ];
