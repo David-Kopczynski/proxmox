@@ -11,17 +11,17 @@ keys:
       - &stirling-pdf age1hufrva65uqfcvuc8f8f2z85txgx5wjnnq6ynlm2l6t3jc8u474ns0u3nku
       - &uptime-kuma age1m83vds5k6paz9r5k4g23udv7ct4twz3utkzjlyy49728y54mufssmmj9k5
 creation_rules:
-  - path_regex: install/home-assistant/secrets.yaml$
+  - path_regex: ^install/home-assistant/secrets\.yaml$
     key_groups:
       - age:
           - *user
           - *home-assistant
-  - path_regex: install/immich/secrets.yaml$
+  - path_regex: ^install/immich/secrets\.yaml$
     key_groups:
       - age:
           - *user
           - *immich
-  - path_regex: install/nginx(/[[:print:]]+)?/secrets.yaml$
+  - path_regex: ^install/nginx(/[[:print:]]+)?/secrets\.yaml$
     key_groups:
       - age:
           - *user
