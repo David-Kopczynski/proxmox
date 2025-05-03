@@ -5,7 +5,7 @@
   services.nextcloud.enable = true;
   services.nextcloud = {
 
-    package = pkgs.nextcloud30;
+    package = pkgs.nextcloud31;
 
     # General configuration
     hostName = domain;
