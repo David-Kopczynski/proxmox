@@ -84,7 +84,7 @@
     system.name = "printer.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ "data" ] ++ [ "cloudflare" ];
+    deployment.tags = [ "cloudflare" ] ++ [ "data" ];
   };
   paperless = {
     system.name = "archive.davidkopczynski.com";
