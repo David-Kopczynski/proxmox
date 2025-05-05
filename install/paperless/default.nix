@@ -41,7 +41,11 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = config.nginx.proxyWebsocketsConfig;
+      extraConfig = ''
+        ${config.nginx.proxyWebsocketsConfig}
+
+        client_max_body_size 100M;
+      '';
       proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/";
       proxyWebsockets = true;
     };

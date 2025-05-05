@@ -15,6 +15,9 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
+      extraConfig = ''
+        client_max_body_size 100M;
+      '';
       proxyPass = "http://127.0.0.1:${toString config.services.stirling-pdf.environment.SERVER_PORT}/";
     };
   };
