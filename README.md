@@ -12,13 +12,13 @@ This way, the server is always up-to-date with the current channels (`nixos`, `s
 Proxmox itself and the Proxmox-Backup-Server is kept updated with Ansible.
 
 ```shell
-nix-shell ansible/update.sh
+./ansible/update.sh
 ```
 
 <details>
 <summary>🔨 Installation</summary>
 
-Setup is done remotely using `nixos-anywhere` by running `nix-shell PATH_TO_THIS_REPO/nixos-anywhere/setup.sh` to setup all partitions and deploying a base configuration to begin with.
+Setup is done remotely using `nixos-anywhere` by running `./nixos-anywhere/setup.sh` to setup all partitions and deploying a base configuration to begin with.
 
 Make sure the following constraints are met:
 
@@ -30,7 +30,7 @@ Make sure the following constraints are met:
     - EFI Disk: ***default***
 2. The VM is booted with the NixOS installation ISO.
 3. A **password is set** with `sudo passwd` to connect with the VM over SSH.
-4. Install using `nix-shell PATH_TO_THIS_REPO/nixos-anywhere/setup.sh`.
+4. Install using `./nixos-anywhere/setup.sh`.
 5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**. Ideally, the VM should also be renamed to its hostname within the router dashboard.
 6. In order to deploy with Colmena, the initial installation with `deployment.targetHost` should point to the hostname `nixos` or the IP address of the VM. Also, (if required) generate an `age` key for the host machine with `nix-shell -p ssh-to-age --run "echo '$(ssh nixos "cat /etc/ssh/ssh_host_ed25519_key.pub")' | ssh-to-age"` and add it to the `.sops.yaml` file.
 

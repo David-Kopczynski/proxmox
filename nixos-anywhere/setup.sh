@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p nixos-anywhere
+#! nix-shell -i bash -p nix nixos-anywhere
 set -o errexit
 set -o nounset
 set -o pipefail
