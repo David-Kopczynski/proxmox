@@ -32,7 +32,7 @@ Make sure the following constraints are met:
 3. A **password is set** with `sudo passwd` to connect with the VM over SSH.
 4. Install using `./nixos-anywhere/setup.sh`.
 5. After installation, a **new password** should be set with `passwd`. Apart from that, the VM is ready to be used, while the **ISO can be removed**. Ideally, the VM should also be renamed to its hostname within the router dashboard.
-6. In order to deploy with Colmena, the initial installation with `deployment.targetHost` should point to the hostname `nixos` or the IP address of the VM. Also, (if required) generate an `age` key for the host machine with `nix-shell -p ssh-to-age --run "echo '$(ssh nixos "cat /etc/ssh/ssh_host_ed25519_key.pub")' | ssh-to-age"` and add it to the `.sops.yaml` file.
+6. In order to deploy with Colmena, the initial installation with `deployment.targetHost` should point to the hostname `nixos` or the IP address of the VM. Also, (if required) generate an `age` key for the host machine with `nix-shell -p ssh-to-age --run "echo '$(ssh root@nixos "cat /etc/ssh/ssh_host_ed25519_key.pub")' | ssh-to-age"` and add it to the `.sops.yaml` file.
 
 *Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \
 *During the installation, it is possible for the IP to change. If this happens, run the installation again using the new IP.*

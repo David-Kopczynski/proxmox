@@ -14,7 +14,6 @@
       "mobile_app"
       "piper"
       "sun"
-      "tplink"
       "whisper"
       "wyoming"
     ];
@@ -51,6 +50,10 @@
     # Lovelace configuration
     # This only loads the modules for use with the default views
     lovelaceConfig = { };
+
+    # Postgres Support
+    extraPackages = ps: with ps; [ psycopg2 ];
+    config.recorder.db_url = "postgresql://@/hass";
   };
 
   systemd.tmpfiles.rules = [
@@ -78,6 +81,15 @@
     voice = "de_DE-thorsten-high";
     uri = "tcp://0.0.0.0:${toString 10200}";
   };
+
+  services.wyoming.openwakeword.enable = true;
+  services.wyoming.openwakeword.preloadModels = [ "ok_nabu" ];
+  services.wyoming.openwakeword.uri = "tcp://0.0.0.0:${toString 10400}";
+
+  # Postgres database
+  services.postgresql.enable = true;
+  services.postgresql.ensureDatabases = [ "hass" ];
+  services.postgresql.ensureUsers = [ ({ name = "hass"; } // { ensureDBOwnership = true; }) ];
 
   # Nginx reverse proxy to HomeAssistant with port 8123
   imports = [ ../nginx/proxy-pass.websockets.nix ] ++ [ ../nginx/basic-auth.nix ];

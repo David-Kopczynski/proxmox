@@ -64,7 +64,7 @@
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   home-assistant = {
     system.name = "home.davidkopczynski.com";
-    system.stateVersion = "24.11";
+    system.stateVersion = "25.05";
 
     deployment.tags = [ "cloudflare" ];
   };
