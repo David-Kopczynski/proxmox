@@ -41,6 +41,7 @@
         # Merge all nginx related configurations from the other services
         lib.trivial.pipe nodes [
           (x: lib.attrsToList (removeAttrs x [ "nginx" ]))
+          (x: builtins.filter (n: !builtins.elem "standalone" n.value.config.deployment.tags) x)
           (map (
             n:
             import ./install/nginx/proxy-pass.nix {
@@ -73,6 +74,12 @@
     system.stateVersion = "24.11";
 
     deployment.tags = [ "data" ];
+  };
+  minecraft = {
+    system.name = "minecraft.davidkopczynski.com";
+    system.stateVersion = "25.05";
+
+    deployment.tags = [ "standalone" ];
   };
   nextcloud = {
     system.name = "cloud.davidkopczynski.com";
