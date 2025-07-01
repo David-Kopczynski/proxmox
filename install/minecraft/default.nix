@@ -22,7 +22,10 @@
     openFirewall = true;
 
     # Allowed players
+    whitelist."Mathisphonix" = "9cfa09b4-b042-4b15-8b96-2552d44439e1";
     whitelist."StableThulium" = "73dd60b2-7616-4ccf-92b4-70898a6ac80e";
+    whitelist."Terminal79" = "8e4f7d49-5b4d-4f80-af46-59ff53e0e821";
+    whitelist."TheChaosBrain" = "cde2ebf7-3c01-4420-ac34-29f05f5c1656";
 
     # Game configuration and tweaks
     jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC";
