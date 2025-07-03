@@ -4,6 +4,7 @@ keys:
   - hosts:
       - &home-assistant age1rjrlkz52zk6ne6cpf934qcduwnt0eg30gd0eqvywfg5m6shha54sdp3p70
       - &immich age17mwqcru7agmkjxagtdhnhh2hyj4zazf543e6c9xv2teqmzyl352s0pwwkp
+      - &minecraft age1lp9jp93dmqhcq7k7g0d6sm9z6qr03usz8wwefhzw6kdwzpydj9uq63xz53
       - &nextcloud age192kq5hqm6re6kjgnnlps3julcsm43x5u7ggdywkyp64rcmdmd4ws4vc7yr
       - &nginx age1rpqdczs8q4rzrd0cp79d96zg0xxzcjh6jsyld2xrl539fh65ju8q6cq9my
       - &octoprint age19mudawdduaf42halmrelllltzuke6cnufvm600mvyck6jl2tdals3mmdaz
