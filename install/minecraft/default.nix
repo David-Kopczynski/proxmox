@@ -28,6 +28,7 @@
     whitelist."StefaniusMaximus" = "7436b20a-c89d-45e7-a740-b5604f4ae66d";
     whitelist."Terminal79" = "8e4f7d49-5b4d-4f80-af46-59ff53e0e821";
     whitelist."TheChaosBrain" = "cde2ebf7-3c01-4420-ac34-29f05f5c1656";
+    whitelist."_Minas_" = "bcbf481f-739d-41f8-8623-32c9622b7e30";
 
     # Game configuration and tweaks
     jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC";
