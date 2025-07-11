@@ -58,6 +58,7 @@ in
 
     protocol = "cloudflare";
     usev4 = "webv4, webv4=ipv4.ident.me/";
+    usev6 = "disabled";
     zone = HOST;
     domains = [ HOST ];
     username = "token";
