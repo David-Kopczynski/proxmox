@@ -1,18 +1,7 @@
 { ... }:
-{ ... }:
+{ pkgs, ... }:
 
 {
-  # Newest Minecraft server version
-  nixpkgs.overlays = [
-    (final: prev: {
-      minecraft-server = prev.minecraft-server.override {
-        version = "1.21.7";
-        url = "https://piston-data.mojang.com/v1/objects/05e4b48fbc01f0385adb74bcff9751d34552486c/server.jar";
-        sha1 = "sha1-BeS0j7wB8Dha23S8/5dR00VSSGw=";
-      };
-    })
-  ];
-
   services.minecraft-server.enable = true;
   services.minecraft-server = {
 
@@ -20,6 +9,14 @@
     declarative = true;
     eula = true;
     openFirewall = true;
+
+    # Version
+    package =
+      with pkgs;
+      papermc.overrideAttrs {
+        version = "1.21.8-11";
+        hash = "sha256-lFfRJ578wglOgYyssvF2cNlHnl9rTqJRfrk6aj+s5R8=";
+      };
 
     # Allowed players
     whitelist."Mathisphonix" = "9cfa09b4-b042-4b15-8b96-2552d44439e1";
