@@ -11,6 +11,7 @@
     openFirewall = true;
 
     # Version
+    # TODO: Remove unstable when stable version is available
     package =
       with pkgs;
       papermc.overrideAttrs {
