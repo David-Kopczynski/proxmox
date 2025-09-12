@@ -10,6 +10,7 @@
       "default_config"
       "esphome"
       "isal"
+      "matter"
       "met"
       "mobile_app"
       "piper"
@@ -67,6 +68,10 @@
   services.esphome.enable = true;
   services.esphome.address = "0.0.0.0";
   services.esphome.usePing = true;
+
+  # Enable Matter-Server
+  services.matter-server.enable = true;
+  services.matter-server.port = 5580;
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
