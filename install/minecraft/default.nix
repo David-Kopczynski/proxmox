@@ -11,13 +11,7 @@
     openFirewall = true;
 
     # Version
-    # TODO: Remove unstable when stable version is available
-    package =
-      with pkgs;
-      papermc.overrideAttrs {
-        version = "1.21.8-11";
-        hash = "sha256-lFfRJ578wglOgYyssvF2cNlHnl9rTqJRfrk6aj+s5R8=";
-      };
+    package = with pkgs.unstable; papermcServers.papermc-1_21_8;
 
     # Allowed players
     whitelist."Mathisphonix" = "9cfa09b4-b042-4b15-8b96-2552d44439e1";
