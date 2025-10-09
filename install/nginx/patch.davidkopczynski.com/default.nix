@@ -2,7 +2,7 @@
 { config, ... }:
 
 {
-  imports = [ ../cloudflare.nix ];
+  imports = [ ];
 
   # Redirect patch to page of my choice
   services.nginx.virtualHosts.${domain} = {

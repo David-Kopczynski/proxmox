@@ -19,10 +19,10 @@
           (import ./default.nix { hasDataDisk = builtins.elem "data" config.deployment.tags; })
         ]
         ++
-        # Secrets management (if provided)
-        lib.lists.optional (builtins.pathExists ./install/${name}/secrets.yaml) (
-          import ./sops/default.nix { sopsFile = ./install/${name}/secrets.yaml; }
-        );
+          # Secrets management (if provided)
+          lib.lists.optional (builtins.pathExists ./install/${name}/secrets.yaml) (
+            import ./sops/default.nix { sopsFile = ./install/${name}/secrets.yaml; }
+          );
 
       # Networking target host
       deployment.targetHost = lib.mkDefault config.networking.hostName;
@@ -67,7 +67,7 @@
     system.name = "home.davidkopczynski.com";
     system.stateVersion = "25.05";
 
-    deployment.tags = [ "cloudflare" ];
+    deployment.tags = [ ];
   };
   immich = {
     system.name = "photos.davidkopczynski.com";
@@ -91,24 +91,24 @@
     system.name = "printer.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ "cloudflare" ] ++ [ "data" ];
+    deployment.tags = [ "data" ];
   };
   paperless = {
     system.name = "archive.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ "cloudflare" ];
+    deployment.tags = [ ];
   };
   stirling-pdf = {
     system.name = "pdf.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ "cloudflare" ];
+    deployment.tags = [ ];
   };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ "cloudflare" ] ++ [ "default" ];
+    deployment.tags = [ "default" ];
   };
 }

@@ -2,7 +2,7 @@
 { config, ... }:
 
 {
-  imports = [ ../cloudflare.nix ] ++ [ ../basic-auth.nix ];
+  imports = [ ../basic-auth.nix ];
 
   # Allow access to dashboard with basic auth
   services.nginx.virtualHosts.${domain} = {
