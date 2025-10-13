@@ -7,11 +7,7 @@
   # Allow access to dashboard with basic auth
   services.nginx.virtualHosts.${domain} = {
 
-    inherit (config.cloudflare)
-      extraConfig
-      sslCertificate
-      sslCertificateKey
-      ;
+    enableACME = true;
     forceSSL = true;
     locations."/" = {
       extraConfig = config.nginx.basic_auth {
