@@ -1,4 +1,4 @@
-{ ... }:
+{ domain }:
 { config, ... }:
 
 {
@@ -6,9 +6,15 @@
   services.immich = {
 
     # General configuration
-    host = "0.0.0.0";
+    host = "127.0.0.1";
+    server.externalDomain = domain;
+    environment.IMMICH_TRUSTED_PROXIES = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
+
     mediaLocation = toString /data;
     secretsFile = config.sops.templates."environment".path;
+
+    # Allow all hardware acceleration devices
+    accelerationDevices = null;
   };
 
   # Enable hardware acceleration
