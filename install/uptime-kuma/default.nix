@@ -6,8 +6,10 @@
   services.uptime-kuma = {
 
     # General configuration
-    appriseSupport = true;
+    settings.HOST = "127.0.0.1";
     settings.PORT = toString 3000;
+
+    appriseSupport = true;
   };
 
   # Nginx reverse proxy to Uptime Kuma with custom port 3000
@@ -18,7 +20,7 @@
 
     locations."/" = {
       extraConfig = config.nginx.proxyWebsocketsConfig;
-      proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}/";
+      proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}/";
       proxyWebsockets = true;
     };
   };
