@@ -20,7 +20,7 @@
 
     locations."/" = {
       extraConfig = config.nginx.proxyWebsocketsConfig;
-      proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${toString config.services.uptime-kuma.settings.PORT}/";
+      proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${config.services.uptime-kuma.settings.PORT}/";
       proxyWebsockets = true;
     };
   };
