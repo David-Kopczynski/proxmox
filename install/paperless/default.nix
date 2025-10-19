@@ -44,7 +44,7 @@
       extraConfig = ''
         ${config.nginx.proxyWebsocketsConfig}
 
-        client_max_body_size 100M;
+        client_max_body_size 1G;
       '';
       proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}/";
       proxyWebsockets = true;
