@@ -5,6 +5,9 @@
   services.octoprint.enable = true;
   services.octoprint = {
 
+    # Server configuration
+    host = "127.0.0.1";
+
     # Additional plugins
     plugins =
       p: with p; [
@@ -58,7 +61,7 @@
 
         client_max_body_size 100M;
       '';
-      proxyPass = "http://127.0.0.1:${toString config.services.octoprint.port}/";
+      proxyPass = "http://${config.services.octoprint.host}:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };
     locations."/webcam/" = {
