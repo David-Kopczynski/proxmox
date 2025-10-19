@@ -6,8 +6,10 @@
   services.stirling-pdf.environment = {
 
     # General configuration
+    SERVER_ADDRESS = "127.0.0.1";
+    SERVER_PORT = toString 3000;
+
     INSTALL_BOOK_AND_ADVANCED_HTML_OPS = "true";
-    SERVER_PORT = 3000;
   };
 
   # Nginx reverse proxy to Stirling PDF with custom port 3000
@@ -18,7 +20,7 @@
       extraConfig = ''
         client_max_body_size 1G;
       '';
-      proxyPass = "http://127.0.0.1:${toString config.services.stirling-pdf.environment.SERVER_PORT}/";
+      proxyPass = "http://${config.services.stirling-pdf.environment.SERVER_ADDRESS}:${config.services.stirling-pdf.environment.SERVER_PORT}/";
     };
   };
 
