@@ -33,6 +33,7 @@
 
       # HTTP configuration for reverse proxy
       http = {
+        server_host = "127.0.0.1";
         trusted_proxies = [
           "127.0.0.0/8"
           "10.0.0.0/8"
@@ -66,30 +67,29 @@
 
   # Enable ESPHome for HomeAssistant
   services.esphome.enable = true;
-  services.esphome.address = "0.0.0.0";
+  services.esphome.address = "127.0.0.1";
   services.esphome.usePing = true;
 
   # Enable Matter-Server
   services.matter-server.enable = true;
-  services.matter-server.port = 5580;
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
 
     enable = true;
     language = "de";
-    uri = "tcp://0.0.0.0:${toString 10300}";
+    uri = "tcp://127.0.0.1:${toString 10300}";
   };
   services.wyoming.piper.servers."home-assistant" = {
 
     enable = true;
     voice = "de_DE-thorsten-high";
-    uri = "tcp://0.0.0.0:${toString 10200}";
+    uri = "tcp://127.0.0.1:${toString 10200}";
   };
 
   services.wyoming.openwakeword.enable = true;
   services.wyoming.openwakeword.preloadModels = [ "ok_nabu" ];
-  services.wyoming.openwakeword.uri = "tcp://0.0.0.0:${toString 10400}";
+  services.wyoming.openwakeword.uri = "tcp://127.0.0.1:${toString 10400}";
 
   # Postgres database
   services.postgresql.enable = true;
@@ -104,7 +104,7 @@
 
     locations."/" = {
       extraConfig = config.nginx.proxyWebsocketsConfig;
-      proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}/";
+      proxyPass = "http://${config.services.home-assistant.config.http.server_host}:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
     locations."/esphome/" = {
