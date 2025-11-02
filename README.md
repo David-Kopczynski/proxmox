@@ -1,5 +1,4 @@
 # 🌐 NixOS on Proxmox
-
 This Nix installation is for multiple VMs running on my Proxmox Home-Lab server with a N100 (Intel 4 Core, Max 3.40 GHz) and 32 GB of RAM.
 
 Installation is done remotely with the following command to build and deploy the new configuration.
