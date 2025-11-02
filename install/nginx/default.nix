@@ -92,6 +92,10 @@ in
     };
   };
 
+  # Trap SSH attacks (external 22 forwarded to internal 2222)
+  services.endlessh.enable = true;
+  services.endlessh.openFirewall = true;
+
   # Secrets
   sops.secrets."cloudflare/token" = {
     owner = "nginx";
