@@ -44,14 +44,14 @@
       };
     }
     //
-    # Disk: /dev/sdb (optional)
-    lib.optionalAttrs hasDataDisk {
-      "/data" = {
-        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
-        fsType = "ext4";
-        autoResize = true;
+      # Disk: /dev/sdb (optional)
+      lib.optionalAttrs hasDataDisk {
+        "/data" = {
+          device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
+          fsType = "ext4";
+          autoResize = true;
+        };
       };
-    };
 
   # Automatically keep system clean and optimized
   boot.loader.systemd-boot.configurationLimit = 8;
