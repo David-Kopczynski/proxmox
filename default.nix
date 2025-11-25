@@ -76,9 +76,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"
   ];
 
-  # Prevent local link hostname resolution
-  networking.enableIPv6 = false;
-
   # Update locale and timezone
   console.keyMap = "de";
   time.timeZone = "Europe/Berlin";
