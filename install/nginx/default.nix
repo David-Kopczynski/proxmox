@@ -16,7 +16,7 @@ in
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
-    recommendedZstdSettings = true;
+    recommendedUwsgiSettings = true;
 
     # General configuration
     appendConfig = ''

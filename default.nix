@@ -64,7 +64,6 @@
 
   # Configure QEMU quest agent for safe shutdown
   services.qemuGuest.enable = true;
-  systemd.extraConfig = "DefaultTimeoutStopSec=10s";
 
   # Enable SSH
   programs.ssh.startAgent = true;
@@ -79,9 +78,6 @@
   # Update locale and timezone
   console.keyMap = "de";
   time.timeZone = "Europe/Berlin";
-
-  # Optimizations
-  services.preload.enable = true;
 
   # Enable firmware updates
   services.fwupd.enable = true;

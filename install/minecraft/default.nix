@@ -1,9 +1,6 @@
 { ... }:
-{ ... }:
+{ pkgs, ... }:
 
-let
-  unstable = import <nixos-unstable> { };
-in
 {
   services.minecraft-server.enable = true;
   services.minecraft-server = {
@@ -14,7 +11,7 @@ in
     openFirewall = true;
 
     # Version
-    package = with unstable; papermcServers.papermc-1_21_8;
+    package = with pkgs; papermcServers.papermc-1_21_8;
 
     # Allowed players
     whitelist."Mathisphonix" = "9cfa09b4-b042-4b15-8b96-2552d44439e1";

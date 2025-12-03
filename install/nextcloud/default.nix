@@ -1,18 +1,18 @@
 { domain }:
-{ config, pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   services.nextcloud.enable = true;
   services.nextcloud = {
 
-    package = pkgs.nextcloud31;
+    package = pkgs.nextcloud32;
 
     # General configuration
     hostName = domain;
     home = toString /data;
 
     autoUpdateApps.enable = true;
-    configureRedis = true;
+    imaginary.enable = true;
     maxUploadSize = "10G";
 
     settings = {

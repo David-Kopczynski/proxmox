@@ -72,6 +72,7 @@
 
   # Enable Matter-Server
   services.matter-server.enable = true;
+  services.matter-server.extraArgs = [ "--enable-test-net-dcl" ];
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
@@ -88,7 +89,6 @@
   };
 
   services.wyoming.openwakeword.enable = true;
-  services.wyoming.openwakeword.preloadModels = [ "ok_nabu" ];
   services.wyoming.openwakeword.uri = "tcp://127.0.0.1:${toString 10400}";
 
   # Postgres database
