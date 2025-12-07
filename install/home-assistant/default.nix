@@ -5,8 +5,9 @@
   services.home-assistant.enable = true;
   services.home-assistant = {
 
-    # Additional components
+    # Additional components and modules
     extraComponents = [
+      "co2signal"
       "default_config"
       "esphome"
       "isal"
@@ -18,18 +19,40 @@
       "whisper"
       "wyoming"
     ];
+    customComponents = [
+      (pkgs.callPackage ./hass-ingress.nix { })
+    ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mini-graph-card
+    ];
 
     # General configuration
     # This is taken from the configuration.yaml file
     config = {
 
       default_config = { };
+      homeassistant.media_dirs."media" = "media";
+      lovelace.mode = "yaml";
 
       # Load different sensitive or ui driven configuration
       automation = "!include automations.yaml";
       rest_command = "!include rest_command.yaml";
       scene = "!include scenes.yaml";
       script = "!include scripts.yaml";
+
+      # Forward local services
+      ingress = {
+        "esphome" = {
+          title = "ESPHome";
+          icon = "mdi:memory";
+          url = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
+        };
+        "matter" = {
+          title = "Matter";
+          icon = "mdi:home-automation";
+          url = "http://127.0.0.1:${toString config.services.matter-server.port}/";
+        };
+      };
 
       # HTTP configuration for reverse proxy
       http = {
@@ -44,25 +67,17 @@
       };
     };
 
-    # Additional lovelace modules
-    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
-      mini-graph-card
-    ];
-
-    # Lovelace configuration
-    # This only loads the modules for use with the default views
-    lovelaceConfig = { };
-
     # Postgres Support
     extraPackages = ps: with ps; [ psycopg2 ];
     config.recorder.db_url = "postgresql://@/hass";
   };
 
   systemd.tmpfiles.rules = [
-    "f ${config.services.home-assistant.configDir}/automations.yaml 644 hass hass"
-    "f ${config.services.home-assistant.configDir}/rest_command.yaml 644 hass hass"
-    "f ${config.services.home-assistant.configDir}/scenes.yaml 644 hass hass"
-    "f ${config.services.home-assistant.configDir}/scripts.yaml 644 hass hass"
+    "d ${config.services.home-assistant.configDir}/media 700 hass hass"
+    "f ${config.services.home-assistant.configDir}/automations.yaml 600 hass hass"
+    "f ${config.services.home-assistant.configDir}/rest_command.yaml 600 hass hass"
+    "f ${config.services.home-assistant.configDir}/scenes.yaml 600 hass hass"
+    "f ${config.services.home-assistant.configDir}/scripts.yaml 600 hass hass"
   ];
 
   # Enable ESPHome for HomeAssistant
@@ -97,7 +112,7 @@
   services.postgresql.ensureUsers = [ ({ name = "hass"; } // { ensureDBOwnership = true; }) ];
 
   # Nginx reverse proxy to HomeAssistant with port 8123
-  imports = [ ../nginx/proxy-pass.websockets.nix ] ++ [ ../nginx/basic-auth.nix ];
+  imports = [ ../nginx/proxy-pass.websockets.nix ];
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."localhost" = {
@@ -107,36 +122,7 @@
       proxyPass = "http://${config.services.home-assistant.config.http.server_host}:${toString config.services.home-assistant.config.http.server_port}/";
       proxyWebsockets = true;
     };
-    locations."/esphome/" = {
-      extraConfig = ''
-        ${config.services.nginx.virtualHosts."localhost".locations."/".extraConfig}
-
-        ${config.nginx.basic_auth {
-          authFile = config.sops.secrets."esphome/basic-auth/auth".path;
-          tokenFile = config.sops.templates."esphome/basic-auth/token".path;
-        }}
-      '';
-      proxyPass = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
-      proxyWebsockets = true;
-    };
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ];
-
-  # Secrets
-  sops.secrets."esphome/basic-auth/auth" = {
-    owner = "nginx";
-    group = "nginx";
-  };
-  sops.secrets."esphome/basic-auth/token" = {
-    owner = "nginx";
-    group = "nginx";
-  };
-  sops.templates."esphome/basic-auth/token" = {
-    content = ''
-      set $auth_token "${config.sops.placeholder."esphome/basic-auth/token"}";
-    '';
-    owner = "nginx";
-    group = "nginx";
-  };
 }
