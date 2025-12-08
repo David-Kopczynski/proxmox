@@ -1,6 +1,11 @@
 { ... }:
 { config, pkgs, ... }:
 
+let
+  custom =
+    import (fetchTarball "https://github.com/David-Kopczynski/nixpkgs/archive/hass-ingress.tar.gz")
+      { };
+in
 {
   services.home-assistant.enable = true;
   services.home-assistant = {
@@ -19,8 +24,8 @@
       "whisper"
       "wyoming"
     ];
-    customComponents = [
-      (pkgs.callPackage ./hass-ingress.nix { })
+    customComponents = with custom.pkgs.home-assistant-custom-components; [
+      ingress
     ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mini-graph-card
