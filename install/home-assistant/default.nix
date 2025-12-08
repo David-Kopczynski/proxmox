@@ -50,11 +50,13 @@ in
         "esphome" = {
           title = "ESPHome";
           icon = "mdi:memory";
+          ui_mode = "toolbar";
           url = "http://${config.services.esphome.address}:${toString config.services.esphome.port}/";
         };
         "matter" = {
           title = "Matter";
           icon = "mdi:home-automation";
+          ui_mode = "toolbar";
           url = "http://127.0.0.1:${toString config.services.matter-server.port}/";
         };
       };
