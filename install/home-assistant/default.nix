@@ -2,9 +2,13 @@
 { config, pkgs, ... }:
 
 let
-  custom =
-    import (fetchTarball "https://github.com/David-Kopczynski/nixpkgs/archive/hass-ingress.tar.gz")
-      { };
+  # TODO: remove
+  unstable = import <nixos-unstable> { };
+
+  # TODO: remove
+  otbr = builtins.fetchTarball "https://github.com/mrene/nixpkgs/archive/openthread-border-router.tar.gz";
+
+  ETH0 = "ens18";
 in
 {
   services.home-assistant.enable = true;
@@ -19,12 +23,14 @@ in
       "matter"
       "met"
       "mobile_app"
+      "otbr"
       "piper"
       "sun"
+      "thread"
       "whisper"
       "wyoming"
     ];
-    customComponents = with custom.pkgs.home-assistant-custom-components; [
+    customComponents = with unstable.pkgs.home-assistant-custom-components; [
       ingress
     ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
@@ -92,9 +98,27 @@ in
   services.esphome.address = "127.0.0.1";
   services.esphome.usePing = true;
 
+  # TODO: remove when https://github.com/NixOS/nixpkgs/issues/339557 fixed
+  # until then, compile manually in CLI
+  environment.systemPackages = with pkgs; [ esphome ];
+
   # Enable Matter-Server
   services.matter-server.enable = true;
   services.matter-server.extraArgs = [ "--enable-test-net-dcl" ];
+
+  # Enable OTBR
+  services.openthread-border-router.enable = true;
+  services.openthread-border-router.backboneInterface = ETH0;
+  services.openthread-border-router.radio = {
+
+    baudRate = 460800;
+    device = "/dev/serial/by-id/usb-SMLIGHT_SMLIGHT_SLZB-MR4U_SLZB-MR4U237191-if00";
+  };
+
+  # TODO: remove
+  services.openthread-border-router.package =
+    pkgs.callPackage "${otbr}/pkgs/by-name/op/openthread-border-router/package.nix"
+      { };
 
   # Voice assistant
   services.wyoming.faster-whisper.servers."home-assistant" = {
@@ -119,7 +143,10 @@ in
   services.postgresql.ensureUsers = [ ({ name = "hass"; } // { ensureDBOwnership = true; }) ];
 
   # Nginx reverse proxy to HomeAssistant with port 8123
-  imports = [ ../nginx/proxy-pass.websockets.nix ];
+  imports = [
+    ../nginx/proxy-pass.websockets.nix
+    "${otbr}/nixos/modules/services/home-automation/openthread-border-router.nix" # TODO: remove
+  ];
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."localhost" = {
