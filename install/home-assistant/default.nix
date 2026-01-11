@@ -1,11 +1,16 @@
 { ... }:
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   # TODO: remove
   unstable = import <nixos-unstable> { };
 
-  # TODO: remove
+  # TODO: remove after https://github.com/NixOS/nixpkgs/pull/332296 merged
   otbr = builtins.fetchTarball "https://github.com/mrene/nixpkgs/archive/openthread-border-router.tar.gz";
 
   ETH0 = "ens18";
@@ -97,10 +102,21 @@ in
   services.esphome.enable = true;
   services.esphome.address = "127.0.0.1";
   services.esphome.usePing = true;
+  services.esphome.package = with unstable.pkgs; esphome; # TODO: remove after https://github.com/NixOS/nixpkgs/issues/442676 merged
 
-  # TODO: remove when https://github.com/NixOS/nixpkgs/issues/339557 fixed
-  # until then, compile manually in CLI
-  environment.systemPackages = with pkgs; [ esphome ];
+  # TODO: remove after https://github.com/NixOS/nixpkgs/issues/339557 resolved
+  systemd.services.esphome.serviceConfig = {
+    ProtectSystem = lib.mkForce "off";
+    DynamicUser = lib.mkForce "false";
+    User = "esphome";
+    Group = "esphome";
+  };
+  users.users.esphome = {
+    isSystemUser = true;
+    home = "/var/lib/esphome";
+    group = "esphome";
+  };
+  users.groups.esphome = { };
 
   # Enable Matter-Server
   services.matter-server.enable = true;
@@ -115,7 +131,7 @@ in
     device = "/dev/serial/by-id/usb-SMLIGHT_SMLIGHT_SLZB-MR4U_SLZB-MR4U237191-if00";
   };
 
-  # TODO: remove
+  # TODO: remove after https://github.com/NixOS/nixpkgs/pull/332296 merged
   services.openthread-border-router.package =
     pkgs.callPackage "${otbr}/pkgs/by-name/op/openthread-border-router/package.nix"
       { };
@@ -145,7 +161,7 @@ in
   # Nginx reverse proxy to HomeAssistant with port 8123
   imports = [
     ../nginx/proxy-pass.websockets.nix
-    "${otbr}/nixos/modules/services/home-automation/openthread-border-router.nix" # TODO: remove
+    "${otbr}/nixos/modules/services/home-automation/openthread-border-router.nix" # TODO: remove after https://github.com/NixOS/nixpkgs/pull/332296 merged
   ];
 
   services.nginx.enable = true;
