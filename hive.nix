@@ -63,12 +63,6 @@
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   #                Special Purpose VMs                #
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
-  home-assistant = {
-    system.name = "home.davidkopczynski.com";
-    system.stateVersion = "25.05";
-
-    deployment.tags = [ ];
-  };
   immich = {
     system.name = "photos.davidkopczynski.com";
     system.stateVersion = "24.11";
