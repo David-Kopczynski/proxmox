@@ -53,6 +53,9 @@
         };
       };
 
+  # Additional swap to fallback to
+  zramSwap.enable = true;
+
   # Automatically keep system clean and optimized
   boot.loader.systemd-boot.configurationLimit = 8;
   nix.gc.automatic = true;
