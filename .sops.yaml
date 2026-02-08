@@ -2,8 +2,8 @@ keys:
   - users:
       - &user age1nhssvcts5qr9m3gjl2ps5p4ss7nez6nnhjncrvwm0gpy7x0nqeeq97tm9v
   - hosts:
-      - &home-assistant age1rjrlkz52zk6ne6cpf934qcduwnt0eg30gd0eqvywfg5m6shha54sdp3p70
       - &immich age17mwqcru7agmkjxagtdhnhh2hyj4zazf543e6c9xv2teqmzyl352s0pwwkp
+      - &mealie age1gsqeszswxycx6tquut65vmuv9ruveypewdxspv920mhltmd6hp9s8pclv3
       - &minecraft age1lp9jp93dmqhcq7k7g0d6sm9z6qr03usz8wwefhzw6kdwzpydj9uq63xz53
       - &nextcloud age192kq5hqm6re6kjgnnlps3julcsm43x5u7ggdywkyp64rcmdmd4ws4vc7yr
       - &nginx age1rpqdczs8q4rzrd0cp79d96zg0xxzcjh6jsyld2xrl539fh65ju8q6cq9my
@@ -12,11 +12,6 @@ keys:
       - &stirling-pdf age1hufrva65uqfcvuc8f8f2z85txgx5wjnnq6ynlm2l6t3jc8u474ns0u3nku
       - &uptime-kuma age1m83vds5k6paz9r5k4g23udv7ct4twz3utkzjlyy49728y54mufssmmj9k5
 creation_rules:
-  - path_regex: ^install/home-assistant/secrets\.yaml$
-    key_groups:
-      - age:
-          - *user
-          - *home-assistant
   - path_regex: ^install/immich/secrets\.yaml$
     key_groups:
       - age:

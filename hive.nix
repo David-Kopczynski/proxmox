@@ -69,6 +69,12 @@
 
     deployment.tags = [ "data" ];
   };
+  mealie = {
+    system.name = "meals.davidkopczynski.com";
+    system.stateVersion = "25.11";
+
+    deployment.tags = [ ];
+  };
   minecraft = {
     system.name = "minecraft.davidkopczynski.com";
     system.stateVersion = "25.05";
