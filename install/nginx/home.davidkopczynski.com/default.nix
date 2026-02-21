@@ -8,6 +8,9 @@
     enableACME = true;
     forceSSL = true;
     locations."/" = {
+      extraConfig = ''
+        proxy_buffering off;
+      '';
       proxyPass = "http://homeassistant:8123/";
       proxyWebsockets = true;
     };
