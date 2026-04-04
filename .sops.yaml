@@ -17,8 +17,23 @@ creation_rules:
       - age:
           - *user
           - *immich
+  - path_regex: ^install/mealie/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *mealie
+  - path_regex: ^install/nextcloud/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *nextcloud
   - path_regex: ^install/nginx(/[[:print:]]+)?/secrets\.yaml$
     key_groups:
       - age:
           - *user
           - *nginx
+  - path_regex: ^install/paperless/secrets\.yaml$
+    key_groups:
+      - age:
+          - *user
+          - *paperless

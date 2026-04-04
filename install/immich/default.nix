@@ -13,6 +13,22 @@
     mediaLocation = toString /data;
     secretsFile = config.sops.templates."environment".path;
 
+    # Mail notifications
+    settings.notifications.smtp.enabled = true;
+    settings.notifications.smtp = {
+
+      from =
+        let
+          # Split domain from "sub.domain.code" to [ "sub" "domain.code" ]
+          parts = builtins.match "^([^.]+)\\.(.+)$" domain;
+        in
+        "Immich <${builtins.elemAt parts 0}@${builtins.elemAt parts 1}>";
+      transport.host = "smtp.ionos.de";
+      transport.port = 587;
+      transport.username = "mail@davidkopczynski.com";
+      transport.password._secret = config.sops.secrets."mail/password".path;
+    };
+
     # Allow all hardware acceleration devices
     accelerationDevices = null;
   };
@@ -44,9 +60,13 @@
     owner = "immich";
     group = "immich";
   };
+  sops.secrets."mail/password" = {
+    owner = "immich";
+    group = "immich";
+  };
   sops.templates."environment" = {
     content = ''
-      DB_PASSWORD: ${config.sops.placeholder."db/password"}
+      DB_PASSWORD="${config.sops.placeholder."db/password"}"
     '';
     owner = "immich";
     group = "immich";

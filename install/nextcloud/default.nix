@@ -15,22 +15,28 @@
     imaginary.enable = true;
     maxUploadSize = "10G";
 
-    settings = {
-      maintenance_window_start = 3;
-      default_phone_region = "DE";
+    settings.default_phone_region = "DE";
+    settings."maintenance_window_start" = 3;
+    phpOptions."opcache.interned_strings_buffer" = "64";
 
-      trusted_domains = [ config.networking.hostName ];
-      trusted_proxies = [
-        "127.0.0.0/8"
-        "10.0.0.0/8"
-        "172.16.0.0/12"
-        "192.168.0.0/16"
-      ];
-    };
+    settings.trusted_domains = [ config.networking.hostName ];
+    settings.trusted_proxies = [
+      "127.0.0.0/8"
+      "10.0.0.0/8"
+      "172.16.0.0/12"
+      "192.168.0.0/16"
+    ];
 
-    phpOptions = {
-      "opcache.interned_strings_buffer" = "64";
-    };
+    # Mail notifications
+    settings.mail_from_address = builtins.head (builtins.match "^([^.]+)\\..+$" domain); # for subdomain
+    settings.mail_domain = builtins.head (builtins.match "^[^.]+\\.(.+)$" domain); # for rest
+    settings.mail_smtphost = "smtp.ionos.de";
+    settings.mail_smtpport = 587;
+    settings.mail_smtpauth = true;
+    settings.mail_smtpname = "mail@davidkopczynski.com";
+
+    # Secrets
+    secretFile = config.sops.templates."secrets".path;
 
     # Faster database
     config.dbtype = "pgsql";
@@ -44,4 +50,17 @@
 
   # Allow access to service from nginx
   networking.firewall.allowedTCPPorts = [ 80 ];
+
+  # Secrets
+  sops.secrets."mail/password" = {
+    owner = "nextcloud";
+    group = "nextcloud";
+  };
+  sops.templates."secrets" = {
+    content = builtins.toJSON {
+      "mail_smtppassword" = config.sops.placeholder."mail/password";
+    };
+    owner = "nextcloud";
+    group = "nextcloud";
+  };
 }

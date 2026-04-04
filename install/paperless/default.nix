@@ -6,20 +6,35 @@
   services.paperless = {
 
     # General configuration
-    settings.PAPERLESS_URL = "https://${domain}";
-    settings.PAPERLESS_TRUSTED_PROXIES = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
+    settings."PAPERLESS_URL" = "https://${domain}";
+    settings."PAPERLESS_TRUSTED_PROXIES" = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
 
     # Custom settings for my optimal setup
-    settings.PAPERLESS_OCR_LANGUAGE = "deu+eng";
-    settings.PAPERLESS_OCR_USER_ARGS = {
+    settings."PAPERLESS_OCR_LANGUAGE" = "deu+eng";
+    settings."PAPERLESS_OCR_USER_ARGS" = {
 
       # PDF optimization
-      optimize = 1;
-      pdfa_image_compression = "lossless";
+      "optimize" = 1;
+      "pdfa_image_compression" = "lossless";
 
       # This prevents failure when PDF is signed
-      invalidate_digital_signatures = true;
+      "invalidate_digital_signatures" = true;
     };
+
+    # Mail notifications
+    settings."PAPERLESS_EMAIL_FROM" =
+      let
+        # Split domain from "sub.domain.code" to [ "sub" "domain.code" ]
+        parts = builtins.match "^([^.]+)\\.(.+)$" domain;
+      in
+      "${builtins.elemAt parts 0}@${builtins.elemAt parts 1}";
+    settings."PAPERLESS_EMAIL_HOST" = "smtp.ionos.de";
+    settings."PAPERLESS_EMAIL_PORT" = 587;
+    settings."PAPERLESS_EMAIL_USE_TLS" = true;
+    settings."PAPERLESS_EMAIL_HOST_USER" = "mail@davidkopczynski.com";
+
+    # Secrets
+    environmentFile = config.sops.templates."secrets".path;
 
     # Add office document support
     configureTika = true;
@@ -46,4 +61,17 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ];
+
+  # Secrets
+  sops.secrets."mail/password" = {
+    owner = "paperless";
+    group = "paperless";
+  };
+  sops.templates."secrets" = {
+    content = ''
+      PAPERLESS_EMAIL_HOST_PASSWORD="${config.sops.placeholder."mail/password"}"
+    '';
+    owner = "paperless";
+    group = "paperless";
+  };
 }
