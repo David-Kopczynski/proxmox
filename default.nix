@@ -72,8 +72,12 @@
   programs.ssh.startAgent = true;
   services.openssh.enable = true;
 
+  services.openssh.authorizedKeysInHomedir = false;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.KbdInteractiveAuthentication = false;
+  services.openssh.settings."ClientAliveInterval" = 60;
+  services.openssh.settings."MaxAuthTries" = 1;
+
   users.users."root".openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"
   ];
