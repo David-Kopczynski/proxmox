@@ -86,10 +86,12 @@ in
     };
   };
 
-  # Trap SSH attacks (external 22 forwarded to internal 2222)
+  # Trap SSH attacks
   services.endlessh.enable = true;
   services.endlessh.extraOptions = [ "-v" ];
   services.endlessh.openFirewall = true;
+  services.endlessh.port = 22;
+  services.openssh.ports = [ 2244 ];
 
   # Secrets
   sops.secrets."cloudflare/token" = {
