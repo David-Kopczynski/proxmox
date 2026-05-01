@@ -14,7 +14,7 @@
         authFile = config.sops.secrets."basic-auth/auth".path;
         tokenFile = config.sops.templates."basic-auth/token".path;
       };
-      proxyPass = "https://192.168.0.169:8006/";
+      proxyPass = "https://10.4.10.1:8006/";
       proxyWebsockets = true;
     };
   };

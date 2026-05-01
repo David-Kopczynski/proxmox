@@ -68,55 +68,47 @@
     system.stateVersion = "24.11";
 
     deployment.tags = [ "data" ];
-    deployment.targetHost = "192.168.0.45";
   };
   mealie = {
     system.name = "meals.davidkopczynski.com";
     system.stateVersion = "25.11";
 
     deployment.tags = [ ];
-    deployment.targetHost = "192.168.0.150";
   };
   minecraft = {
     system.name = "minecraft.davidkopczynski.com";
     system.stateVersion = "25.05";
 
     deployment.tags = [ "standalone" ];
-    deployment.targetHost = "192.168.0.58";
   };
   nextcloud = {
     system.name = "cloud.davidkopczynski.com";
     system.stateVersion = "24.11";
 
     deployment.tags = [ "data" ];
-    deployment.targetHost = "192.168.0.43";
   };
   octoprint = {
     system.name = "printer.davidkopczynski.com";
     system.stateVersion = "24.11";
 
     deployment.tags = [ "data" ];
-    deployment.targetHost = "192.168.0.44";
   };
   paperless = {
     system.name = "archive.davidkopczynski.com";
     system.stateVersion = "24.11";
 
     deployment.tags = [ ];
-    deployment.targetHost = "192.168.0.42";
   };
   stirling-pdf = {
     system.name = "pdf.davidkopczynski.com";
     system.stateVersion = "24.11";
 
     deployment.tags = [ ];
-    deployment.targetHost = "192.168.0.39";
   };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
     system.stateVersion = "24.11";
 
     deployment.tags = [ "default" ];
-    deployment.targetHost = "192.168.0.40";
   };
 }

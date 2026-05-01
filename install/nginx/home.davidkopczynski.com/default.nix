@@ -13,7 +13,7 @@
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
       '';
-      proxyPass = "http://192.168.0.136:8123/";
+      proxyPass = "http://10.5.4.106:8123/";
       proxyWebsockets = true;
     };
   };
