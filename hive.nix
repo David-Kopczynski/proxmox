@@ -63,6 +63,12 @@
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   #                Special Purpose VMs                #
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  adguardhome = {
+    system.name = "dns.davidkopczynski.com";
+    system.stateVersion = "25.11";
+
+    deployment.tags = [ ];
+  };
   immich = {
     system.name = "photos.davidkopczynski.com";
     system.stateVersion = "24.11";

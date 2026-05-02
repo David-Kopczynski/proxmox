@@ -2,6 +2,7 @@ keys:
   - users:
       - &user age1nhssvcts5qr9m3gjl2ps5p4ss7nez6nnhjncrvwm0gpy7x0nqeeq97tm9v
   - hosts:
+      - &adguardhome age1s26vsj6xdw308qshpeq5qsd6cxsa092nn2agmrjrxszc3vw4f9kswhp92n
       - &immich age17mwqcru7agmkjxagtdhnhh2hyj4zazf543e6c9xv2teqmzyl352s0pwwkp
       - &mealie age1gsqeszswxycx6tquut65vmuv9ruveypewdxspv920mhltmd6hp9s8pclv3
       - &minecraft age1lp9jp93dmqhcq7k7g0d6sm9z6qr03usz8wwefhzw6kdwzpydj9uq63xz53
