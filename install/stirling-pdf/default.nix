@@ -13,12 +13,15 @@
   };
 
   # Nginx reverse proxy to Stirling PDF with custom port 3000
+  imports = [ ../nginx/proxy-pass.client.nix ];
+
   services.nginx.enable = true;
+  services.nginx.recommendedOptimisation = true;
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
       extraConfig = ''
-        client_max_body_size 1G;
+        client_max_body_size  1G;
       '';
       proxyPass = "http://${config.services.stirling-pdf.environment.SERVER_ADDRESS}:${config.services.stirling-pdf.environment.SERVER_PORT}/";
     };

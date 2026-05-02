@@ -8,7 +8,6 @@
     # General configuration
     host = "127.0.0.1";
     settings.server.externalDomain = "https://${domain}";
-    environment.IMMICH_TRUSTED_PROXIES = "127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16";
 
     mediaLocation = toString /data;
     secretsFile = config.sops.templates."environment".path;
@@ -37,16 +36,15 @@
   users.users.immich.extraGroups = [ "video" ] ++ [ "render" ];
 
   # Nginx reverse proxy to Immich with port 2283
-  imports = [ ../nginx/proxy-pass.websockets.nix ];
+  imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
+  services.nginx.recommendedOptimisation = true;
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
       extraConfig = ''
-        ${config.nginx.proxyWebsocketsConfig}
-
-        client_max_body_size 0;
+        client_max_body_size  0;
       '';
       proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
       proxyWebsockets = true;

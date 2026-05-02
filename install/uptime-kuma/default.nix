@@ -13,13 +13,13 @@
   };
 
   # Nginx reverse proxy to Uptime Kuma with custom port 3000
-  imports = [ ../nginx/proxy-pass.websockets.nix ];
+  imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
+  services.nginx.recommendedOptimisation = true;
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = config.nginx.proxyWebsocketsConfig;
       proxyPass = "http://${config.services.uptime-kuma.settings.HOST}:${config.services.uptime-kuma.settings.PORT}/";
       proxyWebsockets = true;
     };

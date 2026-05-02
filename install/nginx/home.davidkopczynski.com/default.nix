@@ -9,9 +9,9 @@
     forceSSL = true;
     locations."/" = {
       extraConfig = ''
-        proxy_buffering off;
-        proxy_read_timeout 3600s;
-        proxy_send_timeout 3600s;
+        proxy_buffering     off;
+        proxy_read_timeout  3600s;
+        proxy_send_timeout  3600s;
       '';
       proxyPass = "http://10.5.4.106:8123/";
       proxyWebsockets = true;

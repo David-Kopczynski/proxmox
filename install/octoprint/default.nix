@@ -26,12 +26,6 @@
       serial.autoconnect = true;
       server.commands.serverRestartCommand = "systemctl restart octoprint.service";
       server.onlineCheck.enabled = false;
-      server.reverseProxy.trustedProxies = [
-        "127.0.0.0/8"
-        "10.0.0.0/8"
-        "172.16.0.0/12"
-        "192.168.0.0/16"
-      ];
       tracking.enabled = false;
       webcam.watermark = false;
 
@@ -50,16 +44,17 @@
   services.mjpg-streamer.outputPlugin = "output_http.so -p 5050 -w @www@ -n";
 
   # Nginx reverse proxy to OctoPrint with port 5000
-  imports = [ ../nginx/proxy-pass.websockets.nix ] ++ [ ../nginx/auth-request.nix ];
+  imports = [ ../nginx/proxy-pass.client.nix ] ++ [ ../nginx/auth-request.nix ];
 
   services.nginx.enable = true;
+  services.nginx.recommendedOptimisation = true;
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
       extraConfig = ''
-        ${config.nginx.proxyWebsocketsConfig}
+        ${config.nginx.customProxySettings}
 
-        client_max_body_size 100M;
+        client_max_body_size  100M;
       '';
       proxyPass = "http://${config.services.octoprint.host}:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;

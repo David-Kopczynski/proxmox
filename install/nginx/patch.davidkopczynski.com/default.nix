@@ -8,7 +8,7 @@
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      return = "302 https://www.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaaajyav";
+      return = "302 https://www.rwth-aachen.de/cms/root/studium/im-studium/~egy/exmatrikulation/";
     };
   };
 }

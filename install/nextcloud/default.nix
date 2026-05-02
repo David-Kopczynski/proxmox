@@ -19,14 +19,6 @@
     settings."maintenance_window_start" = 3;
     phpOptions."opcache.interned_strings_buffer" = "64";
 
-    settings.trusted_domains = [ config.networking.hostName ];
-    settings.trusted_proxies = [
-      "127.0.0.0/8"
-      "10.0.0.0/8"
-      "172.16.0.0/12"
-      "192.168.0.0/16"
-    ];
-
     # Mail notifications
     settings.mail_from_address = builtins.head (builtins.match "^([^.]+)\\..+$" domain); # for subdomain
     settings.mail_domain = builtins.head (builtins.match "^[^.]+\\.(.+)$" domain); # for rest
@@ -49,6 +41,7 @@
   };
 
   # Allow access to service from nginx
+  imports = [ ../nginx/proxy-pass.client.nix ];
   networking.firewall.allowedTCPPorts = [ 80 ];
 
   # Secrets

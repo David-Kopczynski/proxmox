@@ -32,7 +32,7 @@
   };
   sops.templates."basic-auth/token" = {
     content = ''
-      set $auth_token "${config.sops.placeholder."basic-auth/token"}";
+      set  $auth_token "${config.sops.placeholder."basic-auth/token"}";
     '';
     owner = "nginx";
     group = "nginx";

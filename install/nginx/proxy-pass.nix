@@ -20,20 +20,25 @@
       proxyPass = "http://${targetHost}/";
 
       extraConfig =
+        # Forward real client IP to backend services
+        ''
+          proxy_set_header         X-Real-IP $remote_addr;
+          proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+        ''
         # Special configuration to get Websockets correctly when working with second Nginx instance
         # Manually configure Websockets with forwarded method $http_connection
-        ''
-          proxy_http_version 1.1;
-          proxy_set_header   Upgrade    $http_upgrade;
-          proxy_set_header   Connection $http_connection;
+        + ''
+          proxy_http_version       1.1;
+          proxy_set_header         Upgrade    $http_upgrade;
+          proxy_set_header         Connection $http_connection;
         ''
         # Disable all limits and buffering features
         # These should be set in the second Nginx instance
         + ''
-          client_max_body_size 0;
+          client_max_body_size     0;
 
-          proxy_buffering off;
-          proxy_request_buffering off;
+          proxy_buffering          off;
+          proxy_request_buffering  off;
         '';
     };
 
