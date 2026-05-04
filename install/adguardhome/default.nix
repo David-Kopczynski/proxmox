@@ -70,8 +70,8 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 53 ] ++ [ 853 ] ++ [ 80 ];
-  networking.firewall.allowedUDPPorts = [ 53 ] ++ [ 853 ];
+  networking.firewall.allowedTCPPorts = [ 53 ] ++ [ 80 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 
   # Secrets
   sops.secrets."basic-auth/auth" = {
