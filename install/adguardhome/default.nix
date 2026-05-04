@@ -13,11 +13,12 @@ in
 
     # DNS upstreams
     settings.dns.upstream_dns =
-      # DNS over HTTPs servers for external resolution
+      # DNS over HTTPs/QUIC servers for external resolution
       [
         "https://dns.google/dns-query"
         "https://dns.quad9.net/dns-query"
         "https://dns.cloudflare.com/dns-query"
+        "quic://dns.adguard-dns.com"
       ]
       # Resolve hostnames and .internal domains with local DNS
       ++ [
