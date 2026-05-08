@@ -37,6 +37,7 @@ in
     # Advanced DNS features
     settings.dns.enable_dnssec = true;
     settings.dns.edns_client_subnet.enabled = true;
+    settings.tls.allow_unencrypted_doh = true;
 
     # Performance optimizations
     settings.dns.ratelimit = 0;
@@ -70,8 +71,8 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 53 ] ++ [ 80 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [ 53 ] ++ [ 853 ] ++ [ 80 ];
+  networking.firewall.allowedUDPPorts = [ 53 ] ++ [ 853 ];
 
   # Secrets
   sops.secrets."basic-auth/auth" = {
