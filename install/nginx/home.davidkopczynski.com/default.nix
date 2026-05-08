@@ -1,5 +1,5 @@
 { domain }:
-{ ... }:
+{ config, ... }:
 
 {
   # Allow access to dashboard from outside
@@ -7,12 +7,14 @@
 
     enableACME = true;
     forceSSL = true;
+    kTLS = true;
     locations."/" = {
-      extraConfig = ''
-        proxy_buffering     off;
-        proxy_read_timeout  3600s;
-        proxy_send_timeout  3600s;
-      '';
+      extraConfig =
+        # Recommended settings from https://community.home-assistant.io/t/reverse-proxy-using-nginx/196954
+        ''
+          proxy_buffering  off;
+          send_timeout     ${config.services.nginx.proxyTimeout};
+        '';
       proxyPass = "http://10.5.4.106:8123/";
       proxyWebsockets = true;
     };

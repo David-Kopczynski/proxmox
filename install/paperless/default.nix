@@ -46,13 +46,18 @@
   imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+
+    # Recommended settings from https://github.com/paperless-ngx/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#nginx
+    clientMaxBodySize = "1G";
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = ''
-        client_max_body_size  1G;
-      '';
       proxyPass = "http://${config.services.paperless.address}:${toString config.services.paperless.port}/";
       proxyWebsockets = true;
     };

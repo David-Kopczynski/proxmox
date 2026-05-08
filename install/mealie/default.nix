@@ -30,7 +30,15 @@
   imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+
+    # Recommended settings from https://docs.mealie.io/documentation/community-guide/swag/
+    clientMaxBodySize = "100M";
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {

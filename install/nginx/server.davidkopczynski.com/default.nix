@@ -9,11 +9,19 @@
 
     enableACME = true;
     forceSSL = true;
+    kTLS = true;
     locations."/" = {
-      extraConfig = config.nginx.basic_auth {
-        authFile = config.sops.secrets."basic-auth/auth".path;
-        tokenFile = config.sops.templates."basic-auth/token".path;
-      };
+      extraConfig =
+        # Recommended settings from https://pve.proxmox.com/wiki/Web_Interface_Via_Nginx_Proxy
+        ''
+          proxy_buffering       off;
+          client_max_body_size  0;
+          send_timeout          ${config.services.nginx.proxyTimeout};
+        ''
+        + config.nginx.basic_auth {
+          authFile = config.sops.secrets."basic-auth/auth".path;
+          tokenFile = config.sops.templates."basic-auth/token".path;
+        };
       proxyPass = "https://10.4.10.1:8006/";
       proxyWebsockets = true;
     };

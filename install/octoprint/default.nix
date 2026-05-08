@@ -47,15 +47,19 @@
   imports = [ ../nginx/proxy-pass.client.nix ] ++ [ ../nginx/auth-request.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+
+    # Recommended settings from https://community.octoprint.org/t/reverse-proxy-configuration/1107
+    clientMaxBodySize = "100M";
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = ''
-        ${config.nginx.customProxySettings}
-
-        client_max_body_size  100M;
-      '';
+      extraConfig = config.nginx.customProxySettings;
       proxyPass = "http://${config.services.octoprint.host}:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };

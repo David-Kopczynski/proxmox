@@ -23,6 +23,11 @@ in
       worker_processes auto;
     '';
 
+    # Optimizations and general tweaks
+    enableQuicBPF = true;
+    proxyTimeout = "2h";
+    uwsgiTimeout = "2h";
+
     # Additional custom security headers
     appendHttpConfig = ''
       proxy_hide_header  Referrer-Policy;

@@ -59,7 +59,12 @@ in
   imports = [ ../nginx/proxy-pass.client.nix ] ++ [ ../nginx/basic-auth.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {

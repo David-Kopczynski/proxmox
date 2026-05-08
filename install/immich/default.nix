@@ -39,13 +39,23 @@
   imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+
+    # Recommended settings from https://docs.immich.app/administration/reverse-proxy/
+    clientMaxBodySize = "0";
+    proxyTimeout = "600s";
+    appendHttpConfig = ''
+      proxy_request_buffering  off;
+      client_body_buffer_size  1024k;
+    '';
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = ''
-        client_max_body_size  0;
-      '';
       proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}/";
       proxyWebsockets = true;
     };

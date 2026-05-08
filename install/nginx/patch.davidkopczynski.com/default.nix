@@ -7,6 +7,7 @@
 
     enableACME = true;
     forceSSL = true;
+    kTLS = true;
     locations."/" = {
       return = "302 https://www.rwth-aachen.de/cms/root/studium/im-studium/~egy/exmatrikulation/";
     };

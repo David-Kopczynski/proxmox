@@ -16,14 +16,21 @@
   imports = [ ../nginx/proxy-pass.client.nix ];
 
   services.nginx.enable = true;
-  services.nginx.recommendedOptimisation = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+
+    # Recommended settings from https://docs.stirlingpdf.com/Production-Deployment-Guide/
+    clientMaxBodySize = "1G";
+    proxyTimeout = "300s";
+  };
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = ''
-        client_max_body_size  1G;
-      '';
       proxyPass = "http://${config.services.stirling-pdf.environment.SERVER_ADDRESS}:${config.services.stirling-pdf.environment.SERVER_PORT}/";
+      proxyWebsockets = true;
     };
   };
 
