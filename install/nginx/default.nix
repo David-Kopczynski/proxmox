@@ -35,11 +35,11 @@ in
 
       add_header         Referrer-Policy "strict-origin-when-cross-origin" always;
       add_header         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-      add_header         X-Content-Type-Options nosniff;
-      add_header         X-Frame-Options SAMEORIGIN;
-      add_header         X-Permitted-Cross-Domain-Policies none;
-      add_header         X-Robots-Tag noindex,nofollow;
-      add_header         X-XSS-Protection "1; mode=block";
+      add_header         X-Content-Type-Options "nosniff" always;
+      add_header         X-Frame-Options "SAMEORIGIN" always;
+      add_header         X-Permitted-Cross-Domain-Policies "none" always;
+      add_header         X-Robots-Tag "noindex,nofollow" always;
+      add_header         X-XSS-Protection "1; mode=block" always;
     '';
   };
 
