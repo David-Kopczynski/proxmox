@@ -24,11 +24,11 @@
       extraConfig =
         # Disable all limits and buffering features
         # These should be set in the second Nginx instance
-        + ''
-          client_max_body_size     0;
-
+        ''
           proxy_buffering          off;
           proxy_request_buffering  off;
+          client_max_body_size     0;
+          send_timeout             ${config.services.nginx.proxyTimeout};
         '';
     };
 
