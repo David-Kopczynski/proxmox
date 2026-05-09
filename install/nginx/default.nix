@@ -25,8 +25,8 @@ in
 
     # Optimizations and general tweaks
     enableQuicBPF = true;
-    proxyTimeout = "2h";
-    uwsgiTimeout = "2h";
+    proxyTimeout = "7440s";
+    uwsgiTimeout = "7440s";
 
     # Additional custom security headers
     appendHttpConfig = ''
