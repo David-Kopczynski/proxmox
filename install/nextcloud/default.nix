@@ -10,7 +10,10 @@
     # General configuration
     hostName = domain;
     home = toString /data;
+    settings."overwriteprotocol" = "https";
+    settings."overwrite.cli.url" = "https://${domain}";
 
+    appstoreEnable = true;
     autoUpdateApps.enable = true;
     imaginary.enable = true;
     maxUploadSize = "10G";
@@ -29,6 +32,9 @@
 
     # Secrets
     secretFile = config.sops.templates."secrets".path;
+
+    # Optimizations
+    caching.redis = true;
 
     # Faster database
     config.dbtype = "pgsql";
