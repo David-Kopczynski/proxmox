@@ -20,7 +20,6 @@
 
     settings.default_phone_region = "DE";
     settings."maintenance_window_start" = 3;
-    phpOptions."opcache.interned_strings_buffer" = "64";
 
     # Mail notifications
     settings.mail_from_address = builtins.head (builtins.match "^([^.]+)\\..+$" domain); # for subdomain
@@ -35,6 +34,9 @@
 
     # Optimizations
     caching.redis = true;
+    cli.memoryLimit = "1G";
+
+    phpOptions."opcache.interned_strings_buffer" = "64";
 
     # Faster database
     config.dbtype = "pgsql";
