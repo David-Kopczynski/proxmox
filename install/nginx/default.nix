@@ -4,7 +4,6 @@
 let
   HOST = "davidkopczynski.com";
   MAIL = "mail@davidkopczynski.com";
-  ETH0 = "ens18";
 in
 {
   services.nginx.enable = true;
@@ -71,7 +70,7 @@ in
   };
 
   # Prevent incorrect IPv6 address resolution
-  networking.interfaces.${ETH0}.tempAddress = "disabled";
+  networking.tempAddresses = "disabled";
 
   # Secure SSH/Nginx with Fail2Ban
   services.fail2ban.enable = true;
