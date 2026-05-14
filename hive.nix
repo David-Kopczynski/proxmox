@@ -64,10 +64,10 @@
   #                Special Purpose VMs                #
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   adguardhome = {
-    system.name = "dns.davidkopczynski.com";
+    system.name = "adguardhome.server.internal";
     system.stateVersion = "25.11";
 
-    deployment.tags = [ ];
+    deployment.tags = [ "standalone" ];
   };
   immich = {
     system.name = "photos.davidkopczynski.com";
