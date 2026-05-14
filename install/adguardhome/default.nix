@@ -1,9 +1,6 @@
 { ... }:
 { config, ... }:
 
-let
-  GATE = "10.4.0.1";
-in
 {
   services.adguardhome.enable = true;
   services.adguardhome = {
@@ -22,13 +19,13 @@ in
       ]
       # Resolve hostnames and .internal domains with local DNS
       ++ [
-        "[//]${GATE}" # resolves hostnames
-        "[/internal/]${GATE}" # resolves .internal domains
+        "[//]10.4.0.1" # resolves hostnames
+        "[/internal/]10.4.0.1" # resolves .internal domains
       ]
       # rDNS for IP hostname resolution
       ++ [
-        "[/in-addr.arpa/]${GATE}" # resolves IPv4 reverse lookups
-        "[/ip6.arpa/]${GATE}" # resolves IPv6 reverse lookups
+        "[/in-addr.arpa/]10.4.0.1" # resolves IPv4 reverse lookups
+        "[/ip6.arpa/]10.4.0.1" # resolves IPv6 reverse lookups
       ];
     settings.dns.bootstrap_dns =
       # Cloudflare DNS for initial resolution of upstream DNS servers
@@ -43,12 +40,12 @@ in
     settings.dns.ratelimit = 0;
     settings.dns.upstream_mode = "load_balance";
     settings.dns.upstream_timeout = "1s";
-    settings.dns.fallback_dns = [ GATE ];
+    settings.dns.fallback_dns = [ "10.4.0.1" ];
 
     # Resolve local domains with gateway DNS
     settings.clients.runtime_sources.rdns = true;
     settings.dns.use_private_ptr_resolvers = true;
-    settings.dns.local_ptr_upstreams = [ GATE ];
+    settings.dns.local_ptr_upstreams = [ "10.4.0.1" ];
 
     # Prevent invalid hostname resolution from local machine
     settings.clients.runtime_sources.hosts = false;
