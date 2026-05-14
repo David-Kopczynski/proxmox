@@ -35,6 +35,7 @@
   nginx =
     { lib, nodes, ... }:
     {
+      system.name = "davidkopczynski.com";
       system.stateVersion = "24.11";
 
       imports =

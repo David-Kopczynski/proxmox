@@ -1,10 +1,6 @@
-{ ... }:
+{ domain }:
 { config, ... }:
 
-let
-  HOST = "davidkopczynski.com";
-  MAIL = "mail@davidkopczynski.com";
-in
 {
   services.nginx.enable = true;
   services.nginx = {
@@ -53,7 +49,7 @@ in
   # A separate certificate will be generated for all domains with enableACME
   security.acme = {
     acceptTerms = true;
-    defaults.email = MAIL;
+    defaults.email = "mail@davidkopczynski.com";
   };
 
   # Automatically propagate IP address changes to DNS
@@ -62,8 +58,8 @@ in
 
     protocol = "cloudflare";
     usev4 = "webv4, webv4=ipv4.ident.me/";
-    zone = HOST;
-    domains = [ HOST ];
+    zone = domain;
+    domains = [ domain ];
     username = "token";
     passwordFile = config.sops.secrets."cloudflare/token".path;
     interval = "1min";
