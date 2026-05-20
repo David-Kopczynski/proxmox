@@ -16,7 +16,7 @@
     appstoreEnable = true;
     autoUpdateApps.enable = true;
     imaginary.enable = true;
-    maxUploadSize = "10G";
+    maxUploadSize = "64G";
 
     settings.default_phone_region = "DE";
     settings."maintenance_window_start" = 3;
