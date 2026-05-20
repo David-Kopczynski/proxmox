@@ -20,6 +20,7 @@
 
     settings.default_phone_region = "DE";
     settings."maintenance_window_start" = 3;
+    settings."simpleSignUpLink.shown" = false;
 
     # Mail notifications
     settings.mail_from_address = builtins.head (builtins.match "^([^.]+)\\..+$" domain); # for subdomain
