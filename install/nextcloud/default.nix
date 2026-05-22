@@ -16,7 +16,9 @@
     appstoreEnable = true;
     autoUpdateApps.enable = true;
     imaginary.enable = true;
+
     maxUploadSize = "64G";
+    fastcgiTimeout = 7440;
 
     settings.default_phone_region = "DE";
     settings."maintenance_window_start" = 3;
