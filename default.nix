@@ -7,6 +7,14 @@
 }:
 
 {
+  assertions = [
+    {
+      assertion = lib.versionOlder config.system.stateVersion config.system.nixos.release;
+      message = "Current NixOS version is older than configured state version.";
+    }
+  ];
+
+  # General system configuration
   nixpkgs.hostPlatform = "x86_64-linux";
 
   imports = [
