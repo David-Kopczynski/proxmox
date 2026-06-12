@@ -9,7 +9,7 @@
 {
   assertions = [
     {
-      assertion = lib.versionOlder config.system.stateVersion config.system.nixos.release;
+      assertion = lib.versionAtLeast config.system.nixos.release config.system.stateVersion;
       message = "Current NixOS version is older than configured state version.";
     }
   ];
@@ -25,6 +25,9 @@
   # Enable bootloader from initial configuration
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Simple security hardening
+  security.lockKernelModules = true;
 
   # Grow the root partition to fill the disk
   boot.growPartition = true;
@@ -96,6 +99,5 @@
 
   # Enable firmware updates
   services.fwupd.enable = true;
-  services.fwupd.extraRemotes = [ "lvfs-testing" ];
   services.fwupd.daemonSettings.DisabledPlugins = [ "bios" ];
 }
