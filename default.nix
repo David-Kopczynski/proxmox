@@ -18,8 +18,8 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
-    (modulesPath + "/profiles/minimal.nix")
+    (modulesPath + /profiles/qemu-guest.nix)
+    (modulesPath + /profiles/minimal.nix)
   ];
 
   # Enable bootloader from initial configuration
@@ -47,6 +47,7 @@
       "/boot" = {
         device = "/dev/disk/by-partlabel/disk-system-ESP";
         fsType = "vfat";
+        options = [ "umask=0077" ];
       };
       "/" = {
         device = "/dev/disk/by-partlabel/disk-system-root";
@@ -86,8 +87,6 @@
   services.openssh.authorizedKeysInHomedir = false;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.KbdInteractiveAuthentication = false;
-  services.openssh.settings."ClientAliveInterval" = 60;
-  services.openssh.settings."MaxAuthTries" = 1;
 
   users.users."root".openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e user@nixos"

@@ -57,7 +57,7 @@
         ++ lib.trivial.pipe (builtins.readDir ./install/nginx) [
           (x: builtins.filter (n: x.${n} == "directory") (builtins.attrNames x))
           (builtins.filter (n: builtins.pathExists ./install/nginx/${n}/default.nix))
-          (builtins.map (n: import ./install/nginx/${n}/default.nix { domain = n; }))
+          (map (n: import ./install/nginx/${n}/default.nix { domain = n; }))
         ];
     };
 
