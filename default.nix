@@ -18,8 +18,8 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   imports = [
-    (modulesPath + /profiles/qemu-guest.nix)
-    (modulesPath + /profiles/minimal.nix)
+    (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/profiles/minimal.nix")
   ];
 
   # Enable bootloader from initial configuration
