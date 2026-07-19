@@ -32,15 +32,7 @@
   # Grow the root partition to fill the disk
   boot.growPartition = true;
 
-  # Add filesystem partitions
-  swapDevices = [
-    {
-      device = "/dev/disk/by-partlabel/disk-system-swap";
-      randomEncryption.enable = true;
-      randomEncryption.allowDiscards = config.services.fstrim.enable;
-    }
-  ];
-
+  # System
   fileSystems =
     # Disk: /dev/sda
     {
@@ -55,15 +47,20 @@
         autoResize = true;
       };
     }
-    //
-      # Disk: /dev/sdb (optional)
-      lib.optionalAttrs hasDataDisk {
-        "/data" = {
-          device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
-          fsType = "ext4";
-          autoResize = true;
-        };
+    # Disk: /dev/sdb (optional)
+    // lib.optionalAttrs hasDataDisk {
+      "/data" = {
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
+        fsType = "ext4";
+        autoResize = true;
       };
+    };
+
+  swapDevices = lib.toList {
+    device = "/dev/disk/by-partlabel/disk-system-swap";
+    randomEncryption.enable = true;
+    randomEncryption.allowDiscards = config.services.fstrim.enable;
+  };
 
   # Additional swap to fallback to
   zramSwap.enable = true;

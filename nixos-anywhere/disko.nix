@@ -1,7 +1,7 @@
 { lib, hasDataDisk, ... }:
 
 {
-  imports = [ "${fetchTarball "https://github.com/nix-community/disko/tarball/master"}/module.nix" ];
+  imports = [ "${(import ../npins).disko}/module.nix" ];
 
   disko.devices.disk =
     # Default disk setup using EFI partition
@@ -43,9 +43,8 @@
         };
       };
     }
-    //
     # Extra data disk without partitioning (optional)
-    lib.optionalAttrs hasDataDisk {
+    // lib.optionalAttrs hasDataDisk {
       "data" = {
         device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
         type = "disk";

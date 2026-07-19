@@ -2,7 +2,7 @@
 { ... }:
 
 {
-  imports = [ <sops-nix/modules/sops> ];
+  imports = [ "${(import ../npins).sops-nix}/modules/sops" ];
 
   sops.defaultSopsFile = sopsFile;
   sops.defaultSopsFormat = "yaml";

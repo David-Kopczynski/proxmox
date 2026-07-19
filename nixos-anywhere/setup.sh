@@ -1,10 +1,5 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -i bash -p nix nixos-anywhere
-set -o errexit
-set -o nounset
-set -o pipefail
-
-cd "$(dirname "$0")"
 
 # Get target host and configuration
 read -rp "Host IP: " host
@@ -15,4 +10,13 @@ case "$has_data_disk" in
   *)     has_data_disk=false ;;
 esac
 
-nixos-anywhere --store-paths $(nix-build --arg hasDataDisk $has_data_disk -A config.system.build.diskoScript -A config.system.build.toplevel --no-out-link) root@"$host"
+nixos-anywhere \
+  --store-paths $(
+    nix-build \
+      "$(dirname "$0")" \
+      --arg hasDataDisk $has_data_disk \
+      -A config.system.build.diskoScript \
+      -A config.system.build.toplevel \
+      --no-out-link
+    ) \
+  root@"$host"

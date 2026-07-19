@@ -1,5 +1,5 @@
 {
-  meta.nixpkgs = <nixpkgs>;
+  meta.nixpkgs = (import ./npins).nixpkgs;
 
   # # # # # # # # # # # # # # # # # # # # # # # # # # #
   #                  Default Config                   #
@@ -18,11 +18,10 @@
           (import ./install/${name} { domain = config.system.name; })
           (import ./default.nix { hasDataDisk = builtins.elem "data" config.deployment.tags; })
         ]
-        ++
-          # Secrets management (if provided)
-          lib.lists.optional (builtins.pathExists ./install/${name}/secrets.yaml) (
-            import ./sops/default.nix { sopsFile = ./install/${name}/secrets.yaml; }
-          );
+        # Secrets management (if provided)
+        ++ lib.lists.optional (builtins.pathExists ./install/${name}/secrets.yaml) (
+          import ./sops/default.nix { sopsFile = ./install/${name}/secrets.yaml; }
+        );
 
       # Networking target host
       deployment.targetHost = lib.mkDefault config.networking.hostName;

@@ -1,9 +1,4 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p ansible python3
-set -o errexit
-set -o nounset
-set -o pipefail
+#! nix-shell -i bash -p ansible
 
-cd "$(dirname "$0")"
-
-ansible-playbook playbook.yml
+ANSIBLE_CONFIG="$(dirname $0)/ansible.cfg" ansible-playbook "$(dirname $0)/playbook.yml"

@@ -3,7 +3,8 @@
   hasDataDisk ? false,
 }:
 
-import (<nixpkgs> + "/nixos/lib/eval-config.nix") {
+import "${(import ../npins).nixpkgs}/nixos/lib/eval-config.nix" {
+
   modules = [ ./configuration.nix ];
   specialArgs = { inherit hasDataDisk; };
 }
