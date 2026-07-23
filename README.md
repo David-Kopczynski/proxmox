@@ -8,9 +8,6 @@ Also, [npins](https://github.com/andir/npins) and [sops-nix](https://github.com/
 to streamline deployment!
 
 ```shell
-# Init dependencies (if required)
-npins -d ~/Documents/proxmox/npins init
-
 # Update dependencies (if required)
 npins -d ~/Documents/proxmox/npins update
 
