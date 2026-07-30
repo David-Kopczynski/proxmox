@@ -10,14 +10,8 @@ keys:
     - &nginx "age1rpqdczs8q4rzrd0cp79d96zg0xxzcjh6jsyld2xrl539fh65ju8q6cq9my"
     - &octoprint "age19mudawdduaf42halmrelllltzuke6cnufvm600mvyck6jl2tdals3mmdaz"
     - &paperless "age100n33reu08nhdege3t8jkwdnwa9hdh33rq0dlg3xa0mwwhwy0pvsnre9v5"
-    - &stirling-pdf "age1hufrva65uqfcvuc8f8f2z85txgx5wjnnq6ynlm2l6t3jc8u474ns0u3nku"
     - &uptime-kuma "age1m83vds5k6paz9r5k4g23udv7ct4twz3utkzjlyy49728y54mufssmmj9k5"
 creation_rules:
-  - path_regex: ^install/adguardhome/secrets\.yaml$
-    key_groups:
-      - age:
-          - *user
-          - *adguardhome
   - path_regex: ^install/immich/secrets\.yaml$
     key_groups:
       - age:
