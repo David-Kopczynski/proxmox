@@ -95,7 +95,7 @@
 
   # Secrets
   sops.secrets."cloudflare/token" = {
-    owner = "nginx";
-    group = "nginx";
+    owner = config.users.users."nginx".name;
+    group = config.users.users."nginx".group;
   };
 }

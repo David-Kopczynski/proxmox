@@ -67,14 +67,14 @@
 
   # Secrets
   sops.secrets."mail/password" = {
-    owner = "paperless";
-    group = "paperless";
+    owner = config.users.users."paperless".name;
+    group = config.users.users."paperless".group;
   };
   sops.templates."secrets" = {
     content = ''
       PAPERLESS_EMAIL_HOST_PASSWORD="${config.sops.placeholder."mail/password"}"
     '';
-    owner = "paperless";
-    group = "paperless";
+    owner = config.users.users."paperless".name;
+    group = config.users.users."paperless".group;
   };
 }
