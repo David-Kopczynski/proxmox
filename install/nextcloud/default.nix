@@ -39,7 +39,8 @@
     caching.redis = true;
     cli.memoryLimit = "1G";
 
-    phpOptions."opcache.interned_strings_buffer" = "64";
+    phpOptions."opcache.interned_strings_buffer" = 64;
+    phpOptions."opcache.memory_consumption" = 1024;
 
     # Faster database
     config.dbtype = "pgsql";
