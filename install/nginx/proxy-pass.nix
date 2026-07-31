@@ -16,7 +16,6 @@
 
     # Basic configuration for all services
     forceSSL = true;
-    kTLS = true;
     locations."/" = {
       proxyPass = "http://${targetHost}/";
       proxyWebsockets = true;

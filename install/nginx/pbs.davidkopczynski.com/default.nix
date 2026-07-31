@@ -7,7 +7,6 @@
 
     enableACME = true;
     forceSSL = true;
-    kTLS = true;
     locations."/" = {
       extraConfig =
         # Recommended settings from https://pve.proxmox.com/wiki/Web_Interface_Via_Nginx_Proxy

@@ -7,7 +7,6 @@
 
     enableACME = true;
     forceSSL = true;
-    kTLS = true;
     locations."/" = {
       extraConfig =
         # Recommended settings from https://community.home-assistant.io/t/reverse-proxy-using-nginx/196954
