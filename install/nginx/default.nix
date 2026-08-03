@@ -41,6 +41,16 @@
       add_header         X-Robots-Tag "noindex,nofollow" always;
       add_header         X-XSS-Protection "1; mode=block" always;
     '';
+
+    # Custom logging format with extended information
+    commonHttpConfig = ''
+      log_format extended '$remote_addr - $remote_user [$time_local] '
+                          '"$request" $status $body_bytes_sent '
+                          '"$http_referer" "$http_user_agent" '
+                          '"$host"';
+
+      access_log /var/log/nginx/access.log extended;
+    '';
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ] ++ [ 443 ];
