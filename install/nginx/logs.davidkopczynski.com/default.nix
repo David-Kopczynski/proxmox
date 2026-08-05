@@ -81,7 +81,7 @@
   services.alloy.enable = true;
   environment.etc."alloy/config.alloy".text = ''
     local.file_match "logs" {
-      path_targets = [{ __path__ = "/var/log/nginx/*.log" }]
+      path_targets = [{ __path__ = "/var/log/nginx/*.log", job = "nginx", service_name = "nginx" }]
       sync_period  = "5s"
     }
 
