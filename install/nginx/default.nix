@@ -96,6 +96,8 @@
     };
   };
 
+  boot.kernelModules = [ "xt_multiport" ] ++ [ "ipt_REJECT" ] ++ [ "ip6t_REJECT" ];
+
   # Trap SSH attacks
   services.endlessh.enable = true;
   services.endlessh.extraOptions = [ "-v" ];
