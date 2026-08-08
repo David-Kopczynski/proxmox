@@ -1,5 +1,4 @@
 { domain }:
-{ ... }:
 
 {
   # Redirect patch to page of my choice

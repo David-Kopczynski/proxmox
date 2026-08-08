@@ -58,14 +58,12 @@
 
   # Secrets
   sops.secrets."mail/password" = {
-    owner = config.users.users."nextcloud".name;
-    group = config.users.users."nextcloud".group;
+    owner = config.services.nextcloud.config.dbuser;
   };
   sops.templates."secrets" = {
     content = builtins.toJSON {
       "mail_smtppassword" = config.sops.placeholder."mail/password";
     };
-    owner = config.users.users."nextcloud".name;
-    group = config.users.users."nextcloud".group;
+    owner = config.services.nextcloud.config.dbuser;
   };
 }

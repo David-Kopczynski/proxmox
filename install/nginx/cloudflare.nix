@@ -82,7 +82,7 @@
 
   # Secrets
   config.sops.secrets."certificates/key" = {
-    owner = config.users.users."nginx".name;
-    group = config.users.users."nginx".group;
+    owner = config.services.nginx.user;
+    group = config.services.nginx.group;
   };
 }

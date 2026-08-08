@@ -98,7 +98,7 @@
   '';
 
   # File permissions
-  systemd.services.alloy.serviceConfig.SupplementaryGroups = [ config.users.users."nginx".group ];
+  systemd.services.alloy.serviceConfig.SupplementaryGroups = [ config.services.nginx.group ];
 
   # Nginx reverse proxy to Grafana with port 3000
   services.nginx.virtualHosts.${domain} = {
@@ -114,7 +114,6 @@
   # Secrets
   sops.secrets."grafana/secret" = {
     sopsFile = ./secrets.yaml;
-    owner = config.users.users."grafana".name;
-    group = config.users.users."grafana".group;
+    owner = config.services.grafana.settings.database.user;
   };
 }

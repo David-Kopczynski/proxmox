@@ -1,5 +1,4 @@
 { sopsFile }:
-{ ... }:
 
 {
   imports = [ "${(import ../npins).sops-nix}/modules/sops" ];

@@ -65,18 +65,18 @@
 
   # Secrets
   sops.secrets."db/password" = {
-    owner = config.users.users."immich".name;
-    group = config.users.users."immich".group;
+    owner = config.services.immich.user;
+    group = config.services.immich.group;
   };
   sops.secrets."mail/password" = {
-    owner = config.users.users."immich".name;
-    group = config.users.users."immich".group;
+    owner = config.services.immich.user;
+    group = config.services.immich.group;
   };
   sops.templates."environment" = {
     content = ''
       DB_PASSWORD="${config.sops.placeholder."db/password"}"
     '';
-    owner = config.users.users."immich".name;
-    group = config.users.users."immich".group;
+    owner = config.services.immich.user;
+    group = config.services.immich.group;
   };
 }
