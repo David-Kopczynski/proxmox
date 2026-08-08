@@ -114,6 +114,6 @@
   # Secrets
   sops.secrets."grafana/secret" = {
     sopsFile = ./secrets.yaml;
-    owner = config.services.grafana.settings.database.user;
+    owner = config.systemd.services."grafana".serviceConfig."User";
   };
 }
