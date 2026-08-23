@@ -62,6 +62,7 @@
     server.http_listen_address = "127.0.0.1";
     server.http_listen_port = 3100;
     common.path_prefix = "/var/lib/loki";
+    analytics.reporting_enabled = false;
 
     # Storage
     storage_config.filesystem = {
@@ -79,6 +80,11 @@
 
   # Configure Grafana Alloy to scrape Nginx logs
   services.alloy.enable = true;
+  services.alloy = {
+
+    # General
+    extraFlags = [ "--disable-reporting" ];
+  };
   environment.etc."alloy/config.alloy".text = ''
     local.file_match "logs" {
       path_targets = [{ __path__ = "/var/log/nginx/*.log", job = "nginx", service_name = "nginx" }]
