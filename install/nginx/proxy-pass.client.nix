@@ -14,11 +14,15 @@
         set_real_ip_from  172.16.0.0/12;
         set_real_ip_from  192.168.0.0/16;
       ''
-      # Also include config for proxying
+      # Include config for proxying
       + ''
         ${config.nginx.customProxySettings}
       '';
   };
+
+  # Also include config for default proxy location in case of websockets
+  config.services.nginx.virtualHosts."localhost".locations."/".extraConfig =
+    config.nginx.customProxySettings;
 
   # Allow proxying without overwriting current protocol (modified recommendedProxySettings)
   # This fixes my `user -> https -> http -> service` setup for certain websockets

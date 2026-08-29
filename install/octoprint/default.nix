@@ -59,7 +59,6 @@
   services.nginx.virtualHosts."localhost" = {
 
     locations."/" = {
-      extraConfig = config.nginx.customProxySettings;
       proxyPass = "http://${config.services.octoprint.host}:${toString config.services.octoprint.port}/";
       proxyWebsockets = true;
     };
