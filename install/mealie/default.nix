@@ -49,9 +49,22 @@
 
   networking.firewall.allowedTCPPorts = [ 80 ];
 
+  # User
+  users.users."mealie".isSystemUser = true;
+  users.users."mealie" = {
+
+    group = "mealie";
+  };
+  users.groups."mealie" = { };
+
   # Secrets
-  sops.secrets."mail/password" = { };
-  sops.templates."credentials".content = ''
-    SMTP_PASSWORD="${config.sops.placeholder."mail/password"}"
-  '';
+  sops.secrets."mail/password" = {
+    owner = config.systemd.services."mealie".serviceConfig."User";
+  };
+  sops.templates."credentials" = {
+    content = ''
+      SMTP_PASSWORD="${config.sops.placeholder."mail/password"}"
+    '';
+    owner = config.systemd.services."mealie".serviceConfig."User";
+  };
 }
