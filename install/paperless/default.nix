@@ -8,6 +8,8 @@
     # General configuration
     settings."PAPERLESS_URL" = "https://${domain}";
 
+    dataDir = toString /data;
+
     # Custom settings for my optimal setup
     settings."PAPERLESS_OCR_LANGUAGE" = "deu+eng";
     settings."PAPERLESS_OCR_USER_ARGS" = {

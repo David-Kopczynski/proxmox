@@ -103,7 +103,7 @@
     system.name = "archive.davidkopczynski.com";
     system.stateVersion = "24.11";
 
-    deployment.tags = [ ];
+    deployment.tags = [ "data" ];
   };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
