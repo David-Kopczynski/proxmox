@@ -14,7 +14,7 @@
           proxy_buffering  off;
           send_timeout     ${config.services.nginx.proxyTimeout};
         '';
-      proxyPass = "http://10.5.4.106:8123/";
+      proxyPass = "http://10.5.4.106:8123";
       proxyWebsockets = true;
     };
   };

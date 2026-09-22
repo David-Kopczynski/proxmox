@@ -17,7 +17,7 @@
     # Basic configuration for all services
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://${targetHost}/";
+      proxyPass = "http://${targetHost}";
       proxyWebsockets = true;
 
       extraConfig =

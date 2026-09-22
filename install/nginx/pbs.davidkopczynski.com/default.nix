@@ -16,7 +16,7 @@
           client_max_body_size     0;
           send_timeout             ${config.services.nginx.proxyTimeout};
         '';
-      proxyPass = "https://10.4.10.2:8007/";
+      proxyPass = "https://10.4.10.2:8007";
       proxyWebsockets = true;
     };
   };

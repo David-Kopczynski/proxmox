@@ -23,6 +23,11 @@
     proxyTimeout = "7440s";
     uwsgiTimeout = "7440s";
 
+    # DNS tweaks
+    resolver.addresses = [ "10.4.0.1" ];
+    proxyResolveWhileRunning = true;
+    uwsgiResolveWhileRunning = true;
+
     # Additional custom security headers
     appendHttpConfig = ''
       proxy_hide_header  Referrer-Policy;
