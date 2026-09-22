@@ -24,9 +24,10 @@
     uwsgiTimeout = "7440s";
 
     # DNS tweaks
-    resolver.addresses = config.networking.nameservers;
     proxyResolveWhileRunning = true;
     uwsgiResolveWhileRunning = true;
+    resolver.addresses = config.networking.nameservers;
+    resolver.valid = "30s";
 
     # Additional custom security headers
     appendHttpConfig = ''
