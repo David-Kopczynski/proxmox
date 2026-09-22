@@ -19,13 +19,13 @@
       ]
       # Resolve hostnames and .internal domains with local DNS
       ++ [
-        "[//]10.4.0.1" # resolves hostnames
-        "[/internal/]10.4.0.1" # resolves .internal domains
+        "[//]${builtins.head config.networking.nameservers}" # resolves hostnames
+        "[/internal/]${builtins.head config.networking.nameservers}" # resolves .internal domains
       ]
       # rDNS for IP hostname resolution
       ++ [
-        "[/in-addr.arpa/]10.4.0.1" # resolves IPv4 reverse lookups
-        "[/ip6.arpa/]10.4.0.1" # resolves IPv6 reverse lookups
+        "[/in-addr.arpa/]${builtins.head config.networking.nameservers}" # resolves IPv4 reverse lookups
+        "[/ip6.arpa/]${builtins.head config.networking.nameservers}" # resolves IPv6 reverse lookups
       ];
     settings.dns.bootstrap_dns =
       # Cloudflare DNS for initial resolution of upstream DNS servers
@@ -40,12 +40,12 @@
     settings.dns.ratelimit = 0;
     settings.dns.upstream_mode = "load_balance";
     settings.dns.upstream_timeout = "1s";
-    settings.dns.fallback_dns = [ "10.4.0.1" ];
+    settings.dns.fallback_dns = config.networking.nameservers;
 
     # Resolve local domains with gateway DNS
     settings.clients.runtime_sources.rdns = true;
     settings.dns.use_private_ptr_resolvers = true;
-    settings.dns.local_ptr_upstreams = [ "10.4.0.1" ];
+    settings.dns.local_ptr_upstreams = config.networking.nameservers;
 
     # Prevent invalid hostname resolution from local machine
     settings.clients.runtime_sources.hosts = false;

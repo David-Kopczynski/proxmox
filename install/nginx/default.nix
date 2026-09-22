@@ -24,7 +24,7 @@
     uwsgiTimeout = "7440s";
 
     # DNS tweaks
-    resolver.addresses = [ "10.4.0.1" ];
+    resolver.addresses = config.networking.nameservers;
     proxyResolveWhileRunning = true;
     uwsgiResolveWhileRunning = true;
 

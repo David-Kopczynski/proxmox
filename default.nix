@@ -77,6 +77,9 @@
   # Configure QEMU quest agent for safe shutdown
   services.qemuGuest.enable = true;
 
+  # Configure nameserver statically
+  networking.nameservers = [ "10.4.0.1" ];
+
   # Enable SSH
   programs.ssh.startAgent = true;
   services.openssh.enable = true;
