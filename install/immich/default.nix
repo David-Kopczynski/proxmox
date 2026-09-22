@@ -32,6 +32,9 @@
     accelerationDevices = null;
   };
 
+  # TODO remove when fixed
+  nixpkgs.config.permittedInsecurePackages = [ "immich-2.7.5" ];
+
   # Enable hardware acceleration
   users.users.immich.extraGroups = [ "video" ] ++ [ "render" ];
 

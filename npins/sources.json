@@ -19,8 +19,8 @@
     "nixpkgs": {
       "type": "Channel",
       "name": "nixos-26.05",
-      "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.8538.d57af924f160/nixexprs.tar.xz",
-      "hash": "sha256-pbm8BrmtI4lOXt2syJ3FP12LjybYuiTdUO0GQrbQMk0="
+      "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.10304.6d663c0533ff/nixexprs.tar.xz",
+      "hash": "sha256-lIL3uDaS4Q9Ks6klLrBlDr+XS71sbjMJFSipIp2yPjs="
     },
     "sops-nix": {
       "type": "Git",
@@ -31,9 +31,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
-      "url": "https://github.com/Mic92/sops-nix/archive/a8627b21b9107c5711c96b84f32a9a4b3d45295f.tar.gz",
-      "hash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck="
+      "revision": "7214124c20c1542c90deb54af50e2f53ae02711f",
+      "url": "https://github.com/Mic92/sops-nix/archive/7214124c20c1542c90deb54af50e2f53ae02711f.tar.gz",
+      "hash": "sha256-GKwH3zpy7tartuJMG0Rv/xUsdetG1QLmTVv8UKgJLmA="
     }
   },
   "version": 7
