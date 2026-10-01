@@ -111,9 +111,17 @@
   services.endlessh.port = 22;
   services.openssh.ports = [ 2244 ];
 
+  # User
+  users.users."ddclient".isSystemUser = true;
+  users.users."ddclient" = {
+
+    group = "ddclient";
+  };
+  users.groups."ddclient" = { };
+
   # Secrets
   sops.secrets."cloudflare/token" = {
-    owner = config.services.nginx.user;
-    group = config.services.nginx.group;
+    owner = config.users.users."ddclient".name;
+    group = config.users.users."ddclient".group;
   };
 }
