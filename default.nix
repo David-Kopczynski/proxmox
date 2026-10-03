@@ -74,6 +74,8 @@
   nix.channel.enable = false;
   system.disableInstallerTools = true;
 
+  security.sudo.enable = false;
+
   # Configure QEMU quest agent for safe shutdown
   services.qemuGuest.enable = true;
 
