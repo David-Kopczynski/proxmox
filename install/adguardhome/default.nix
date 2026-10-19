@@ -10,11 +10,20 @@
 
     # DNS upstreams
     settings.dns.upstream_dns =
-      # DNS over HTTPs/QUIC servers for external resolution
+      # DNS over HTTPs/TLS/QUIC servers for external resolution
       [
         "https://dns.google/dns-query"
         "https://dns.quad9.net/dns-query"
-        "https://dns.cloudflare.com/dns-query"
+        "https://cloudflare-dns.com/dns-query"
+        "https://dns.telekom.de/dns-query"
+        "https://dns.adguard-dns.com/dns-query"
+        "h3://cloudflare-dns.com/dns-query"
+        "tls://dns.google"
+        "tls://dns.quad9.net"
+        "tls://one.one.one.one"
+        "tls://dns.telekom.de"
+        "tls://dns.adguard-dns.com"
+        "quic://dns.quad9.net"
         "quic://dns.adguard-dns.com"
       ]
       # Resolve hostnames and .internal domains with local DNS
