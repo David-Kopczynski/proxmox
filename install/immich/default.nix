@@ -12,6 +12,9 @@
     mediaLocation = toString /data;
     secretsFile = config.sops.templates."environment".path;
 
+    # TODO remove once 26.11 is out
+    package = (import (import ../../npins).nixos-unstable { }).immich;
+
     # Mail notifications
     settings.notifications.smtp.enabled = true;
     settings.notifications.smtp = {
@@ -31,9 +34,6 @@
     # Allow all hardware acceleration devices
     accelerationDevices = null;
   };
-
-  # TODO remove when fixed
-  nixpkgs.config.permittedInsecurePackages = [ "immich-2.7.5" ];
 
   # Enable hardware acceleration
   users.users.immich.extraGroups = [ "video" ] ++ [ "render" ];

@@ -16,6 +16,12 @@
       "url": "https://api.github.com/repos/nix-community/disko/tarball/refs/tags/v1.13.0",
       "hash": "sha256-CNzzBsRhq7gg4BMBuTDObiWDH/rFYHEuDRVOwCcwXw4="
     },
+    "nixos-unstable": {
+      "type": "Channel",
+      "name": "nixos-unstable",
+      "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1095516.09063bd1f2b3/nixexprs.tar.xz",
+      "hash": "sha256-EFOYkCb5ZNtbPx1NInawzi4y/6JRdHia0ag0CbJoMNY="
+    },
     "nixpkgs": {
       "type": "Channel",
       "name": "nixos-26.05",
