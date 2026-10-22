@@ -73,7 +73,6 @@
   services.ddclient = {
 
     protocol = "cloudflare";
-    usev4 = "webv4, webv4=ipv4.ident.me/";
     zone = domain;
     domains = [ domain ];
     username = "token";
