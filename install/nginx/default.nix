@@ -106,8 +106,11 @@
 
   # Trap SSH attacks
   services.endlessh.enable = true;
-  services.endlessh.extraOptions = [ "-v" ];
-  services.endlessh.openFirewall = true;
+  services.endlessh = {
+    extraOptions = [ "-v" ];
+    openFirewall = true;
+  };
+
   services.endlessh.port = 22;
   services.openssh.ports = [ 2244 ];
 
