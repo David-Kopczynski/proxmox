@@ -105,6 +105,12 @@
 
     deployment.tags = [ "data" ];
   };
+  siegenia = {
+    system.name = "siegenia.world";
+    system.stateVersion = "26.05";
+
+    deployment.tags = [ "default" ];
+  };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
     system.stateVersion = "24.11";
