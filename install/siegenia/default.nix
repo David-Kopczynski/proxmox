@@ -1,5 +1,10 @@
 { domain }:
-{ config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   services.minecraft-server.enable = true;
@@ -19,7 +24,37 @@
     serverProperties.difficulty = 3;
     serverProperties.motd = "Test Minecraft Server";
     serverProperties.view-distance = 16;
+    serverProperties.white-list = false;
+    serverProperties.enforce-secure-profile = false;
   };
+
+  # Geyser libcrypto.so.3 patch
+  systemd.services."minecraft-server".environment."LD_LIBRARY_PATH" = lib.makeLibraryPath (
+    with pkgs; [ openssl ]
+  );
+
+  # Geyser NetherNet support
+  systemd.services."minecraft-server".serviceConfig."RestrictAddressFamilies" = [ "AF_NETLINK" ];
+
+  # Nginx reverse proxy to BlueMap with port 8100
+  imports = [ ../nginx/proxy-pass.client.nix ];
+
+  services.nginx.enable = true;
+  services.nginx = {
+
+    # General configuration
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+  };
+  services.nginx.virtualHosts."localhost" = {
+
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8100";
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 19132 ] ++ [ 80 ];
+  networking.firewall.allowedUDPPorts = [ 19132 ];
 
   # Automatically propagate IP address changes to DNS
   services.ddclient.enable = true;

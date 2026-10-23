@@ -109,7 +109,7 @@
     system.name = "siegenia.world";
     system.stateVersion = "26.05";
 
-    deployment.tags = [ "default" ];
+    deployment.tags = [ ];
   };
   uptime-kuma = {
     system.name = "davidkopczynski.com";
