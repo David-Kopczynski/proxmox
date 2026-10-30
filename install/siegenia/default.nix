@@ -21,7 +21,6 @@
     # Game configuration and tweaks
     jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC";
 
-    serverProperties.difficulty = 3;
     serverProperties.motd = "Test Minecraft Server";
     serverProperties.view-distance = 16;
     serverProperties.white-list = false;
