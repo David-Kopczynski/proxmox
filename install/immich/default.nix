@@ -36,15 +36,8 @@
 
       "clip"."modelName" = "ViT-L-16-SigLIP2-256__webli";
       "facialRecognition"."modelName" = "buffalo_l";
-      "ocr"."modelName" = "LATIN__PP-OCRv5_mobile";
     };
-
-    # Allow all hardware acceleration devices
-    accelerationDevices = null;
   };
-
-  # Enable hardware acceleration
-  users.users.immich.extraGroups = [ "video" ] ++ [ "render" ];
 
   # Nginx reverse proxy to Immich with port 2283
   imports = [ ../nginx/proxy-pass.client.nix ];
