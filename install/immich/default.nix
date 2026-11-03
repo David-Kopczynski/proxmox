@@ -16,19 +16,27 @@
     package = (import (import ../../npins).nixos-unstable { }).immich;
 
     # Mail notifications
-    settings.notifications.smtp.enabled = true;
-    settings.notifications.smtp = {
+    settings."notifications"."smtp"."enabled" = true;
+    settings."notifications"."smtp" = {
 
-      from =
+      "from" =
         let
           # Split domain from "sub.domain.code" to [ "sub" "domain.code" ]
           parts = builtins.match "^([^.]+)\\.(.+)$" domain;
         in
         "Immich <${builtins.elemAt parts 0}@${builtins.elemAt parts 1}>";
-      transport.host = "smtp.ionos.de";
-      transport.port = 587;
-      transport.username = "mail@davidkopczynski.com";
-      transport.password._secret = config.sops.secrets."mail/password".path;
+      "transport"."host" = "smtp.ionos.de";
+      "transport"."port" = 587;
+      "transport"."username" = "mail@davidkopczynski.com";
+      "transport"."password"."_secret" = config.sops.secrets."mail/password".path;
+    };
+
+    # Custom models
+    settings."machineLearning" = {
+
+      "clip"."modelName" = "ViT-L-16-SigLIP2-256__webli";
+      "facialRecognition"."modelName" = "buffalo_l";
+      "ocr"."modelName" = "LATIN__PP-OCRv5_mobile";
     };
 
     # Allow all hardware acceleration devices
