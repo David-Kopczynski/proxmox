@@ -36,7 +36,11 @@
 
       "clip"."modelName" = "ViT-L-16-SigLIP2-256__webli";
       "facialRecognition"."modelName" = "buffalo_l";
+      "ocr"."modelName" = "LATIN__PP-OCRv5_mobile";
     };
+
+    # Required for OCR to work
+    machine-learning.environment."MACHINE_LEARNING_MODEL_REVISION" = "v2";
   };
 
   # Nginx reverse proxy to Immich with port 2283
