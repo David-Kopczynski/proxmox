@@ -36,7 +36,7 @@
 
       "clip"."modelName" = "ViT-L-16-SigLIP2-256__webli";
       "facialRecognition"."modelName" = "buffalo_l";
-      "ocr"."modelName" = "LATIN__PP-OCRv5_mobile";
+      "ocr"."modelName" = "PP-OCRv6_medium";
     };
 
     # Required for OCR to work
