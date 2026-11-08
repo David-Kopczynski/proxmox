@@ -63,7 +63,7 @@
   };
 
   # Additional swap to fallback to
-  zramSwap.enable = true;
+  boot.zswap.enable = true;
 
   # Automatically keep system clean and optimized
   boot.loader.systemd-boot.configurationLimit = 8;
