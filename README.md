@@ -40,8 +40,8 @@ Apart from that, the VM is ready to be used, while the **ISO can be removed**.
 Ideally, the VM should also be renamed to its hostname within the router dashboard.
 6. In order to deploy with Colmena, the initial installation with `deployment.targetHost`
 should point to the hostname `nixos` or the IP address of the VM.
-Also, (if required) generate an `age` key for the host machine with
-`nix-shell -p ssh-to-age --run "echo '$(ssh root@nixos "cat /etc/ssh/ssh_host_ed25519_key.pub")' | ssh-to-age"`
+Also, (if required) generate an `pubkey` key for the host machine with
+`ssh root@nixos "cat /etc/ssh/ssh_host_ed25519_key.pub"`
 and add it to the `.sops.yaml` file.
 
 *Otherwise, the installation will fail due to a lack of resources in the store or the connection being refused.* \

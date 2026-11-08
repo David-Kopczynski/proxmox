@@ -1,17 +1,17 @@
 keys:
   users:
-    - &user "age1nhssvcts5qr9m3gjl2ps5p4ss7nez6nnhjncrvwm0gpy7x0nqeeq97tm9v"
+    - &user "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPLqP71iBRAFd7OFIjlkN6yGEr++G5eRDJ+U57R9f8e"
   hosts:
-    - &adguardhome "age1s26vsj6xdw308qshpeq5qsd6cxsa092nn2agmrjrxszc3vw4f9kswhp92n"
-    - &immich "age17mwqcru7agmkjxagtdhnhh2hyj4zazf543e6c9xv2teqmzyl352s0pwwkp"
-    - &mealie "age1gsqeszswxycx6tquut65vmuv9ruveypewdxspv920mhltmd6hp9s8pclv3"
-    - &minecraft "age1lp9jp93dmqhcq7k7g0d6sm9z6qr03usz8wwefhzw6kdwzpydj9uq63xz53"
-    - &nextcloud "age192kq5hqm6re6kjgnnlps3julcsm43x5u7ggdywkyp64rcmdmd4ws4vc7yr"
-    - &nginx "age1rpqdczs8q4rzrd0cp79d96zg0xxzcjh6jsyld2xrl539fh65ju8q6cq9my"
-    - &octoprint "age19mudawdduaf42halmrelllltzuke6cnufvm600mvyck6jl2tdals3mmdaz"
-    - &paperless "age100n33reu08nhdege3t8jkwdnwa9hdh33rq0dlg3xa0mwwhwy0pvsnre9v5"
-    - &siegenia "age1yvtka9v4eh7q3rtgrqe8avlwu9p7fnextukk4z3kn70jf58rfazszhhfc2"
-    - &uptime-kuma "age1m83vds5k6paz9r5k4g23udv7ct4twz3utkzjlyy49728y54mufssmmj9k5"
+    - &adguardhome "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMh5/fme7y7FgJbblviXAjskkw4vDKrM6DzkW41gADGT"
+    - &immich "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaFuVx62iHZZiIaS4yrxB9ESAM9b18MAgpE1BZc5U82"
+    - &mealie "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGra11agGDCPJL7E4xhC/DNP9IihxTobIHn52BFYk5d2"
+    - &minecraft "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF1jH8/fmzoV1ApfckrkyWWRUo/tKiMnnoxk7jEcfYsl"
+    - &nextcloud "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGW9QriBYWifeMjTLd24S2ZyLEzMx2pIxh80rS2z/XvA"
+    - &nginx "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAZz3LhKcZ7JO0svukrUqPoPr7qt8h1KcRR4OGt/8LiP"
+    - &octoprint "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKa6BE5+WLQpY8DBokdTdlCEuCRvksQM5Uw6aW0tJY45"
+    - &paperless "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGcUrveZXqiXnlPDD5ToWy2uXbwirzTLIW1o7dT5DlzP"
+    - &siegenia "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMYTJCVsU6h4ePY0BWTgVip5WjbTyMGuM8cjRT7E4OFY"
+    - &uptime-kuma "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGpt8nyXM2NN3MxxhwhPDPGJdND1YGnc6r8q0d+CaaS"
 creation_rules:
   - path_regex: ^install/immich/secrets\.yaml$
     key_groups:
