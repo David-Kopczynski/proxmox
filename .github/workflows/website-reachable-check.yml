@@ -1,0 +1,22 @@
+name: Website Reachable Check
+
+# Schedule
+on:
+  workflow_dispatch: # for manual
+  schedule:
+    - cron: "*/30 * * * *"
+
+# Check
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check website reachability
+        env:
+          TARGET_URL: ${{ vars.URL }}
+        run: |
+          curl -fsSL \
+            --connect-timeout 10 \
+            --max-time 20 \
+            --retry 3 \
+            "$TARGET_URL" -o /dev/null
